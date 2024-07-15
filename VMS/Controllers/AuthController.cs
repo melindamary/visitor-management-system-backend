@@ -12,9 +12,9 @@ namespace VMS.Controllers
     {
         private static readonly List<User> UserList = new List<User>
         {
-            new User { Username = "admin", Password = "admin123", RoleId =1 },
-            new User { Username = "user", Password = "user123", RoleId =2 },
-            new User { Username = "auditor", Password = "auditor123", RoleId =3 }
+            new User { Username = "admin", Password = "admin123"},
+            new User { Username = "user", Password = "user123"},
+            new User { Username = "auditor", Password = "auditor123"}
         };
 
         [HttpPost]
@@ -27,7 +27,7 @@ namespace VMS.Controllers
             }
 
             // Generate and return a JWT token here
-            return Ok(new User {Username = user.Username, RoleId = user.RoleId });
+            return Ok(new User {Username = user.Username});
         }
     }
 }

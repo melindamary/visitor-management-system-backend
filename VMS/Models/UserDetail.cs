@@ -1,13 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS.Models;
+namespace VMS;
 
 public partial class UserDetail
 {
     public int UserDetailsId { get; set; }
 
-    public string FirstName { get; set; } = null!;
+    public int? UserId { get; set; }
+
+    public int? OfficeLocationId { get; set; }
+
+    public string? FirstName { get; set; }
 
     public string? LastName { get; set; }
 
@@ -17,17 +21,19 @@ public partial class UserDetail
 
     public string? Address { get; set; }
 
-    public int CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
-    public int UpdatedBy { get; set; }
+    public int? UpdatedBy { get; set; }
 
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
-    public virtual User CreatedByNavigation { get; set; } = null!;
+    public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual User UpdatedByNavigation { get; set; } = null!;
+    public virtual OfficeLocation? OfficeLocation { get; set; }
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual User? User { get; set; }
 }

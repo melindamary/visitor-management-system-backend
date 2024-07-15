@@ -3,11 +3,13 @@ using System.Collections.Generic;
 
 namespace VMS;
 
-public partial class Device
+public partial class UserRole
 {
-    public int DeviceId { get; set; }
+    public int UserRoleId { get; set; }
 
-    public string? DeviceName { get; set; }
+    public int? UserId { get; set; }
+
+    public int? RoleId { get; set; }
 
     public int? CreatedBy { get; set; }
 
@@ -19,7 +21,9 @@ public partial class Device
 
     public virtual User? CreatedByNavigation { get; set; }
 
+    public virtual Role? Role { get; set; }
+
     public virtual User? UpdatedByNavigation { get; set; }
 
-    public virtual ICollection<VisitorDevice> VisitorDevices { get; set; } = new List<VisitorDevice>();
+    public virtual User? User { get; set; }
 }

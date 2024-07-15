@@ -1,31 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS.Models;
+namespace VMS;
 
 public partial class OfficeLocation
 {
-    public int LocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
-    public string LocationName { get; set; } = null!;
+    public string? LocationName { get; set; }
 
-    public string Address { get; set; } = null!;
+    public string? Address { get; set; }
 
     public string? Phone { get; set; }
 
-    public int CreatedBy { get; set; }
+    public int? CreatedBy { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
-    public int UpdatedBy { get; set; }
+    public int? UpdatedBy { get; set; }
 
-    public DateTime UpdatedDate { get; set; }
+    public DateTime? UpdatedDate { get; set; }
 
-    public virtual User CreatedByNavigation { get; set; } = null!;
+    public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual User UpdatedByNavigation { get; set; } = null!;
+    public virtual User? UpdatedByNavigation { get; set; }
 
-    public virtual ICollection<User> Users { get; set; } = new List<User>();
+    public virtual ICollection<UserDetail> UserDetails { get; set; } = new List<UserDetail>();
 
     public virtual ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
 }

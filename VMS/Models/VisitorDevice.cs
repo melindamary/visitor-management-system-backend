@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS.Models;
+namespace VMS;
 
 public partial class VisitorDevice
 {
@@ -15,7 +15,7 @@ public partial class VisitorDevice
 
     public int? CreatedBy { get; set; }
 
-    public DateTime CreatedDate { get; set; }
+    public DateTime? CreatedDate { get; set; }
 
     public int? UpdatedBy { get; set; }
 
