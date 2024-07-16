@@ -36,6 +36,7 @@ namespace VMS.Controllers
                 PurposeName = purposeDto.Name,
                 CreatedBy = purposeDto.CreatedBy,
                 UpdatedBy = purposeDto.UpdatedBy,
+
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };

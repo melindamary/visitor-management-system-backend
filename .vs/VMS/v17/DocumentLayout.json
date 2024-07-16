@@ -7,22 +7,6 @@
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\visitorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\visitordevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\visitordevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\visitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\visitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\dto\\addvisitordevicedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\addvisitordevicedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\dto\\visitorcreationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\visitorcreationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -31,16 +15,40 @@
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\visitordevicedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\dto\\addnewpurposedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\addnewpurposedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\controllers\\purposecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\purposecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\visitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\visitor.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\dto\\addnewpurposedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\addnewpurposedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\officelocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\officelocation.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\purposeofvisit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\purposeofvisit.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\visitordevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\visitordevice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\models\\dto\\addvisitordevicedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\addvisitordevicedto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\aiswarya.jayadev\\desktop\\vms\\visitor-management-system-backend\\vms\\migrations\\20240716042622_m1.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -70,7 +78,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 8,
+          "SelectedChildIndex": 10,
           "Children": [
             {
               "$type": "Bookmark",
@@ -78,12 +86,38 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 7,
+              "Title": "OfficeLocation.cs",
+              "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\OfficeLocation.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\OfficeLocation.cs",
+              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\OfficeLocation.cs",
+              "RelativeToolTip": "VMS\\Models\\OfficeLocation.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T07:00:06.986Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "PurposeOfVisit.cs",
+              "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\PurposeOfVisit.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\PurposeOfVisit.cs",
+              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\PurposeOfVisit.cs",
+              "RelativeToolTip": "VMS\\Models\\PurposeOfVisit.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T07:00:04.062Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
               "Title": "Program.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Program.cs",
               "RelativeDocumentMoniker": "VMS\\Program.cs",
-              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Program.cs*",
-              "RelativeToolTip": "VMS\\Program.cs*",
+              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Program.cs",
+              "RelativeToolTip": "VMS\\Program.cs",
               "ViewState": "AQIAACUAAAAAAAAAAAAAABgAAAADAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T06:07:27.661Z",
@@ -91,7 +125,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 10,
               "Title": "VisitorDevice.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\VisitorDevice.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\VisitorDevice.cs",
@@ -104,20 +138,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 5,
               "Title": "Visitor.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\Visitor.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\Visitor.cs",
               "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\Visitor.cs",
               "RelativeToolTip": "VMS\\Models\\Visitor.cs",
-              "ViewState": "AQIAACUAAAAAAAAAAAAxwDUAAAAAAAAA",
+              "ViewState": "AQIAABcAAAAAAAAAAAAIwB0AAAAuAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T05:40:14.297Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 2,
               "Title": "VisitorDeviceDto.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\VisitorDeviceDto.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\VisitorDeviceDto.cs",
@@ -130,20 +164,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 1,
               "Title": "VisitorCreationDTO.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\VisitorCreationDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\VisitorCreationDTO.cs",
               "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\VisitorCreationDTO.cs",
               "RelativeToolTip": "VMS\\Models\\DTO\\VisitorCreationDTO.cs",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAQwBQAAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAAAmwBAAAAAIAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T05:39:46.935Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 11,
               "Title": "AddVisitorDeviceDto.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddVisitorDeviceDto.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddVisitorDeviceDto.cs",
@@ -156,13 +190,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 6,
               "Title": "AddNewPurposeDTO.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
               "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
               "RelativeToolTip": "VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAASAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T05:39:34.752Z",
               "EditorCaption": ""
@@ -173,29 +207,29 @@
               "Title": "VisitorController.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\VisitorController.cs",
-              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs*",
-              "RelativeToolTip": "VMS\\Controllers\\VisitorController.cs*",
-              "ViewState": "AQIAAEoAAAAAAAAAAAAwwGIAAAAAAAAA",
+              "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\VisitorController.cs",
+              "ViewState": "AQIAACkAAAAAAAAAAAAwwDUAAAA/AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T05:39:22.604Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 3,
               "Title": "PurposeController.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\PurposeController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\PurposeController.cs",
               "ToolTip": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\PurposeController.cs",
               "RelativeToolTip": "VMS\\Controllers\\PurposeController.cs",
-              "ViewState": "AQIAAA0AAAAAAAAAAAAQwAAAAAAAAAAA",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAgwCYAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-16T05:39:12.323Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 4,
               "Title": "DeviceController.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Controllers\\DeviceController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\DeviceController.cs",
@@ -208,7 +242,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 12,
               "Title": "20240716042622_M1.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Migrations\\20240716042622_M1.cs",
               "RelativeDocumentMoniker": "VMS\\Migrations\\20240716042622_M1.cs",
@@ -221,7 +255,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 13,
               "Title": "appsettings.json",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\appsettings.json",
               "RelativeDocumentMoniker": "VMS\\appsettings.json",
@@ -233,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 14,
               "Title": "MappingConfig.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\MappingConfig.cs",
               "RelativeDocumentMoniker": "VMS\\MappingConfig.cs",
@@ -245,7 +279,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 15,
               "Title": "APIResponse.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Models\\APIResponse.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\APIResponse.cs",
@@ -257,7 +291,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 16,
               "Title": "VisitorManagementDbContext.cs",
               "DocumentMoniker": "C:\\Users\\aiswarya.jayadev\\Desktop\\VMS\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
               "RelativeDocumentMoniker": "VMS\\Data\\VisitorManagementDbContext.cs",

@@ -14,7 +14,10 @@ namespace VMS.Models.DTO
         public int PurposeOfVisitId { get; set; }
         [Required]
         public string PersonInContact { get; set; }
-       
+        
+        [Required]
+        public int? OfficeLocationId { get; set; }
+
         public List<VisitorDeviceDto>? SelectedDevice { get; set; }
     }
 }

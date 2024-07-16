@@ -51,6 +51,8 @@ namespace VMS.Controllers
                 Phone = visitorDto.PhoneNumber,
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
+                OfficeLocationId = visitorDto.OfficeLocationId,
+                CreatedBy = 1,                
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
