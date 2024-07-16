@@ -1,4 +1,4 @@
-﻿namespace VMS.Models
+﻿namespace VMS.Models.DTO
 {
     public class LoginRequest
     {

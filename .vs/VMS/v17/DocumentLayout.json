@@ -1,12 +1,71 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\mappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\mappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\apiresponse.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "MappingConfig.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\MappingConfig.cs",
+              "RelativeDocumentMoniker": "VMS\\MappingConfig.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\MappingConfig.cs*",
+              "RelativeToolTip": "VMS\\MappingConfig.cs*",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T04:00:21.119Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "APIResponse.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Models\\APIResponse.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\APIResponse.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Models\\APIResponse.cs",
+              "RelativeToolTip": "VMS\\Models\\APIResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T03:58:38.358Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "VisitorManagementDbContext.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
+              "RelativeDocumentMoniker": "VMS\\Data\\VisitorManagementDbContext.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
+              "RelativeToolTip": "VMS\\Data\\VisitorManagementDbContext.cs",
+              "ViewState": "AQIAACQAAAAAAAAAAAAiwC0AAABAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-16T03:36:23.511Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
     }
   ]
 }
