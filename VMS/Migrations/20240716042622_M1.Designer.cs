@@ -12,7 +12,7 @@ using VMS.Data;
 namespace VMS.Migrations
 {
     [DbContext(typeof(VisitorManagementDbContext))]
-    [Migration("20240715165406_M1")]
+    [Migration("20240716042622_M1")]
     partial class M1
     {
         /// <inheritdoc />
