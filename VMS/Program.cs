@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Text.Json.Serialization;
 using VMS;
 using VMS.Data;
 using VMS.Models;
@@ -17,7 +18,11 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<VisitorManagementDbContext>(option => {
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddControllers().AddJsonOptions(options =>
+{
+    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
+    options.JsonSerializerOptions.MaxDepth = 32; // Adjust if necessary
+});
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
