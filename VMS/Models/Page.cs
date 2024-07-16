@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS;
+namespace VMS.Models;
 
 public partial class Page
 {

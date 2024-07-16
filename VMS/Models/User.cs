@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS;
+namespace VMS.Models;
 
 public partial class User
 {
@@ -62,6 +62,12 @@ public partial class User
     public virtual ICollection<UserDetail> UserDetailUpdatedByNavigations { get; set; } = new List<UserDetail>();
 
     public virtual ICollection<UserDetail> UserDetailUsers { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserLocation> UserLocationCreatedByNavigations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<UserLocation> UserLocationUpdatedByNavigations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<UserLocation> UserLocationUsers { get; set; } = new List<UserLocation>();
 
     public virtual ICollection<UserRole> UserRoleCreatedByNavigations { get; set; } = new List<UserRole>();
 

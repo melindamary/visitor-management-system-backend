@@ -1,6 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Linq;
-
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Data;
@@ -99,17 +98,17 @@ namespace VMS.Controllers
 
 
         [HttpGet("{id}")]
-    public IActionResult GetVisitorById(int id)
-    {
-        var visitor = _context.Visitors.FirstOrDefault(v => v.VisitorId == id);
-
-        if (visitor == null)
+        public IActionResult GetVisitorById(int id)
         {
-            return NotFound();
-        }
+            var visitor = _context.Visitors.FirstOrDefault(v => v.VisitorId == id);
 
-        return Ok(visitor);
+            if (visitor == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(visitor);
+        }
     }
 }
-    }
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace VMS;
+namespace VMS.Models;
 
 public partial class OfficeLocation
 {
@@ -26,6 +26,8 @@ public partial class OfficeLocation
     public virtual User? UpdatedByNavigation { get; set; }
 
     public virtual ICollection<UserDetail> UserDetails { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserLocation> UserLocations { get; set; } = new List<UserLocation>();
 
     public virtual ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
 }

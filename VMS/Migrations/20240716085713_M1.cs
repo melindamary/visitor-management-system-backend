@@ -30,7 +30,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user", x => x.user_id);
+                    table.PrimaryKey("pk_user", x => x.user_id);
                     table.ForeignKey(
                         name: "fk_user_created_by",
                         column: x => x.created_by,
@@ -57,7 +57,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_device", x => x.device_id);
+                    table.PrimaryKey("pk_device", x => x.device_id);
                     table.ForeignKey(
                         name: "fk_device_created_by",
                         column: x => x.created_by,
@@ -86,7 +86,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_office_location", x => x.office_location_id);
+                    table.PrimaryKey("pk_office_location", x => x.office_location_id);
                     table.ForeignKey(
                         name: "fk_office_location_created_by",
                         column: x => x.created_by,
@@ -114,7 +114,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_page", x => x.page_id);
+                    table.PrimaryKey("pk_page", x => x.page_id);
                     table.ForeignKey(
                         name: "fk_page_created_by",
                         column: x => x.created_by,
@@ -141,7 +141,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_purpose_of_visit", x => x.purpose_id);
+                    table.PrimaryKey("pk_purpose_of_visit", x => x.purpose_id);
                     table.ForeignKey(
                         name: "fk_purpose_of_visit_created_by",
                         column: x => x.created_by,
@@ -168,7 +168,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_role", x => x.role_id);
+                    table.PrimaryKey("pk_role", x => x.role_id);
                     table.ForeignKey(
                         name: "fk_role_created_by",
                         column: x => x.created_by,
@@ -201,7 +201,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_details", x => x.user_details_id);
+                    table.PrimaryKey("pk_user_details", x => x.user_details_id);
                     table.ForeignKey(
                         name: "fk_user_details_created_by",
                         column: x => x.created_by,
@@ -219,6 +219,44 @@ namespace VMS.Migrations
                         principalColumn: "user_id");
                     table.ForeignKey(
                         name: "fk_user_details_user_id",
+                        column: x => x.user_id,
+                        principalTable: "user",
+                        principalColumn: "user_id");
+                });
+
+            migrationBuilder.CreateTable(
+                name: "user_location",
+                columns: table => new
+                {
+                    user_location_id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    user_id = table.Column<int>(type: "integer", nullable: true),
+                    office_location_id = table.Column<int>(type: "integer", nullable: true),
+                    created_by = table.Column<int>(type: "integer", nullable: true),
+                    created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
+                    updated_by = table.Column<int>(type: "integer", nullable: true),
+                    updated_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("pk_user_location", x => x.user_location_id);
+                    table.ForeignKey(
+                        name: "fk_user_location_created_by",
+                        column: x => x.created_by,
+                        principalTable: "user",
+                        principalColumn: "user_id");
+                    table.ForeignKey(
+                        name: "fk_user_location_office_location_id",
+                        column: x => x.office_location_id,
+                        principalTable: "office_location",
+                        principalColumn: "office_location_id");
+                    table.ForeignKey(
+                        name: "fk_user_location_updated_by",
+                        column: x => x.updated_by,
+                        principalTable: "user",
+                        principalColumn: "user_id");
+                    table.ForeignKey(
+                        name: "fk_user_location_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
                         principalColumn: "user_id");
@@ -249,7 +287,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_visitor", x => x.visitor_id);
+                    table.PrimaryKey("pk_visitor", x => x.visitor_id);
                     table.ForeignKey(
                         name: "fk_visitor_created_by",
                         column: x => x.created_by,
@@ -292,7 +330,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_page_control", x => x.page_control_id);
+                    table.PrimaryKey("pk_page_control", x => x.page_control_id);
                     table.ForeignKey(
                         name: "fk_page_control_created_by",
                         column: x => x.created_by,
@@ -330,7 +368,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_user_role", x => x.user_role_id);
+                    table.PrimaryKey("pk_user_role", x => x.user_role_id);
                     table.ForeignKey(
                         name: "fk_user_role_created_by",
                         column: x => x.created_by,
@@ -369,7 +407,7 @@ namespace VMS.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_visitor_device", x => x.visitor_device_id);
+                    table.PrimaryKey("pk_visitor_device", x => x.visitor_device_id);
                     table.ForeignKey(
                         name: "fk_device_id",
                         column: x => x.device_id,
@@ -493,6 +531,26 @@ namespace VMS.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "fk_user_location_created_by",
+                table: "user_location",
+                column: "created_by");
+
+            migrationBuilder.CreateIndex(
+                name: "fk_user_location_office_location_id",
+                table: "user_location",
+                column: "office_location_id");
+
+            migrationBuilder.CreateIndex(
+                name: "fk_user_location_updated_by",
+                table: "user_location",
+                column: "updated_by");
+
+            migrationBuilder.CreateIndex(
+                name: "fk_user_location_user_id",
+                table: "user_location",
+                column: "user_id");
+
+            migrationBuilder.CreateIndex(
                 name: "fk_user_role_created_by",
                 table: "user_role",
                 column: "created_by");
@@ -566,6 +624,9 @@ namespace VMS.Migrations
 
             migrationBuilder.DropTable(
                 name: "user_details");
+
+            migrationBuilder.DropTable(
+                name: "user_location");
 
             migrationBuilder.DropTable(
                 name: "user_role");

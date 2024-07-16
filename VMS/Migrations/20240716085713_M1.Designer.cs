@@ -12,7 +12,7 @@ using VMS.Data;
 namespace VMS.Migrations
 {
     [DbContext(typeof(VisitorManagementDbContext))]
-    [Migration("20240716042622_M1")]
+    [Migration("20240716085713_M1")]
     partial class M1
     {
         /// <inheritdoc />
@@ -20,12 +20,14 @@ namespace VMS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
+                .UseCollation("utf8mb4_0900_ai_ci")
+                .HasAnnotation("MySql:CharSet", "utf8mb4")
                 .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
-            modelBuilder.Entity("VMS.Device", b =>
+            modelBuilder.Entity("VMS.Models.Device", b =>
                 {
                     b.Property<int>("DeviceId")
                         .ValueGeneratedOnAdd()
@@ -60,7 +62,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("DeviceId")
-                        .HasName("PK_device");
+                        .HasName("pk_device");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_device_created_by");
 
@@ -69,7 +71,7 @@ namespace VMS.Migrations
                     b.ToTable("device", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.OfficeLocation", b =>
+            modelBuilder.Entity("VMS.Models.OfficeLocation", b =>
                 {
                     b.Property<int>("OfficeLocationId")
                         .ValueGeneratedOnAdd()
@@ -114,7 +116,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("OfficeLocationId")
-                        .HasName("PK_office_location");
+                        .HasName("pk_office_location");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_office_location_created_by");
 
@@ -123,7 +125,7 @@ namespace VMS.Migrations
                     b.ToTable("office_location", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.Page", b =>
+            modelBuilder.Entity("VMS.Models.Page", b =>
                 {
                     b.Property<int>("PageId")
                         .ValueGeneratedOnAdd()
@@ -163,7 +165,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("PageId")
-                        .HasName("PK_page");
+                        .HasName("pk_page");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_page_created_by");
 
@@ -172,7 +174,7 @@ namespace VMS.Migrations
                     b.ToTable("page", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.PageControl", b =>
+            modelBuilder.Entity("VMS.Models.PageControl", b =>
                 {
                     b.Property<int>("PageControlId")
                         .ValueGeneratedOnAdd()
@@ -210,7 +212,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("PageControlId")
-                        .HasName("PK_page_control");
+                        .HasName("pk_page_control");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_page_control_created_by");
 
@@ -223,7 +225,7 @@ namespace VMS.Migrations
                     b.ToTable("page_control", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.PurposeOfVisit", b =>
+            modelBuilder.Entity("VMS.Models.PurposeOfVisit", b =>
                 {
                     b.Property<int>("PurposeId")
                         .ValueGeneratedOnAdd()
@@ -258,7 +260,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("PurposeId")
-                        .HasName("PK_purpose_of_visit");
+                        .HasName("pk_purpose_of_visit");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_purpose_of_visit_created_by");
 
@@ -267,7 +269,7 @@ namespace VMS.Migrations
                     b.ToTable("purpose_of_visit", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.Role", b =>
+            modelBuilder.Entity("VMS.Models.Role", b =>
                 {
                     b.Property<int>("RoleId")
                         .ValueGeneratedOnAdd()
@@ -303,7 +305,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.HasKey("RoleId")
-                        .HasName("PK_role");
+                        .HasName("pk_role");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_role_created_by");
 
@@ -312,7 +314,7 @@ namespace VMS.Migrations
                     b.ToTable("role", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.User", b =>
+            modelBuilder.Entity("VMS.Models.User", b =>
                 {
                     b.Property<int>("UserId")
                         .ValueGeneratedOnAdd()
@@ -364,7 +366,7 @@ namespace VMS.Migrations
                         .HasColumnName("valid_from");
 
                     b.HasKey("UserId")
-                        .HasName("PK_user");
+                        .HasName("pk_user");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_user_created_by");
 
@@ -373,7 +375,7 @@ namespace VMS.Migrations
                     b.ToTable("user", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.UserDetail", b =>
+            modelBuilder.Entity("VMS.Models.UserDetail", b =>
                 {
                     b.Property<int>("UserDetailsId")
                         .ValueGeneratedOnAdd()
@@ -436,7 +438,7 @@ namespace VMS.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("UserDetailsId")
-                        .HasName("PK_user_details");
+                        .HasName("pk_user_details");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_user_details_created_by");
 
@@ -449,7 +451,58 @@ namespace VMS.Migrations
                     b.ToTable("user_details", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.UserRole", b =>
+            modelBuilder.Entity("VMS.Models.UserLocation", b =>
+                {
+                    b.Property<int>("UserLocationId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer")
+                        .HasColumnName("user_location_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("UserLocationId"));
+
+                    b.Property<int?>("CreatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("created_by");
+
+                    b.Property<DateTime?>("CreatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("created_date")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int?>("OfficeLocationId")
+                        .HasColumnType("integer")
+                        .HasColumnName("office_location_id");
+
+                    b.Property<int?>("UpdatedBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("updated_by");
+
+                    b.Property<DateTime?>("UpdatedDate")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("timestamp")
+                        .HasColumnName("updated_date")
+                        .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<int?>("UserId")
+                        .HasColumnType("integer")
+                        .HasColumnName("user_id");
+
+                    b.HasKey("UserLocationId")
+                        .HasName("pk_user_location");
+
+                    b.HasIndex(new[] { "CreatedBy" }, "fk_user_location_created_by");
+
+                    b.HasIndex(new[] { "OfficeLocationId" }, "fk_user_location_office_location_id");
+
+                    b.HasIndex(new[] { "UpdatedBy" }, "fk_user_location_updated_by");
+
+                    b.HasIndex(new[] { "UserId" }, "fk_user_location_user_id");
+
+                    b.ToTable("user_location", (string)null);
+                });
+
+            modelBuilder.Entity("VMS.Models.UserRole", b =>
                 {
                     b.Property<int>("UserRoleId")
                         .ValueGeneratedOnAdd()
@@ -487,7 +540,7 @@ namespace VMS.Migrations
                         .HasColumnName("user_id");
 
                     b.HasKey("UserRoleId")
-                        .HasName("PK_user_role");
+                        .HasName("pk_user_role");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_user_role_created_by");
 
@@ -500,7 +553,7 @@ namespace VMS.Migrations
                     b.ToTable("user_role", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.Visitor", b =>
+            modelBuilder.Entity("VMS.Models.Visitor", b =>
                 {
                     b.Property<int>("VisitorId")
                         .ValueGeneratedOnAdd()
@@ -583,7 +636,7 @@ namespace VMS.Migrations
                         .HasColumnName("visitor_pass_code");
 
                     b.HasKey("VisitorId")
-                        .HasName("PK_visitor");
+                        .HasName("pk_visitor");
 
                     b.HasIndex(new[] { "CreatedBy" }, "fk_visitor_created_by");
 
@@ -598,7 +651,7 @@ namespace VMS.Migrations
                     b.ToTable("visitor", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.VisitorDevice", b =>
+            modelBuilder.Entity("VMS.Models.VisitorDevice", b =>
                 {
                     b.Property<int>("VisitorDeviceId")
                         .ValueGeneratedOnAdd()
@@ -641,7 +694,7 @@ namespace VMS.Migrations
                         .HasColumnName("visitor_id");
 
                     b.HasKey("VisitorDeviceId")
-                        .HasName("PK_visitor_device");
+                        .HasName("pk_visitor_device");
 
                     b.HasIndex(new[] { "DeviceId" }, "fk_device_id");
 
@@ -654,14 +707,14 @@ namespace VMS.Migrations
                     b.ToTable("visitor_device", (string)null);
                 });
 
-            modelBuilder.Entity("VMS.Device", b =>
+            modelBuilder.Entity("VMS.Models.Device", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("DeviceCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_device_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("DeviceUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_device_updated_by");
@@ -671,14 +724,14 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.OfficeLocation", b =>
+            modelBuilder.Entity("VMS.Models.OfficeLocation", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("OfficeLocationCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_office_location_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("OfficeLocationUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_office_location_updated_by");
@@ -688,14 +741,14 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.Page", b =>
+            modelBuilder.Entity("VMS.Models.Page", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("PageCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_page_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("PageUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_page_updated_by");
@@ -705,27 +758,27 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.PageControl", b =>
+            modelBuilder.Entity("VMS.Models.PageControl", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("PageControlCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .IsRequired()
                         .HasConstraintName("fk_page_control_created_by");
 
-                    b.HasOne("VMS.Page", "Page")
+                    b.HasOne("VMS.Models.Page", "Page")
                         .WithMany("PageControls")
                         .HasForeignKey("PageId")
                         .IsRequired()
                         .HasConstraintName("fk_page_control_page_id");
 
-                    b.HasOne("VMS.Role", "Role")
+                    b.HasOne("VMS.Models.Role", "Role")
                         .WithMany("PageControls")
                         .HasForeignKey("RoleId")
                         .IsRequired()
                         .HasConstraintName("fk_page_control_role_id");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("PageControlUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .IsRequired()
@@ -740,14 +793,14 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.PurposeOfVisit", b =>
+            modelBuilder.Entity("VMS.Models.PurposeOfVisit", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("PurposeOfVisitCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_purpose_of_visit_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("PurposeOfVisitUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_purpose_of_visit_updated_by");
@@ -757,14 +810,14 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.Role", b =>
+            modelBuilder.Entity("VMS.Models.Role", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("RoleCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_role_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("RoleUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_role_updated_by");
@@ -774,14 +827,14 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.User", b =>
+            modelBuilder.Entity("VMS.Models.User", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("InverseCreatedByNavigation")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_user_created_by");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("InverseUpdatedByNavigation")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_user_updated_by");
@@ -791,24 +844,24 @@ namespace VMS.Migrations
                     b.Navigation("UpdatedByNavigation");
                 });
 
-            modelBuilder.Entity("VMS.UserDetail", b =>
+            modelBuilder.Entity("VMS.Models.UserDetail", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("UserDetailCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_user_details_created_by");
 
-                    b.HasOne("VMS.OfficeLocation", "OfficeLocation")
+                    b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
                         .WithMany("UserDetails")
                         .HasForeignKey("OfficeLocationId")
                         .HasConstraintName("fk_user_details_office_location_id");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("UserDetailUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_user_details_updated_by");
 
-                    b.HasOne("VMS.User", "User")
+                    b.HasOne("VMS.Models.User", "User")
                         .WithMany("UserDetailUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_details_user_id");
@@ -822,24 +875,55 @@ namespace VMS.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VMS.UserRole", b =>
+            modelBuilder.Entity("VMS.Models.UserLocation", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
+                        .WithMany("UserLocationCreatedByNavigations")
+                        .HasForeignKey("CreatedBy")
+                        .HasConstraintName("fk_user_location_created_by");
+
+                    b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
+                        .WithMany("UserLocations")
+                        .HasForeignKey("OfficeLocationId")
+                        .HasConstraintName("fk_user_location_office_location_id");
+
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
+                        .WithMany("UserLocationUpdatedByNavigations")
+                        .HasForeignKey("UpdatedBy")
+                        .HasConstraintName("fk_user_location_updated_by");
+
+                    b.HasOne("VMS.Models.User", "User")
+                        .WithMany("UserLocationUsers")
+                        .HasForeignKey("UserId")
+                        .HasConstraintName("fk_user_location_user_id");
+
+                    b.Navigation("CreatedByNavigation");
+
+                    b.Navigation("OfficeLocation");
+
+                    b.Navigation("UpdatedByNavigation");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("VMS.Models.UserRole", b =>
+                {
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("UserRoleCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_user_role_created_by");
 
-                    b.HasOne("VMS.Role", "Role")
+                    b.HasOne("VMS.Models.Role", "Role")
                         .WithMany("UserRoles")
                         .HasForeignKey("RoleId")
                         .HasConstraintName("fk_user_role_role_id");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("UserRoleUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_user_role_updated_by");
 
-                    b.HasOne("VMS.User", "User")
+                    b.HasOne("VMS.Models.User", "User")
                         .WithMany("UserRoleUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_user_role_user_id");
@@ -853,29 +937,29 @@ namespace VMS.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VMS.Visitor", b =>
+            modelBuilder.Entity("VMS.Models.Visitor", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("VisitorCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_visitor_created_by");
 
-                    b.HasOne("VMS.OfficeLocation", "OfficeLocation")
+                    b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
                         .WithMany("Visitors")
                         .HasForeignKey("OfficeLocationId")
                         .HasConstraintName("fk_visitor_location_id");
 
-                    b.HasOne("VMS.PurposeOfVisit", "Purpose")
+                    b.HasOne("VMS.Models.PurposeOfVisit", "Purpose")
                         .WithMany("Visitors")
                         .HasForeignKey("PurposeId")
                         .HasConstraintName("fk_visitor_purpose_id");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("VisitorUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_visitor_updated_by");
 
-                    b.HasOne("VMS.User", "User")
+                    b.HasOne("VMS.Models.User", "User")
                         .WithMany("VisitorUsers")
                         .HasForeignKey("UserId")
                         .HasConstraintName("fk_visitor_user_id");
@@ -891,25 +975,25 @@ namespace VMS.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("VMS.VisitorDevice", b =>
+            modelBuilder.Entity("VMS.Models.VisitorDevice", b =>
                 {
-                    b.HasOne("VMS.User", "CreatedByNavigation")
+                    b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("VisitorDeviceCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_visitor_device_created_by");
 
-                    b.HasOne("VMS.Device", "Device")
+                    b.HasOne("VMS.Models.Device", "Device")
                         .WithMany("VisitorDevices")
                         .HasForeignKey("DeviceId")
                         .IsRequired()
                         .HasConstraintName("fk_device_id");
 
-                    b.HasOne("VMS.User", "UpdatedByNavigation")
+                    b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("VisitorDeviceUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_visitor_device_updated_by");
 
-                    b.HasOne("VMS.Visitor", "Visitor")
+                    b.HasOne("VMS.Models.Visitor", "Visitor")
                         .WithMany("VisitorDevices")
                         .HasForeignKey("VisitorId")
                         .IsRequired()
@@ -924,36 +1008,38 @@ namespace VMS.Migrations
                     b.Navigation("Visitor");
                 });
 
-            modelBuilder.Entity("VMS.Device", b =>
+            modelBuilder.Entity("VMS.Models.Device", b =>
                 {
                     b.Navigation("VisitorDevices");
                 });
 
-            modelBuilder.Entity("VMS.OfficeLocation", b =>
+            modelBuilder.Entity("VMS.Models.OfficeLocation", b =>
                 {
                     b.Navigation("UserDetails");
+
+                    b.Navigation("UserLocations");
 
                     b.Navigation("Visitors");
                 });
 
-            modelBuilder.Entity("VMS.Page", b =>
+            modelBuilder.Entity("VMS.Models.Page", b =>
                 {
                     b.Navigation("PageControls");
                 });
 
-            modelBuilder.Entity("VMS.PurposeOfVisit", b =>
+            modelBuilder.Entity("VMS.Models.PurposeOfVisit", b =>
                 {
                     b.Navigation("Visitors");
                 });
 
-            modelBuilder.Entity("VMS.Role", b =>
+            modelBuilder.Entity("VMS.Models.Role", b =>
                 {
                     b.Navigation("PageControls");
 
                     b.Navigation("UserRoles");
                 });
 
-            modelBuilder.Entity("VMS.User", b =>
+            modelBuilder.Entity("VMS.Models.User", b =>
                 {
                     b.Navigation("DeviceCreatedByNavigations");
 
@@ -989,6 +1075,12 @@ namespace VMS.Migrations
 
                     b.Navigation("UserDetailUsers");
 
+                    b.Navigation("UserLocationCreatedByNavigations");
+
+                    b.Navigation("UserLocationUpdatedByNavigations");
+
+                    b.Navigation("UserLocationUsers");
+
                     b.Navigation("UserRoleCreatedByNavigations");
 
                     b.Navigation("UserRoleUpdatedByNavigations");
@@ -1006,7 +1098,7 @@ namespace VMS.Migrations
                     b.Navigation("VisitorUsers");
                 });
 
-            modelBuilder.Entity("VMS.Visitor", b =>
+            modelBuilder.Entity("VMS.Models.Visitor", b =>
                 {
                     b.Navigation("VisitorDevices");
                 });

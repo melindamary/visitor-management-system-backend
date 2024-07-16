@@ -15,7 +15,8 @@ builder.Host.UseSerilog();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddControllers();
-builder.Services.AddDbContext<VisitorManagementDbContext>(option => {
+builder.Services.AddDbContext<VisitorManagementDbContext>(option =>
+{
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
 builder.Services.AddControllers().AddJsonOptions(options =>

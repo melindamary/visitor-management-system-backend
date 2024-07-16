@@ -387,3 +387,14 @@ C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\obj\
 C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\obj\Debug\net8.0\VMS.pdb
 C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\obj\Debug\net8.0\VMS.genruntimeconfig.cache
 C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\obj\Debug\net8.0\ref\VMS.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\AutoMapper.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\AutoMapper.Extensions.Microsoft.DependencyInjection.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.AspNetCore.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Extensions.Hosting.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Extensions.Logging.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Formatting.Compact.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Settings.Configuration.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.Console.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.File.dll

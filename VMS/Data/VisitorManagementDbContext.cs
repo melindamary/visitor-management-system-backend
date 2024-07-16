@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using VMS.Models;
 
 namespace VMS.Data;
 
@@ -31,19 +33,23 @@ public partial class VisitorManagementDbContext : DbContext
 
     public virtual DbSet<UserDetail> UserDetails { get; set; }
 
+    public virtual DbSet<UserLocation> UserLocations { get; set; }
+
     public virtual DbSet<UserRole> UserRoles { get; set; }
 
     public virtual DbSet<Visitor> Visitors { get; set; }
 
     public virtual DbSet<VisitorDevice> VisitorDevices { get; set; }
 
-   
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        /*modelBuilder
+            .UseCollation("utf8mb4_0900_ai_ci")
+            .HasCharSet("utf8mb4");*/
 
         modelBuilder.Entity<Device>(entity =>
         {
-            entity.HasKey(e => e.DeviceId).HasName("PK_device");
+            entity.HasKey(e => e.DeviceId).HasName("pk_device");
 
             entity.ToTable("device");
 
@@ -77,7 +83,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<OfficeLocation>(entity =>
         {
-            entity.HasKey(e => e.OfficeLocationId).HasName("PK_office_location");
+            entity.HasKey(e => e.OfficeLocationId).HasName("pk_office_location");
 
             entity.ToTable("office_location");
 
@@ -117,7 +123,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Page>(entity =>
         {
-            entity.HasKey(e => e.PageId).HasName("PK_page");
+            entity.HasKey(e => e.PageId).HasName("pk_page");
 
             entity.ToTable("page");
 
@@ -154,7 +160,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<PageControl>(entity =>
         {
-            entity.HasKey(e => e.PageControlId).HasName("PK_page_control");
+            entity.HasKey(e => e.PageControlId).HasName("pk_page_control");
 
             entity.ToTable("page_control");
 
@@ -203,7 +209,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<PurposeOfVisit>(entity =>
         {
-            entity.HasKey(e => e.PurposeId).HasName("PK_purpose_of_visit");
+            entity.HasKey(e => e.PurposeId).HasName("pk_purpose_of_visit");
 
             entity.ToTable("purpose_of_visit");
 
@@ -237,7 +243,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("PK_role");
+            entity.HasKey(e => e.RoleId).HasName("pk_role");
 
             entity.ToTable("role");
 
@@ -271,7 +277,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("PK_user");
+            entity.HasKey(e => e.UserId).HasName("pk_user");
 
             entity.ToTable("user");
 
@@ -311,7 +317,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<UserDetail>(entity =>
         {
-            entity.HasKey(e => e.UserDetailsId).HasName("PK_user_details");
+            entity.HasKey(e => e.UserDetailsId).HasName("pk_user_details");
 
             entity.ToTable("user_details");
 
@@ -369,9 +375,54 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasConstraintName("fk_user_details_user_id");
         });
 
+        modelBuilder.Entity<UserLocation>(entity =>
+        {
+            entity.HasKey(e => e.UserLocationId).HasName("pk_user_location");
+
+            entity.ToTable("user_location");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_user_location_created_by");
+
+            entity.HasIndex(e => e.OfficeLocationId, "fk_user_location_office_location_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_user_location_updated_by");
+
+            entity.HasIndex(e => e.UserId, "fk_user_location_user_id");
+
+            entity.Property(e => e.UserLocationId).HasColumnName("user_location_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.UserLocationCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_user_location_created_by");
+
+            entity.HasOne(d => d.OfficeLocation).WithMany(p => p.UserLocations)
+                .HasForeignKey(d => d.OfficeLocationId)
+                .HasConstraintName("fk_user_location_office_location_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.UserLocationUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_user_location_updated_by");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserLocationUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_location_user_id");
+        });
+
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.UserRoleId).HasName("PK_user_role");
+            entity.HasKey(e => e.UserRoleId).HasName("pk_user_role");
 
             entity.ToTable("user_role");
 
@@ -416,7 +467,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Visitor>(entity =>
         {
-            entity.HasKey(e => e.VisitorId).HasName("PK_visitor");
+            entity.HasKey(e => e.VisitorId).HasName("pk_visitor");
 
             entity.ToTable("visitor");
 
@@ -493,7 +544,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<VisitorDevice>(entity =>
         {
-            entity.HasKey(e => e.VisitorDeviceId).HasName("PK_visitor_device");
+            entity.HasKey(e => e.VisitorDeviceId).HasName("pk_visitor_device");
 
             entity.ToTable("visitor_device");
 

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
+using VMS.Models;
 using VMS.Models.DTO;
 
 namespace VMS.Controllers
