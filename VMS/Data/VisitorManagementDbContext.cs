@@ -16,7 +16,6 @@ public partial class VisitorManagementDbContext : DbContext
         : base(options)
     {
     }
-
     public virtual DbSet<Device> Devices { get; set; }
 
     public virtual DbSet<OfficeLocation> OfficeLocations { get; set; }
@@ -501,7 +500,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("phone");
             entity.Property(e => e.Photo)
-                .HasMaxLength(255)
+                .HasColumnType("bytea")
                 .HasColumnName("photo");
             entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
             entity.Property(e => e.Status).HasColumnName("status");
