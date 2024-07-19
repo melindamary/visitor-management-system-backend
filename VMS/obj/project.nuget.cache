@@ -1,6 +1,10 @@
 {
   "version": 2,
+<<<<<<< HEAD
   "dgSpecHash": "j8PidVUKxPM=",
+=======
+  "dgSpecHash": "K+hFTSlz8EY=",
+>>>>>>> origin/aiswarya3
   "success": true,
   "projectFilePath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
   "expectedPackageFiles": [
