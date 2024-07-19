@@ -2,10 +2,10 @@
 
 namespace VMS.Models.DTO
 {
-    public class AddNewPurposeDTO
+    public class AddNewDeviceDto
     {
         [Required]
-        public string? purposeName { get; set; }
+        public string? deviceName { get; set; }
         [Required]
         public int CreatedBy { get; set; }
         [Required]

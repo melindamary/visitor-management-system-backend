@@ -15,28 +15,32 @@ namespace VMS.Controllers
             this._context = _context;
 
         }
-
-        [HttpGet]
-        public IEnumerable<PurposeOfVisit> GetPurposes()
+        [HttpGet("get-purposes-idAndName")]
+        public IEnumerable<PurposeOfVisitNameadnIdDto> GetPurposes()
         {
-            return _context.PurposeOfVisits.ToList<PurposeOfVisit>();
+            return _context.PurposeOfVisits
+                   .Select(p => new PurposeOfVisitNameadnIdDto
+                   {
+                       PurposeId = p.PurposeId,
+                       PurposeName = p.PurposeName
+                   })
+                   .ToList();
 
         }
 
         [HttpPost]
         public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
         {
-            if (_context.PurposeOfVisits.Any(p => p.PurposeName == purposeDto.Name))
+            if (_context.PurposeOfVisits.Any(p => p.PurposeName == purposeDto.purposeName))
             {
                 return Conflict(new { message = "Purpose already exists" });
             }
 
             var purpose = new PurposeOfVisit
             {
-                PurposeName = purposeDto.Name,
-                CreatedBy = purposeDto.CreatedBy,
-                UpdatedBy = purposeDto.UpdatedBy,
-
+                PurposeName = purposeDto.purposeName,
+                CreatedBy = 1,
+                UpdatedBy = 1,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };

@@ -52,7 +52,7 @@ namespace VMS.Controllers
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                CreatedBy = 1,                
+                CreatedBy = 1,
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
@@ -64,25 +64,32 @@ namespace VMS.Controllers
 
             if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
             {
-                var firstSelectedItem = visitorDto.SelectedDevice.First();
-                var addDeviceDto = new AddVisitorDeviceDto
+                foreach (var selectedDevice in visitorDto.SelectedDevice)
                 {
-                    VisitorId = visitor.VisitorId,
-                    DeviceId = firstSelectedItem.DeviceId,
-                    SerialNumber = firstSelectedItem.SerialNumber
-                };
+                    var addDeviceDto = new AddVisitorDeviceDto
+                    {
+                        VisitorId = visitor.VisitorId,
+                        DeviceId = selectedDevice.DeviceId,
+                        SerialNumber = selectedDevice.SerialNumber
+                    };
 
-                var addedDevice = AddVisitorDevice(addDeviceDto);
-                return Ok(new { CreatedVisitor = visitor, AddedItem = addedDevice });
+                    var addedDevice = AddVisitorDevice(addDeviceDto);
+                }
+
+                return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
+            }
+            else {
+
+                return Ok(new { CreatedVisitor = visitor });
             }
 
-            return Ok(new { CreatedVisitor = visitor });
+            
         }
 
-        // Method to call the AddVisitorItem API
+        // Method to call the AddVisitorDevice API
         private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
         {
-            // Create VisitorItem entity from AddVisitorItemDto
+            // Create VisitorDevice entity from AddVisitorDeviceDto
             var visitorDevice = new VisitorDevice
             {
                 VisitorId = addDeviceDto.VisitorId,
@@ -90,10 +97,10 @@ namespace VMS.Controllers
                 SerialNumber = addDeviceDto.SerialNumber
             };
 
-            // Add VisitorItem to context
+            // Add VisitorDevice to context
             _context.VisitorDevices.Add(visitorDevice);
 
-            // Save changes to the VisitorItems
+            // Save changes to the VisitorDevices
             _context.SaveChanges();
 
             return visitorDevice;
