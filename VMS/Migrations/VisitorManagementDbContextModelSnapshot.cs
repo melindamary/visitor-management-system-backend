@@ -17,8 +17,6 @@ namespace VMS.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .UseCollation("utf8mb4_0900_ai_ci")
-                .HasAnnotation("MySql:CharSet", "utf8mb4")
                 .HasAnnotation("ProductVersion", "8.0.7")
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
@@ -591,9 +589,8 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("phone");
 
-                    b.Property<string>("Photo")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                    b.Property<byte[]>("Photo")
+                        .HasColumnType("bytea")
                         .HasColumnName("photo");
 
                     b.Property<int?>("PurposeId")

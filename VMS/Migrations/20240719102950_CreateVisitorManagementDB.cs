@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VMS.Migrations
 {
     /// <inheritdoc />
-    public partial class M1 : Migration
+    public partial class CreateVisitorManagementDB : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -272,7 +272,7 @@ namespace VMS.Migrations
                     phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     purpose_id = table.Column<int>(type: "integer", nullable: true),
                     host_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    photo = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    photo = table.Column<byte[]>(type: "bytea", nullable: true),
                     visit_date = table.Column<DateTime>(type: "timestamp", nullable: true),
                     visitor_pass_code = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     check_in_time = table.Column<DateTime>(type: "timestamp", nullable: true),

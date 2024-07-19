@@ -1,0 +1,607 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<DirectedGraph GraphDirection="LeftToRight" xmlns="http://schemas.microsoft.com/vs/2009/dgml">
+  <Nodes>
+<Node Id="IModel" Label="VisitorManagementDbContext" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot" PropertyAccessMode="PropertyAccessMode.Default" ProductVersion="8.0.7" Annotations="BaseTypeDiscoveryConvention:DerivedTypes: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.List`1[Microsoft.EntityFrameworkCore.Metadata.IConventionEntityType]]
+Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:MaxIdentifierLength: 63
+RelationshipDiscoveryConvention:InverseNavigationCandidates: System.Collections.Generic.Dictionary`2[System.Type,System.Collections.Generic.SortedSet`1[System.Type]]" Category="Model" Group="Expanded" />
+<Node Id = "Device" Label="Device" Name="Device" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: device
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "OfficeLocation" Label="OfficeLocation" Name="OfficeLocation" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: office_location
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "Device.DeviceId" Label="DeviceId (int)" Name="DeviceId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: device_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Device.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="DeviceCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Device.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="DeviceUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Device.VisitorDevices" Label="VisitorDevices (*)" Name="VisitorDevices" Category="Navigation Collection" Type="ICollection&lt;VisitorDevice&gt;"  Field="" Dependent="VisitorDevice" Principal="" Inverse="Device" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Device.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Device.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Device.DeviceName" Label="DeviceName (string)" Name="DeviceName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: device_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Device.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Device.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Page" Label="Page" Name="Page" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: page
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "OfficeLocation.OfficeLocationId" Label="OfficeLocationId (int)" Name="OfficeLocationId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: office_location_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "OfficeLocation.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="OfficeLocationCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OfficeLocation.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="OfficeLocationUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OfficeLocation.UserDetails" Label="UserDetails (*)" Name="UserDetails" Category="Navigation Collection" Type="ICollection&lt;UserDetail&gt;"  Field="" Dependent="UserDetail" Principal="" Inverse="OfficeLocation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OfficeLocation.UserLocations" Label="UserLocations (*)" Name="UserLocations" Category="Navigation Collection" Type="ICollection&lt;UserLocation&gt;"  Field="" Dependent="UserLocation" Principal="" Inverse="OfficeLocation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OfficeLocation.Visitors" Label="Visitors (*)" Name="Visitors" Category="Navigation Collection" Type="ICollection&lt;Visitor&gt;"  Field="" Dependent="Visitor" Principal="" Inverse="OfficeLocation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "OfficeLocation.Address" Label="Address (string)" Name="Address" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: address" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OfficeLocation.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OfficeLocation.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "OfficeLocation.LocationName" Label="LocationName (string)" Name="LocationName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: location_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OfficeLocation.Phone" Label="Phone (string)" Name="Phone" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: phone" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OfficeLocation.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "OfficeLocation.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PageControl" Label="PageControl" Name="PageControl" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: page_control
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "Page.PageId" Label="PageId (int)" Name="PageId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: page_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Page.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PageCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Page.PageControls" Label="PageControls (*)" Name="PageControls" Category="Navigation Collection" Type="ICollection&lt;PageControl&gt;"  Field="" Dependent="PageControl" Principal="" Inverse="Page" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Page.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PageUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Page.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Page.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Page.PageName" Label="PageName (string)" Name="PageName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: page_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Page.PageUrl" Label="PageUrl (string)" Name="PageUrl" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: page_url" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Page.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Page.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PurposeOfVisit" Label="PurposeOfVisit" Name="PurposeOfVisit" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: purpose_of_visit
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "PageControl.PageControlId" Label="PageControlId (int)" Name="PageControlId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: page_control_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PageControl.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PageControlCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PageControl.Page" Label="Page (1)" Name="Page" Category="Navigation Property" Type="Page"  Field="" Dependent="" Principal="Page" Inverse="PageControls" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PageControl.Role" Label="Role (1)" Name="Role" Category="Navigation Property" Type="Role"  Field="" Dependent="" Principal="Role" Inverse="PageControls" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PageControl.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PageControlUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PageControl.CreatedBy" Label="CreatedBy (int)" Name="CreatedBy" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PageControl.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PageControl.PageId" Label="PageId (int)" Name="PageId" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: page_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PageControl.RoleId" Label="RoleId (int)" Name="RoleId" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: role_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PageControl.UpdatedBy" Label="UpdatedBy (int)" Name="UpdatedBy" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PageControl.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Role" Label="Role" Name="Role" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: role
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "PurposeOfVisit.PurposeId" Label="PurposeId (int)" Name="PurposeId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: purpose_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PurposeOfVisit.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PurposeOfVisitCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PurposeOfVisit.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="PurposeOfVisitUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PurposeOfVisit.Visitors" Label="Visitors (*)" Name="Visitors" Category="Navigation Collection" Type="ICollection&lt;Visitor&gt;"  Field="" Dependent="Visitor" Principal="" Inverse="Purpose" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "PurposeOfVisit.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PurposeOfVisit.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "PurposeOfVisit.PurposeName" Label="PurposeName (string)" Name="PurposeName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: purpose_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PurposeOfVisit.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "PurposeOfVisit.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "User" Label="User" Name="User" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: user
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "Role.RoleId" Label="RoleId (int)" Name="RoleId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: role_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Role.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="RoleCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Role.PageControls" Label="PageControls (*)" Name="PageControls" Category="Navigation Collection" Type="ICollection&lt;PageControl&gt;"  Field="" Dependent="PageControl" Principal="" Inverse="Role" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Role.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="RoleUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Role.UserRoles" Label="UserRoles (*)" Name="UserRoles" Category="Navigation Collection" Type="ICollection&lt;UserRole&gt;"  Field="" Dependent="UserRole" Principal="" Inverse="Role" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Role.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Role.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Role.RoleName" Label="RoleName (string)" Name="RoleName" Category="Property Required" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: role_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Role.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Role.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserDetail" Label="UserDetail" Name="UserDetail" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: user_details
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "User.UserId" Label="UserId (int)" Name="UserId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: user_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "User.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="InverseCreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.DeviceCreatedByNavigations" Label="DeviceCreatedByNavigations (*)" Name="DeviceCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Device&gt;"  Field="" Dependent="Device" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.DeviceUpdatedByNavigations" Label="DeviceUpdatedByNavigations (*)" Name="DeviceUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Device&gt;"  Field="" Dependent="Device" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.InverseCreatedByNavigation" Label="InverseCreatedByNavigation (*)" Name="InverseCreatedByNavigation" Category="Navigation Collection" Type="ICollection&lt;User&gt;"  Field="" Dependent="User" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.InverseUpdatedByNavigation" Label="InverseUpdatedByNavigation (*)" Name="InverseUpdatedByNavigation" Category="Navigation Collection" Type="ICollection&lt;User&gt;"  Field="" Dependent="User" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.OfficeLocationCreatedByNavigations" Label="OfficeLocationCreatedByNavigations (*)" Name="OfficeLocationCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;OfficeLocation&gt;"  Field="" Dependent="OfficeLocation" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.OfficeLocationUpdatedByNavigations" Label="OfficeLocationUpdatedByNavigations (*)" Name="OfficeLocationUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;OfficeLocation&gt;"  Field="" Dependent="OfficeLocation" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PageControlCreatedByNavigations" Label="PageControlCreatedByNavigations (*)" Name="PageControlCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;PageControl&gt;"  Field="" Dependent="PageControl" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PageControlUpdatedByNavigations" Label="PageControlUpdatedByNavigations (*)" Name="PageControlUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;PageControl&gt;"  Field="" Dependent="PageControl" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PageCreatedByNavigations" Label="PageCreatedByNavigations (*)" Name="PageCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Page&gt;"  Field="" Dependent="Page" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PageUpdatedByNavigations" Label="PageUpdatedByNavigations (*)" Name="PageUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Page&gt;"  Field="" Dependent="Page" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PurposeOfVisitCreatedByNavigations" Label="PurposeOfVisitCreatedByNavigations (*)" Name="PurposeOfVisitCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;PurposeOfVisit&gt;"  Field="" Dependent="PurposeOfVisit" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.PurposeOfVisitUpdatedByNavigations" Label="PurposeOfVisitUpdatedByNavigations (*)" Name="PurposeOfVisitUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;PurposeOfVisit&gt;"  Field="" Dependent="PurposeOfVisit" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.RoleCreatedByNavigations" Label="RoleCreatedByNavigations (*)" Name="RoleCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Role&gt;"  Field="" Dependent="Role" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.RoleUpdatedByNavigations" Label="RoleUpdatedByNavigations (*)" Name="RoleUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Role&gt;"  Field="" Dependent="Role" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="InverseUpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserDetailCreatedByNavigations" Label="UserDetailCreatedByNavigations (*)" Name="UserDetailCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserDetail&gt;"  Field="" Dependent="UserDetail" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserDetailUpdatedByNavigations" Label="UserDetailUpdatedByNavigations (*)" Name="UserDetailUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserDetail&gt;"  Field="" Dependent="UserDetail" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserDetailUsers" Label="UserDetailUsers (*)" Name="UserDetailUsers" Category="Navigation Collection" Type="ICollection&lt;UserDetail&gt;"  Field="" Dependent="UserDetail" Principal="" Inverse="User" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserLocationCreatedByNavigations" Label="UserLocationCreatedByNavigations (*)" Name="UserLocationCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserLocation&gt;"  Field="" Dependent="UserLocation" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserLocationUpdatedByNavigations" Label="UserLocationUpdatedByNavigations (*)" Name="UserLocationUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserLocation&gt;"  Field="" Dependent="UserLocation" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserLocationUsers" Label="UserLocationUsers (*)" Name="UserLocationUsers" Category="Navigation Collection" Type="ICollection&lt;UserLocation&gt;"  Field="" Dependent="UserLocation" Principal="" Inverse="User" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserRoleCreatedByNavigations" Label="UserRoleCreatedByNavigations (*)" Name="UserRoleCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserRole&gt;"  Field="" Dependent="UserRole" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserRoleUpdatedByNavigations" Label="UserRoleUpdatedByNavigations (*)" Name="UserRoleUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;UserRole&gt;"  Field="" Dependent="UserRole" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.UserRoleUsers" Label="UserRoleUsers (*)" Name="UserRoleUsers" Category="Navigation Collection" Type="ICollection&lt;UserRole&gt;"  Field="" Dependent="UserRole" Principal="" Inverse="User" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.VisitorCreatedByNavigations" Label="VisitorCreatedByNavigations (*)" Name="VisitorCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Visitor&gt;"  Field="" Dependent="Visitor" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.VisitorDeviceCreatedByNavigations" Label="VisitorDeviceCreatedByNavigations (*)" Name="VisitorDeviceCreatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;VisitorDevice&gt;"  Field="" Dependent="VisitorDevice" Principal="" Inverse="CreatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.VisitorDeviceUpdatedByNavigations" Label="VisitorDeviceUpdatedByNavigations (*)" Name="VisitorDeviceUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;VisitorDevice&gt;"  Field="" Dependent="VisitorDevice" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.VisitorUpdatedByNavigations" Label="VisitorUpdatedByNavigations (*)" Name="VisitorUpdatedByNavigations" Category="Navigation Collection" Type="ICollection&lt;Visitor&gt;"  Field="" Dependent="Visitor" Principal="" Inverse="UpdatedByNavigation" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.VisitorUsers" Label="VisitorUsers (*)" Name="VisitorUsers" Category="Navigation Collection" Type="ICollection&lt;Visitor&gt;"  Field="" Dependent="Visitor" Principal="" Inverse="User" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "User.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "User.IsActive" Label="IsActive (int?)" Name="IsActive" Category="Property Optional" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: is_active" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.IsLoggedIn" Label="IsLoggedIn (int?)" Name="IsLoggedIn" Category="Property Optional" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: is_logged_in" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.Password" Label="Password (string)" Name="Password" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: password" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "User.Username" Label="Username (string)" Name="Username" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: username" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "User.ValidFrom" Label="ValidFrom (DateOnly?)" Name="ValidFrom" Category="Property Optional" Type="DateOnly?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: valid_from" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserLocation" Label="UserLocation" Name="UserLocation" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: user_location
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "UserDetail.UserDetailsId" Label="UserDetailsId (int)" Name="UserDetailsId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: user_details_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserDetail.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserDetailCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserDetail.OfficeLocation" Label="OfficeLocation (1)" Name="OfficeLocation" Category="Navigation Property" Type="OfficeLocation"  Field="" Dependent="" Principal="OfficeLocation" Inverse="UserDetails" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserDetail.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserDetailUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserDetail.User" Label="User (1)" Name="User" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserDetailUsers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserDetail.Address" Label="Address (string)" Name="Address" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: address" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserDetail.Email" Label="Email (string)" Name="Email" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: email" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.FirstName" Label="FirstName (string)" Name="FirstName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: first_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.LastName" Label="LastName (string)" Name="LastName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: last_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.OfficeLocationId" Label="OfficeLocationId (int?)" Name="OfficeLocationId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: office_location_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.Phone" Label="Phone (string)" Name="Phone" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: phone" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserDetail.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserDetail.UserId" Label="UserId (int?)" Name="UserId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: user_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserRole" Label="UserRole" Name="UserRole" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: user_role
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "UserLocation.UserLocationId" Label="UserLocationId (int)" Name="UserLocationId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: user_location_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserLocation.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserLocationCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserLocation.OfficeLocation" Label="OfficeLocation (1)" Name="OfficeLocation" Category="Navigation Property" Type="OfficeLocation"  Field="" Dependent="" Principal="OfficeLocation" Inverse="UserLocations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserLocation.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserLocationUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserLocation.User" Label="User (1)" Name="User" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserLocationUsers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserLocation.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserLocation.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserLocation.OfficeLocationId" Label="OfficeLocationId (int?)" Name="OfficeLocationId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: office_location_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserLocation.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserLocation.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserLocation.UserId" Label="UserId (int?)" Name="UserId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: user_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor" Label="Visitor" Name="Visitor" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: visitor
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "UserRole.UserRoleId" Label="UserRoleId (int)" Name="UserRoleId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: user_role_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserRole.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserRoleCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserRole.Role" Label="Role (1)" Name="Role" Category="Navigation Property" Type="Role"  Field="" Dependent="" Principal="Role" Inverse="UserRoles" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserRole.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserRoleUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserRole.User" Label="User (1)" Name="User" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="UserRoleUsers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "UserRole.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserRole.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserRole.RoleId" Label="RoleId (int?)" Name="RoleId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: role_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserRole.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "UserRole.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "UserRole.UserId" Label="UserId (int?)" Name="UserId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: user_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice" Label="VisitorDevice" Name="VisitorDevice" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="Relational:Schema:
+Relational:TableName: visitor_device
+RelationshipDiscoveryConvention:AmbiguousNavigations: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.MemberInfo,System.Type]
+RelationshipDiscoveryConvention:NavigationCandidates: System.Collections.Immutable.ImmutableSortedDictionary`2[System.Reflection.PropertyInfo,System.ValueTuple`2[System.Type,System.Nullable`1[System.Boolean]]]" Category="EntityType" Group="Expanded" />
+<Node Id = "Visitor.VisitorId" Label="VisitorId (int)" Name="VisitorId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: visitor_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Visitor.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="VisitorCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.OfficeLocation" Label="OfficeLocation (1)" Name="OfficeLocation" Category="Navigation Property" Type="OfficeLocation"  Field="" Dependent="" Principal="OfficeLocation" Inverse="Visitors" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.Purpose" Label="Purpose (1)" Name="Purpose" Category="Navigation Property" Type="PurposeOfVisit"  Field="" Dependent="" Principal="PurposeOfVisit" Inverse="Visitors" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="VisitorUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.User" Label="User (1)" Name="User" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="VisitorUsers" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.VisitorDevices" Label="VisitorDevices (*)" Name="VisitorDevices" Category="Navigation Collection" Type="ICollection&lt;VisitorDevice&gt;"  Field="" Dependent="VisitorDevice" Principal="" Inverse="Visitor" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "Visitor.CheckInTime" Label="CheckInTime (DateTime?)" Name="CheckInTime" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: check_in_time
+Relational:ColumnType: timestamp" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.CheckOutTime" Label="CheckOutTime (DateTime?)" Name="CheckOutTime" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: check_out_time
+Relational:ColumnType: timestamp" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Visitor.HostName" Label="HostName (string)" Name="HostName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: host_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.OfficeLocationId" Label="OfficeLocationId (int?)" Name="OfficeLocationId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: office_location_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.Phone" Label="Phone (string)" Name="Phone" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: phone" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.Photo" Label="Photo (string)" Name="Photo" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: photo" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.PurposeId" Label="PurposeId (int?)" Name="PurposeId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: purpose_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.Status" Label="Status (int?)" Name="Status" Category="Property Optional" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: status" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "Visitor.UserId" Label="UserId (int?)" Name="UserId" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: user_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.VisitDate" Label="VisitDate (DateTime?)" Name="VisitDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: visit_date
+Relational:ColumnType: timestamp" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.VisitorName" Label="VisitorName (string)" Name="VisitorName" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: visitor_name" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "Visitor.VisitorPassCode" Label="VisitorPassCode (string)" Name="VisitorPassCode" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: visitor_pass_code" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice" Label="VisitorDevice" Name="VisitorDevice" BaseClass="" IsAbstract="False" ChangeTrackingStrategy="ChangeTrackingStrategy.Snapshot"  Annotations="" Category="EntityType" Group="Expanded" />
+<Node Id = "VisitorDevice.VisitorDeviceId" Label="VisitorDeviceId (int)" Name="VisitorDeviceId" Category="Property Primary" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Npgsql:ValueGenerationStrategy: IdentityByDefaultColumn
+Relational:ColumnName: visitor_device_id" IsPrimaryKey="True" IsForeignKey="False" IsRequired="True" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "VisitorDevice.CreatedByNavigation" Label="CreatedByNavigation (1)" Name="CreatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="VisitorDeviceCreatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "VisitorDevice.Device" Label="Device (1)" Name="Device" Category="Navigation Property" Type="Device"  Field="" Dependent="" Principal="Device" Inverse="VisitorDevices" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "VisitorDevice.UpdatedByNavigation" Label="UpdatedByNavigation (1)" Name="UpdatedByNavigation" Category="Navigation Property" Type="User"  Field="" Dependent="" Principal="User" Inverse="VisitorDeviceUpdatedByNavigations" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "VisitorDevice.Visitor" Label="Visitor (1)" Name="Visitor" Category="Navigation Property" Type="Visitor"  Field="" Dependent="" Principal="Visitor" Inverse="VisitorDevices" PropertyAccessMode="PropertyAccessMode.Default" />
+<Node Id = "VisitorDevice.CreatedBy" Label="CreatedBy (int?)" Name="CreatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice.CreatedDate" Label="CreatedDate (DateTime?)" Name="CreatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: created_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "VisitorDevice.DeviceId" Label="DeviceId (int)" Name="DeviceId" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: device_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice.SerialNumber" Label="SerialNumber (string)" Name="SerialNumber" Category="Property Optional" Type="string" MaxLength="(255)" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="MaxLength: 255
+Relational:ColumnName: serial_number" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice.UpdatedBy" Label="UpdatedBy (int?)" Name="UpdatedBy" Category="Property Foreign" Type="int?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_by" IsPrimaryKey="False" IsForeignKey="True" IsRequired="False" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+<Node Id = "VisitorDevice.UpdatedDate" Label="UpdatedDate (DateTime?)" Name="UpdatedDate" Category="Property Optional" Type="DateTime?" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: updated_date
+Relational:ColumnType: timestamp
+Relational:DefaultValueSql: CURRENT_TIMESTAMP" IsPrimaryKey="False" IsForeignKey="False" IsRequired="False" IsIndexed="False" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="ValueGenerated.OnAdd" />
+<Node Id = "VisitorDevice.VisitorId" Label="VisitorId (int)" Name="VisitorId" Category="Property Foreign" Type="int" MaxLength="None" Field="" PropertyAccessMode="PropertyAccessMode.Default" BeforeSaveBehavior="PropertySaveBehavior.Save" AfterSaveBehavior="PropertySaveBehavior.Save" Annotations="Relational:ColumnName: visitor_id" IsPrimaryKey="False" IsForeignKey="True" IsRequired="True" IsIndexed="True" IsShadow="False" IsAlternateKey="False" IsConcurrencyToken="False" IsUnicode="True" ValueGenerated="None" />
+  </Nodes>
+  <Links>
+<Link Source = "IModel" Target="Device" Category="Contains" />
+<Link Source = "IModel" Target="OfficeLocation" Category="Contains" />
+<Link Source = "Device" Target="Device.CreatedByNavigation" Category="Contains" />
+<Link Source = "Device" Target="Device.UpdatedByNavigation" Category="Contains" />
+<Link Source = "Device" Target="Device.VisitorDevices" Category="Contains" />
+<Link Source = "Device" Target="Device.DeviceId" Category="Contains" />
+<Link Source="Device" Target="User" From="Device.CreatedBy" To="User.UserId" Name="Device -> User" Annotations="Relational:Name: fk_device_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Device" Target="User" From="Device.UpdatedBy" To="User.UserId" Name="Device -> User" Annotations="Relational:Name: fk_device_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Device" Target="Device.CreatedBy" Category="Contains" />
+<Link Source = "Device" Target="Device.CreatedDate" Category="Contains" />
+<Link Source = "Device" Target="Device.DeviceName" Category="Contains" />
+<Link Source = "Device" Target="Device.UpdatedBy" Category="Contains" />
+<Link Source = "Device" Target="Device.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="Page" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.CreatedByNavigation" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.UpdatedByNavigation" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.UserDetails" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.UserLocations" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.Visitors" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.OfficeLocationId" Category="Contains" />
+<Link Source="OfficeLocation" Target="User" From="OfficeLocation.CreatedBy" To="User.UserId" Name="OfficeLocation -> User" Annotations="Relational:Name: fk_office_location_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="OfficeLocation" Target="User" From="OfficeLocation.UpdatedBy" To="User.UserId" Name="OfficeLocation -> User" Annotations="Relational:Name: fk_office_location_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.Address" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.CreatedBy" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.CreatedDate" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.LocationName" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.Phone" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.UpdatedBy" Category="Contains" />
+<Link Source = "OfficeLocation" Target="OfficeLocation.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="PageControl" Category="Contains" />
+<Link Source = "Page" Target="Page.CreatedByNavigation" Category="Contains" />
+<Link Source = "Page" Target="Page.PageControls" Category="Contains" />
+<Link Source = "Page" Target="Page.UpdatedByNavigation" Category="Contains" />
+<Link Source = "Page" Target="Page.PageId" Category="Contains" />
+<Link Source="Page" Target="User" From="Page.CreatedBy" To="User.UserId" Name="Page -> User" Annotations="Relational:Name: fk_page_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Page" Target="User" From="Page.UpdatedBy" To="User.UserId" Name="Page -> User" Annotations="Relational:Name: fk_page_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Page" Target="Page.CreatedBy" Category="Contains" />
+<Link Source = "Page" Target="Page.CreatedDate" Category="Contains" />
+<Link Source = "Page" Target="Page.PageName" Category="Contains" />
+<Link Source = "Page" Target="Page.PageUrl" Category="Contains" />
+<Link Source = "Page" Target="Page.UpdatedBy" Category="Contains" />
+<Link Source = "Page" Target="Page.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="PurposeOfVisit" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.CreatedByNavigation" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.Page" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.Role" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.UpdatedByNavigation" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.PageControlId" Category="Contains" />
+<Link Source="PageControl" Target="User" From="PageControl.CreatedBy" To="User.UserId" Name="PageControl -> User" Annotations="Relational:Name: fk_page_control_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="PageControl" Target="Page" From="PageControl.PageId" To="Page.PageId" Name="PageControl -> Page" Annotations="Relational:Name: fk_page_control_page_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="PageControl" Target="Role" From="PageControl.RoleId" To="Role.RoleId" Name="PageControl -> Role" Annotations="Relational:Name: fk_page_control_role_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="PageControl" Target="User" From="PageControl.UpdatedBy" To="User.UserId" Name="PageControl -> User" Annotations="Relational:Name: fk_page_control_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "PageControl" Target="PageControl.CreatedBy" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.CreatedDate" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.PageId" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.RoleId" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.UpdatedBy" Category="Contains" />
+<Link Source = "PageControl" Target="PageControl.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="Role" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.CreatedByNavigation" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.UpdatedByNavigation" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.Visitors" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.PurposeId" Category="Contains" />
+<Link Source="PurposeOfVisit" Target="User" From="PurposeOfVisit.CreatedBy" To="User.UserId" Name="PurposeOfVisit -> User" Annotations="Relational:Name: fk_purpose_of_visit_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="PurposeOfVisit" Target="User" From="PurposeOfVisit.UpdatedBy" To="User.UserId" Name="PurposeOfVisit -> User" Annotations="Relational:Name: fk_purpose_of_visit_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.CreatedBy" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.CreatedDate" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.PurposeName" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.UpdatedBy" Category="Contains" />
+<Link Source = "PurposeOfVisit" Target="PurposeOfVisit.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="User" Category="Contains" />
+<Link Source = "Role" Target="Role.CreatedByNavigation" Category="Contains" />
+<Link Source = "Role" Target="Role.PageControls" Category="Contains" />
+<Link Source = "Role" Target="Role.UpdatedByNavigation" Category="Contains" />
+<Link Source = "Role" Target="Role.UserRoles" Category="Contains" />
+<Link Source = "Role" Target="Role.RoleId" Category="Contains" />
+<Link Source="Role" Target="User" From="Role.CreatedBy" To="User.UserId" Name="Role -> User" Annotations="Relational:Name: fk_role_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Role" Target="User" From="Role.UpdatedBy" To="User.UserId" Name="Role -> User" Annotations="Relational:Name: fk_role_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Role" Target="Role.CreatedBy" Category="Contains" />
+<Link Source = "Role" Target="Role.CreatedDate" Category="Contains" />
+<Link Source = "Role" Target="Role.RoleName" Category="Contains" />
+<Link Source = "Role" Target="Role.UpdatedBy" Category="Contains" />
+<Link Source = "Role" Target="Role.UpdatedDate" Category="Contains" />
+<Link Source = "IModel" Target="UserDetail" Category="Contains" />
+<Link Source = "User" Target="User.CreatedByNavigation" Category="Contains" />
+<Link Source = "User" Target="User.DeviceCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.DeviceUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.InverseCreatedByNavigation" Category="Contains" />
+<Link Source = "User" Target="User.InverseUpdatedByNavigation" Category="Contains" />
+<Link Source = "User" Target="User.OfficeLocationCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.OfficeLocationUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PageControlCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PageControlUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PageCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PageUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PurposeOfVisitCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.PurposeOfVisitUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.RoleCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.RoleUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UpdatedByNavigation" Category="Contains" />
+<Link Source = "User" Target="User.UserDetailCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserDetailUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserDetailUsers" Category="Contains" />
+<Link Source = "User" Target="User.UserLocationCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserLocationUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserLocationUsers" Category="Contains" />
+<Link Source = "User" Target="User.UserRoleCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserRoleUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.UserRoleUsers" Category="Contains" />
+<Link Source = "User" Target="User.VisitorCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.VisitorDeviceCreatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.VisitorDeviceUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.VisitorUpdatedByNavigations" Category="Contains" />
+<Link Source = "User" Target="User.VisitorUsers" Category="Contains" />
+<Link Source = "User" Target="User.UserId" Category="Contains" />
+<Link Source="User" Target="User" From="User.CreatedBy" To="User.UserId" Name="User -> User" Annotations="Relational:Name: fk_user_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="User" Target="User" From="User.UpdatedBy" To="User.UserId" Name="User -> User" Annotations="Relational:Name: fk_user_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "User" Target="User.CreatedBy" Category="Contains" />
+<Link Source = "User" Target="User.CreatedDate" Category="Contains" />
+<Link Source = "User" Target="User.IsActive" Category="Contains" />
+<Link Source = "User" Target="User.IsLoggedIn" Category="Contains" />
+<Link Source = "User" Target="User.Password" Category="Contains" />
+<Link Source = "User" Target="User.UpdatedBy" Category="Contains" />
+<Link Source = "User" Target="User.UpdatedDate" Category="Contains" />
+<Link Source = "User" Target="User.Username" Category="Contains" />
+<Link Source = "User" Target="User.ValidFrom" Category="Contains" />
+<Link Source = "IModel" Target="UserLocation" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.CreatedByNavigation" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.OfficeLocation" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.UpdatedByNavigation" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.User" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.UserDetailsId" Category="Contains" />
+<Link Source="UserDetail" Target="User" From="UserDetail.CreatedBy" To="User.UserId" Name="UserDetail -> User" Annotations="Relational:Name: fk_user_details_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserDetail" Target="OfficeLocation" From="UserDetail.OfficeLocationId" To="OfficeLocation.OfficeLocationId" Name="UserDetail -> OfficeLocation" Annotations="Relational:Name: fk_user_details_office_location_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserDetail" Target="User" From="UserDetail.UpdatedBy" To="User.UserId" Name="UserDetail -> User" Annotations="Relational:Name: fk_user_details_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserDetail" Target="User" From="UserDetail.UserId" To="User.UserId" Name="UserDetail -> User" Annotations="Relational:Name: fk_user_details_user_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "UserDetail" Target="UserDetail.Address" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.CreatedBy" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.CreatedDate" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.Email" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.FirstName" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.LastName" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.OfficeLocationId" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.Phone" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.UpdatedBy" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.UpdatedDate" Category="Contains" />
+<Link Source = "UserDetail" Target="UserDetail.UserId" Category="Contains" />
+<Link Source = "IModel" Target="UserRole" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.CreatedByNavigation" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.OfficeLocation" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.UpdatedByNavigation" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.User" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.UserLocationId" Category="Contains" />
+<Link Source="UserLocation" Target="User" From="UserLocation.CreatedBy" To="User.UserId" Name="UserLocation -> User" Annotations="Relational:Name: fk_user_location_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserLocation" Target="OfficeLocation" From="UserLocation.OfficeLocationId" To="OfficeLocation.OfficeLocationId" Name="UserLocation -> OfficeLocation" Annotations="Relational:Name: fk_user_location_office_location_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserLocation" Target="User" From="UserLocation.UpdatedBy" To="User.UserId" Name="UserLocation -> User" Annotations="Relational:Name: fk_user_location_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserLocation" Target="User" From="UserLocation.UserId" To="User.UserId" Name="UserLocation -> User" Annotations="Relational:Name: fk_user_location_user_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "UserLocation" Target="UserLocation.CreatedBy" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.CreatedDate" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.OfficeLocationId" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.UpdatedBy" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.UpdatedDate" Category="Contains" />
+<Link Source = "UserLocation" Target="UserLocation.UserId" Category="Contains" />
+<Link Source = "IModel" Target="Visitor" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.CreatedByNavigation" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.Role" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.UpdatedByNavigation" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.User" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.UserRoleId" Category="Contains" />
+<Link Source="UserRole" Target="User" From="UserRole.CreatedBy" To="User.UserId" Name="UserRole -> User" Annotations="Relational:Name: fk_user_role_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserRole" Target="Role" From="UserRole.RoleId" To="Role.RoleId" Name="UserRole -> Role" Annotations="Relational:Name: fk_user_role_role_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserRole" Target="User" From="UserRole.UpdatedBy" To="User.UserId" Name="UserRole -> User" Annotations="Relational:Name: fk_user_role_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="UserRole" Target="User" From="UserRole.UserId" To="User.UserId" Name="UserRole -> User" Annotations="Relational:Name: fk_user_role_user_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "UserRole" Target="UserRole.CreatedBy" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.CreatedDate" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.RoleId" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.UpdatedBy" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.UpdatedDate" Category="Contains" />
+<Link Source = "UserRole" Target="UserRole.UserId" Category="Contains" />
+<Link Source = "IModel" Target="VisitorDevice" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.CreatedByNavigation" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.OfficeLocation" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.Purpose" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.UpdatedByNavigation" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.User" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.VisitorDevices" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.VisitorId" Category="Contains" />
+<Link Source="Visitor" Target="User" From="Visitor.CreatedBy" To="User.UserId" Name="Visitor -> User" Annotations="Relational:Name: fk_visitor_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Visitor" Target="OfficeLocation" From="Visitor.OfficeLocationId" To="OfficeLocation.OfficeLocationId" Name="Visitor -> OfficeLocation" Annotations="Relational:Name: fk_visitor_location_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Visitor" Target="PurposeOfVisit" From="Visitor.PurposeId" To="PurposeOfVisit.PurposeId" Name="Visitor -> PurposeOfVisit" Annotations="Relational:Name: fk_visitor_purpose_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Visitor" Target="User" From="Visitor.UpdatedBy" To="User.UserId" Name="Visitor -> User" Annotations="Relational:Name: fk_visitor_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="Visitor" Target="User" From="Visitor.UserId" To="User.UserId" Name="Visitor -> User" Annotations="Relational:Name: fk_visitor_user_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "Visitor" Target="Visitor.CheckInTime" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.CheckOutTime" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.CreatedBy" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.CreatedDate" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.HostName" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.OfficeLocationId" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.Phone" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.Photo" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.PurposeId" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.Status" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.UpdatedBy" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.UpdatedDate" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.UserId" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.VisitDate" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.VisitorName" Category="Contains" />
+<Link Source = "Visitor" Target="Visitor.VisitorPassCode" Category="Contains" />
+<Link Source = "IModel" Target="VisitorDevice" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.CreatedByNavigation" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.Device" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.UpdatedByNavigation" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.Visitor" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.VisitorDeviceId" Category="Contains" />
+<Link Source="VisitorDevice" Target="User" From="VisitorDevice.CreatedBy" To="User.UserId" Name="VisitorDevice -> User" Annotations="Relational:Name: fk_visitor_device_created_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="VisitorDevice" Target="Device" From="VisitorDevice.DeviceId" To="Device.DeviceId" Name="VisitorDevice -> Device" Annotations="Relational:Name: fk_device_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="VisitorDevice" Target="User" From="VisitorDevice.UpdatedBy" To="User.UserId" Name="VisitorDevice -> User" Annotations="Relational:Name: fk_visitor_device_updated_by" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source="VisitorDevice" Target="Visitor" From="VisitorDevice.VisitorId" To="Visitor.VisitorId" Name="VisitorDevice -> Visitor" Annotations="Relational:Name: fk_visitor_id" IsUnique="False" Label="1:*" Category="Foreign Key" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.CreatedBy" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.CreatedDate" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.DeviceId" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.SerialNumber" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.UpdatedBy" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.UpdatedDate" Category="Contains" />
+<Link Source = "VisitorDevice" Target="VisitorDevice.VisitorId" Category="Contains" />
+  </Links>
+  <Styles>
+    <Style TargetType="Node" GroupLabel="EntityType" ValueLabel="True">
+      <Condition Expression="HasCategory('EntityType')" />
+      <Setter Property="Background" Value="#FFC0C0C0" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Primary" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Primary')" />
+      <Setter Property="Background" Value="#FF008000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Optional" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Optional')" />
+      <Setter Property="Background" Value="#FF808040" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Foreign" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Foreign')" />
+      <Setter Property="Background" Value="#FF8080FF" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Property Required" ValueLabel="True">
+      <Condition Expression="HasCategory('Property Required')" />
+      <Setter Property="Background" Value="#FFC0A000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Property" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Property')" />
+      <Setter Property="Background" Value="#FF990000" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Navigation Collection" ValueLabel="True">
+      <Condition Expression="HasCategory('Navigation Collection')" />
+      <Setter Property="Background" Value="#FFFF3232" />
+    </Style>
+    <Style TargetType="Node" GroupLabel="Model" ValueLabel="True">
+      <Condition Expression="HasCategory('Model')" />
+      <Setter Property="Background" Value="#FFFFFFFF" />
+    </Style>
+  </Styles>
+  <Properties>
+    <Property Id="Name" Group="Model Properties" DataType="System.String" />
+    <Property Id="Field"  Description="Backing field" Group="Model Properties" DataType="System.String" />
+    <Property Id="Type"  Description="CLR data type" Group="Model Properties" DataType="System.String" />
+    <Property Id="To" Description="Source property" Group="Model Properties" DataType="System.String" />
+    <Property Id="From" Description="Target property" Group="Model Properties" DataType="System.String" />
+    <Property Id="Dependent" Description="Dependent entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Inverse" Description="Inverse entity" Group="Model Properties" DataType="System.String" />
+    <Property Id="Principal" Description="Principal entity" Group="Model Properties" DataType="System.String" />    
+    <Property Id="Annotations" Description="Annotations" Group="Model Properties" DataType="System.String" />
+    <Property Id="BaseClass"  Description="Base class" Group="Model Properties" DataType="System.String" />
+    <Property Id="ChangeTrackingStrategy" Description="Change tracking strategy" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsUnique" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="IsAbstract" Group="Model Properties" DataType="System.Boolean" />
+    <Property Id="ProductVersion" Label="Product Version" Description="EF Core product version" Group="Model Properties" DataType="System.String" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsRequired" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsPrimaryKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsForeignKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsShadow" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsAlternateKey" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsConcurrencyToken" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsIndexed" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="IsUnicode" Group="Property Flags" DataType="System.Boolean" />
+    <Property Id="ValueGenerated" Group="Property Flags" DataType="System.String" />
+    <Property Id="BeforeSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="AfterSaveBehavior" Group="Property Flags" DataType="System.String" />
+    <Property Id="PropertyAccessMode" Group="Property Flags" DataType="System.String" />
+  </Properties>
+</DirectedGraph>

@@ -397,3 +397,12 @@ C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VM
 C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.Console.dll
 C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.Debug.dll
 C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Serilog.Sinks.File.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll

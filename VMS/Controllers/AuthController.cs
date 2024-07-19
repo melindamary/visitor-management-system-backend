@@ -1,34 +1,78 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
 using VMS.Models;
 using VMS.Models.DTO;
+using VMS.Repository.IRepository;
 
 namespace VMS.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    
+
     public class AuthController : ControllerBase
     {
-        private static readonly List<User> UserList = new List<User>
+        private readonly IUserRepository _userRepository;
+        private readonly IConfiguration _configuration;
+
+        public AuthController(IUserRepository userRepository, IConfiguration configuration)
         {
-            new User { Username = "admin", Password = "admin123"},
-            new User { Username = "user", Password = "user123"},
-            new User { Username = "auditor", Password = "auditor123"}
-        };
+            _userRepository = userRepository;
+            _configuration = configuration;
+        }
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
-            var user = UserList.FirstOrDefault(u => u.Username == request.Username && u.Password == request.Password);
-            if (user == null)
-            {
+            if (!await _userRepository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
                 return Unauthorized("Invalid credentials");
-            }
 
-            // Generate and return a JWT token here
-            return Ok(new User {Username = user.Username});
+            var user = await _userRepository.GetUserByUsernameAsync(loginRequest.Username);
+            var token = GenerateJwtToken(user);
+
+            var loginResponse = new LoginResponseDTO
+            {
+                Username = user.Username,
+                Token = token
+            };
+
+            APIResponse response = new APIResponse();
+            response.Result = loginResponse;
+            response.IsSuccess = true;
+            response.StatusCode = HttpStatusCode.OK;
+            return Ok(response);
+
         }
+
+        private string GenerateJwtToken(User user)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
+                new Claim(ClaimTypes.Name, user.Username)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApiSettings:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        
     }
 }
