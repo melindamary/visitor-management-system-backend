@@ -10,6 +10,7 @@ namespace VMS
         public MappingConfig()
         {
             //syntax : CreateMap<POCO class, DTO class>().ReverseMap();
+            CreateMap<Roles, AddNewRoleDTO>().ReverseMap();
         }
     }
 }

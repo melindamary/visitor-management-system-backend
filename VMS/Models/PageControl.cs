@@ -23,7 +23,7 @@ public partial class PageControl
 
     public virtual Page Page { get; set; } = null!;
 
-    public virtual Role Role { get; set; } = null!;
+    public virtual Roles Role { get; set; } = null!;
 
     public virtual User UpdatedByNavigation { get; set; } = null!;
 }

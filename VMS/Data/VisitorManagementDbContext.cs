@@ -27,7 +27,7 @@ public partial class VisitorManagementDbContext : DbContext
 
     public virtual DbSet<PurposeOfVisit> PurposeOfVisits { get; set; }
 
-    public virtual DbSet<Role> Roles { get; set; }
+    public virtual DbSet<Roles> Roles { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
@@ -241,7 +241,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasConstraintName("fk_purpose_of_visit_updated_by");
         });
 
-        modelBuilder.Entity<Role>(entity =>
+        modelBuilder.Entity<Roles>(entity =>
         {
             entity.HasKey(e => e.RoleId).HasName("pk_role");
 

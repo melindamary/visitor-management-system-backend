@@ -4896,19 +4896,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\": {}
+    "C:\\Users\\jobin.joseph\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
+      "projectUniqueName": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
       "projectName": "VMS",
-      "projectPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
-      "packagesPath": "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\obj\\",
+      "projectPath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
+      "packagesPath": "C:\\Users\\jobin.joseph\\.nuget\\packages\\",
+      "outputPath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\melinda.melchizedek\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\jobin.joseph\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4998,7 +4998,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -5,9 +5,12 @@ using System.Text.Json.Serialization;
 using VMS;
 using VMS.Data;
 using VMS.Models;
+using VMS.Repository.IRepository;
+using VMS.Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 
 builder.Host.UseSerilog();
 
