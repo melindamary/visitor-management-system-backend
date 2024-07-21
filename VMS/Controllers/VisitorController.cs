@@ -3,6 +3,7 @@ using System.Linq;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Data;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VMS.Controllers
 {
@@ -17,12 +18,16 @@ namespace VMS.Controllers
             this._context = _context;
 
         }
+
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public IEnumerable<Visitor> GetVisitorDetails()
         {
             return _context.Visitors.ToList<Visitor>();
 
         }
+
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public IEnumerable<string> GetPersonInContact()
         {
@@ -105,7 +110,7 @@ namespace VMS.Controllers
             return visitorDevice;
         }
 
-
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("{id}")]
         public IActionResult GetVisitorById(int id)
         {

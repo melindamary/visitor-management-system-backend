@@ -4,6 +4,7 @@ using System.Linq;
 using VMS.Models;
 using VMS.Data;
 using VMS.Models.DTO;
+using Microsoft.AspNetCore.Authorization;
 
 namespace VMS.Controllers
 {
@@ -18,6 +19,7 @@ namespace VMS.Controllers
 
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("get-device-id-name")]
         public IEnumerable<GetDeviceIdAndNameDto> GetItems()
         {
@@ -31,6 +33,7 @@ namespace VMS.Controllers
 
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<ActionResult<Device>> PostDevice(AddNewDeviceDto deviceDto)
         {
