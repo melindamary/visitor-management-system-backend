@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
@@ -15,6 +16,8 @@ namespace VMS.Controllers
             this._context = _context;
 
         }
+
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("get-purposes-idAndName")]
         public IEnumerable<PurposeOfVisitNameadnIdDto> GetPurposes()
         {
@@ -28,6 +31,7 @@ namespace VMS.Controllers
 
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
         {

@@ -30,7 +30,7 @@ namespace VMS.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
             if (!await _userRepository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
-                return Unauthorized("Invalid credentials");
+                return Unauthorized("Invalid login credentials");
 
             var user = await _userRepository.GetUserByUsernameAsync(loginRequest.Username);
             var token = GenerateJwtToken(user);
@@ -54,7 +54,8 @@ namespace VMS.Controllers
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.UserId.ToString()),
-                new Claim(ClaimTypes.Name, user.Username)
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, "admin")
             };
 
             var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApiSettings:Key"]));
