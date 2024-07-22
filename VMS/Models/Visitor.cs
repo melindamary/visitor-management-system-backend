@@ -15,7 +15,7 @@ public partial class Visitor
 
     public string? HostName { get; set; }
 
-    public byte[]? Photo { get; set; }
+    public byte[] Photo { get; set; }
 
     public DateTime? VisitDate { get; set; }
 

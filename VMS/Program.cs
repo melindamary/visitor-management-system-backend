@@ -1,18 +1,26 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+<<<<<<< HEAD
 using System.Text;
+=======
+using System.Configuration;
+>>>>>>> origin/aiswarya3
 using System.Text.Json.Serialization;
 using VMS;
 using VMS.Data;
 using VMS.Models;
 using VMS.Repository.IRepository;
 using VMS.Repository;
+<<<<<<< HEAD
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using VMS.Services;
 using VMS.Services.IServices;
+=======
+
+>>>>>>> origin/aiswarya3
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +95,13 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("AdminOnly", policy => policy.RequireUserName("admin"));
 });
+ 
+
+    builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
+    builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+
+// Other service registrations
 
 builder.Services.AddControllers().AddJsonOptions(options =>
 {

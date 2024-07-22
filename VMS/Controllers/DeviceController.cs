@@ -5,6 +5,7 @@ using VMS.Models;
 using VMS.Data;
 using VMS.Models.DTO;
 using Microsoft.AspNetCore.Authorization;
+using VMS.Repository.IRepository;
 
 namespace VMS.Controllers
 {
@@ -12,49 +13,33 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class DeviceController : ControllerBase
     {
-        private VisitorManagementDbContext _context;
-        public DeviceController(VisitorManagementDbContext _context)
-        {
-            this._context = _context;
+        private readonly IDeviceRepository _deviceRepository;
 
+        public DeviceController(IDeviceRepository deviceRepository)
+        {
+            _deviceRepository = deviceRepository;
         }
 
         [Authorize(Policy = "AdminOnly")]
         [HttpGet("get-device-id-name")]
-        public IEnumerable<GetDeviceIdAndNameDto> GetItems()
+        public async Task<IEnumerable<GetDeviceIdAndNameDto>> GetItems()
         {
-            return _context.Devices
-                   .Select(d => new GetDeviceIdAndNameDto
-                   {
-                       DeviceId = d.DeviceId,
-                       DeviceName = d.DeviceName
-                   })
-                   .ToList();
-
+            return await _deviceRepository.GetDevicesAsync();
         }
 
         [Authorize(Policy = "AdminOnly")]
         [HttpPost]
         public async Task<ActionResult<Device>> PostDevice(AddNewDeviceDto deviceDto)
         {
-            if (_context.Devices.Any(p => p.DeviceName == deviceDto.deviceName))
+            try
             {
-                return Conflict(new { message = "Purpose already exists" });
+                var device = await _deviceRepository.AddDeviceAsync(deviceDto);
+                return CreatedAtAction(nameof(PostDevice), new { id = device.DeviceId }, device);
             }
-
-            var device = new Device
+            catch (InvalidOperationException ex)
             {
-                DeviceName = deviceDto.deviceName,
-                CreatedBy = 1,
-                UpdatedBy = 1,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-
-            _context.Devices.Add(device);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(PostDevice), new { id = device.DeviceId }, device);
+                return Conflict(new { message = ex.Message });
+            }
         }
     }
 }

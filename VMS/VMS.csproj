@@ -23,4 +23,11 @@
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
   </ItemGroup>
 
+<<<<<<< HEAD
+=======
+  <ItemGroup>
+    <Folder Include="EndPoints\" />
+  </ItemGroup>
+
+>>>>>>> origin/aiswarya3
 </Project>
