@@ -1,4 +1,5 @@
-﻿using VMS.Models.DTO;
+﻿using VMS.Models;
+using VMS.Models.DTO;
 
 namespace VMS.Repository.IRepository
 {

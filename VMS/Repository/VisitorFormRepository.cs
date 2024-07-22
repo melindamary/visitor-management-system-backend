@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
+using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
