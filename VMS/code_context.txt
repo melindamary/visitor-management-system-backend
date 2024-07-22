@@ -1,0 +1,1970 @@
+// File: Controllers\AuthController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.Linq;
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    
+    public class AuthController : ControllerBase
+    {
+        private static readonly List<User> UserList = new List<User>
+        {
+            new User { Username = "admin", Password = "admin123"},
+            new User { Username = "user", Password = "user123"},
+            new User { Username = "auditor", Password = "auditor123"}
+        };
+
+        [HttpPost]
+        public IActionResult Login([FromBody] LoginRequest request)
+        {
+            var user = UserList.FirstOrDefault(u => u.Username == request.Username && u.Password == request.Password);
+            if (user == null)
+            {
+                return Unauthorized("Invalid credentials");
+            }
+
+            // Generate and return a JWT token here
+            return Ok(new User {Username = user.Username});
+        }
+    }
+}
+
+// File: Controllers\DeviceController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+
+using VMS.Models;
+using VMS.Data;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class DeviceController : ControllerBase
+    {
+        private VisitorManagementDbContext _context;
+        public DeviceController(VisitorManagementDbContext _context)
+        {
+            this._context = _context;
+
+        }
+
+        [HttpGet]
+        public IEnumerable<Device> GetItems()
+        {
+            return _context.Devices.ToList<Device>();
+
+        }
+    }
+}
+
+// File: Controllers\PageController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using VMS.Models;
+using VMS.Data;
+using VMS.Models.DTO;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class PageController : ControllerBase
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public PageController(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<Page>> GetPages()
+        {
+            return _context.Pages.ToList();
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult<Page> GetPage(int id)
+        {
+            var page = _context.Pages.Find(id);
+
+            if (page == null)
+            {
+                return NotFound();
+            }
+
+            return page;
+        }
+
+        [HttpPost]
+        public ActionResult<Page> CreatePage(PageDTO pageDto)
+        {
+            var page = new Page
+            {
+                PageName = pageDto.PageName,
+                PageUrl = pageDto.PageUrl,
+                CreatedBy = pageDto.CreatedBy,
+                UpdatedBy = pageDto.UpdatedBy,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.Pages.Add(page);
+            _context.SaveChanges();
+
+            return CreatedAtAction(nameof(GetPage), new { id = page.PageId }, page);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdatePage(int id, PageDTO pageDto)
+        {
+            var page = _context.Pages.Find(id);
+
+            if (page == null)
+            {
+                return NotFound();
+            }
+
+            page.PageName = pageDto.PageName;
+            page.PageUrl = pageDto.PageUrl;
+            page.UpdatedBy = pageDto.UpdatedBy;
+            page.UpdatedDate = DateTime.Now;
+
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeletePage(int id)
+        {
+            var page = _context.Pages.Find(id);
+
+            if (page == null)
+            {
+                return NotFound();
+            }
+
+            _context.Pages.Remove(page);
+            _context.SaveChanges();
+
+            return NoContent();
+        }
+    }
+}
+
+// File: Controllers\PageRoleController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+
+using VMS.Models;
+using VMS.Data;
+using VMS.Models.DTO;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class PageRoleController : ControllerBase
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public PageRoleController(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        [HttpPost]
+        public async Task<ActionResult> CreatePageControls(int roleId, List<PageControlDTO> pageControls)
+        {
+
+            try
+            {
+                var role = await _context.Roles.FindAsync(roleId);
+                if (role == null)
+                {
+                    return NotFound($"Role with ID {roleId} not found.");
+                }
+
+                foreach (var control in pageControls)
+                {
+                    var pageControl = new PageControl
+                    {
+                        RoleId = roleId,
+                        PageId = control.PageId,
+                        CreatedBy = 1, // Replace with actual user ID
+                        UpdatedBy = 1, // Replace with actual user ID
+                        CreatedDate = DateTime.Now,
+                        UpdatedDate = DateTime.Now
+                    };
+                    _context.PageControls.Add(pageControl);
+                }
+                await _context.SaveChangesAsync();
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+    }
+
+    public class PageControlDTO
+    {
+        public int PageId { get; set; }
+    }
+
+}
+
+// File: Controllers\PurposeController.cs
+using Microsoft.AspNetCore.Mvc;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class PurposeController : ControllerBase
+    {
+        private VisitorManagementDbContext _context;
+        public PurposeController(VisitorManagementDbContext _context)
+        {
+            this._context = _context;
+
+        }
+
+        [HttpGet]
+        public IEnumerable<PurposeOfVisit> GetPurposes()
+        {
+            return _context.PurposeOfVisits.ToList<PurposeOfVisit>();
+
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
+        {
+            if (_context.PurposeOfVisits.Any(p => p.PurposeName == purposeDto.Name))
+            {
+                return Conflict(new { message = "Purpose already exists" });
+            }
+
+            var purpose = new PurposeOfVisit
+            {
+                PurposeName = purposeDto.Name,
+                CreatedBy = purposeDto.CreatedBy,
+                UpdatedBy = purposeDto.UpdatedBy,
+
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.PurposeOfVisits.Add(purpose);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(PostPurpose), new { id = purpose.PurposeId }, purpose);
+        }
+    }
+}
+
+// File: Controllers\RoleController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+
+using VMS.Models;
+using VMS.Data;
+using VMS.Models.DTO;
+using Microsoft.EntityFrameworkCore;
+using System.Data;
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class RoleController : ControllerBase
+    {
+
+        private VisitorManagementDbContext _context;
+        public RoleController(VisitorManagementDbContext _context)
+        {
+            this._context = _context;
+        }
+        [HttpGet]
+        public IEnumerable<Roles> GetRoles() { 
+            return _context.Roles.ToList<Roles>();
+        }
+
+
+
+        [HttpPost]
+        public async Task<ActionResult<Roles>> PostRole(AddNewRoleDTO roleDTO)
+        {
+            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
+            {
+                return Conflict(new { message = "role already exists" });
+
+            }
+            var role = new Roles
+            {
+                RoleName = roleDTO.Name,
+                CreatedBy = roleDTO.CreatedBy,
+                UpdatedBy = roleDTO.UpdatedBy,
+
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role});
+        }
+
+
+        [HttpPost]
+
+        public async Task<ActionResult<Roles>> PostPage_Control(AddNewRoleDTO roleDTO)
+        {
+            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
+            {
+                return Conflict(new { message = "role already exists" });
+
+            }
+            var role = new Roles
+            {
+                RoleName = roleDTO.Name,
+                CreatedBy = roleDTO.CreatedBy,
+                UpdatedBy = roleDTO.UpdatedBy,
+
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role });
+        }
+
+    }
+   
+}
+
+// File: Controllers\StatisticsController.cs
+// File: Controllers/StatisticsController.cs
+using Microsoft.AspNetCore.Mvc;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class StatisticsController : ControllerBase
+    {
+        private readonly IStatisticsRepository _statisticsRepository;
+
+        public StatisticsController(IStatisticsRepository statisticsRepository)
+        {
+            _statisticsRepository = statisticsRepository;
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
+        {
+            var result = await _statisticsRepository.GetLocationStatistics();
+            return Ok(result);
+        }
+        [HttpGet("security")]
+        public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
+        {
+            var result = await _statisticsRepository.GetSecurityStatistics();
+            return Ok(result);
+        }
+
+
+        [HttpGet("purpose")]
+        public async Task<ActionResult<IEnumerable<PurposeStatisticsDTO>>> GetPurposeStatistics()
+        {
+            var result = await _statisticsRepository.GetPurposeStatistics();
+            return Ok(result);
+        }
+
+
+    }
+}
+
+// File: Controllers\VisitorController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Linq;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Data;
+
+namespace VMS.Controllers
+{
+
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class VisitorController : ControllerBase
+    {
+        private VisitorManagementDbContext _context;
+        public VisitorController(VisitorManagementDbContext _context)
+        {
+            this._context = _context;
+
+        }
+        [HttpGet]
+        public IEnumerable<Visitor> GetVisitorDetails()
+        {
+            return _context.Visitors.ToList<Visitor>();
+
+        }
+        [HttpGet]
+        public IEnumerable<string> GetPersonInContact()
+        {
+            return _context.Visitors.Select(v => v.HostName).Distinct().ToList();
+        }
+        [HttpPost("create-and-add-item")]
+        public IActionResult CreateVisitorAndAddItem([FromBody] VisitorCreationDTO visitorDto)
+        {
+            if (visitorDto == null)
+            {
+                return BadRequest("Visitor data is null.");
+            }
+
+            // Log the received DTO
+            Console.WriteLine("Received DTO: " + visitorDto);
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var visitor = new Visitor
+            {
+                VisitorName = visitorDto.Name,
+                Phone = visitorDto.PhoneNumber,
+                PurposeId = visitorDto.PurposeOfVisitId,
+                HostName = visitorDto.PersonInContact,
+                OfficeLocationId = visitorDto.OfficeLocationId,
+                CreatedBy = 1,                
+                VisitDate = DateTime.Now.Date,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                VisitorDevices = new List<VisitorDevice>()
+            };
+
+            _context.Visitors.Add(visitor);
+            _context.SaveChanges();
+
+            if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
+            {
+                var firstSelectedItem = visitorDto.SelectedDevice.First();
+                var addDeviceDto = new AddVisitorDeviceDto
+                {
+                    VisitorId = visitor.VisitorId,
+                    DeviceId = firstSelectedItem.DeviceId,
+                    SerialNumber = firstSelectedItem.SerialNumber
+                };
+
+                var addedDevice = AddVisitorDevice(addDeviceDto);
+                return Ok(new { CreatedVisitor = visitor, AddedItem = addedDevice });
+            }
+
+            return Ok(new { CreatedVisitor = visitor });
+        }
+
+        // Method to call the AddVisitorItem API
+        private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
+        {
+            // Create VisitorItem entity from AddVisitorItemDto
+            var visitorDevice = new VisitorDevice
+            {
+                VisitorId = addDeviceDto.VisitorId,
+                DeviceId = addDeviceDto.DeviceId,
+                SerialNumber = addDeviceDto.SerialNumber
+            };
+
+            // Add VisitorItem to context
+            _context.VisitorDevices.Add(visitorDevice);
+
+            // Save changes to the VisitorItems
+            _context.SaveChanges();
+
+            return visitorDevice;
+        }
+
+
+        [HttpGet("{id}")]
+        public IActionResult GetVisitorById(int id)
+        {
+            var visitor = _context.Visitors.FirstOrDefault(v => v.VisitorId == id);
+
+            if (visitor == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(visitor);
+        }
+    }
+}
+
+
+// File: Models\APIResponse.cs
+using System.Net;
+
+namespace VMS.Models
+{
+    public class APIResponse
+    {
+        public APIResponse()
+        {
+            var ErrorMessages = new List<string>();
+        }
+        public bool IsSuccess { get; set; }
+        public Object Result { get; set; }
+        public HttpStatusCode StatusCode { get; set; }
+        public List<string> ErrorMessages { get; set; }
+    }
+}
+
+// File: Models\Device.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class Device
+{
+    public int DeviceId { get; set; }
+
+    public string? DeviceName { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual ICollection<VisitorDevice> VisitorDevices { get; set; } = new List<VisitorDevice>();
+}
+
+// File: Models\OfficeLocation.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class OfficeLocation
+{
+    public int OfficeLocationId { get; set; }
+
+    public string? LocationName { get; set; }
+
+    public string? Address { get; set; }
+
+    public string? Phone { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual ICollection<UserDetail> UserDetails { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserLocation> UserLocations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
+}
+
+// File: Models\Page.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class Page
+{
+    public int PageId { get; set; }
+
+    public string? PageName { get; set; }
+
+    public string? PageUrl { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<PageControl> PageControls { get; set; } = new List<PageControl>();
+
+    public virtual User? UpdatedByNavigation { get; set; }
+}
+
+// File: Models\PageControl.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class PageControl
+{
+    public int PageControlId { get; set; }
+
+    public int RoleId { get; set; }
+
+    public int PageId { get; set; }
+
+    public int CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User CreatedByNavigation { get; set; } = null!;
+
+    public virtual Page Page { get; set; } = null!;
+
+    public virtual Roles Role { get; set; } = null!;
+
+    public virtual User UpdatedByNavigation { get; set; } = null!;
+}
+
+// File: Models\PurposeOfVisit.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class PurposeOfVisit
+{
+    public int PurposeId { get; set; }
+
+    public string? PurposeName { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual ICollection<Visitor> Visitors { get; set; } = new List<Visitor>();
+}
+
+// File: Models\Role.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class Roles
+{
+    public int RoleId { get; set; }
+
+    public string? RoleName { get; set; } = null!;
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<PageControl> PageControls { get; set; } = new List<PageControl>();
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual ICollection<UserRole> UserRoles { get; set; } = new List<UserRole>();
+}
+
+// File: Models\User.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class User
+{
+    public int UserId { get; set; }
+
+    public string? Username { get; set; }
+
+    public string? Password { get; set; }
+
+    public DateOnly? ValidFrom { get; set; }
+
+    public int? IsActive { get; set; }
+
+    public int? IsLoggedIn { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual ICollection<Device> DeviceCreatedByNavigations { get; set; } = new List<Device>();
+
+    public virtual ICollection<Device> DeviceUpdatedByNavigations { get; set; } = new List<Device>();
+
+    public virtual ICollection<User> InverseCreatedByNavigation { get; set; } = new List<User>();
+
+    public virtual ICollection<User> InverseUpdatedByNavigation { get; set; } = new List<User>();
+
+    public virtual ICollection<OfficeLocation> OfficeLocationCreatedByNavigations { get; set; } = new List<OfficeLocation>();
+
+    public virtual ICollection<OfficeLocation> OfficeLocationUpdatedByNavigations { get; set; } = new List<OfficeLocation>();
+
+    public virtual ICollection<PageControl> PageControlCreatedByNavigations { get; set; } = new List<PageControl>();
+
+    public virtual ICollection<PageControl> PageControlUpdatedByNavigations { get; set; } = new List<PageControl>();
+
+    public virtual ICollection<Page> PageCreatedByNavigations { get; set; } = new List<Page>();
+
+    public virtual ICollection<Page> PageUpdatedByNavigations { get; set; } = new List<Page>();
+
+    public virtual ICollection<PurposeOfVisit> PurposeOfVisitCreatedByNavigations { get; set; } = new List<PurposeOfVisit>();
+
+    public virtual ICollection<PurposeOfVisit> PurposeOfVisitUpdatedByNavigations { get; set; } = new List<PurposeOfVisit>();
+
+    public virtual ICollection<Roles> RoleCreatedByNavigations { get; set; } = new List<Roles>();
+
+    public virtual ICollection<Roles> RoleUpdatedByNavigations { get; set; } = new List<Roles>();
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual ICollection<UserDetail> UserDetailCreatedByNavigations { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserDetail> UserDetailUpdatedByNavigations { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserDetail> UserDetailUsers { get; set; } = new List<UserDetail>();
+
+    public virtual ICollection<UserLocation> UserLocationCreatedByNavigations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<UserLocation> UserLocationUpdatedByNavigations { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<UserLocation> UserLocationUsers { get; set; } = new List<UserLocation>();
+
+    public virtual ICollection<UserRole> UserRoleCreatedByNavigations { get; set; } = new List<UserRole>();
+
+    public virtual ICollection<UserRole> UserRoleUpdatedByNavigations { get; set; } = new List<UserRole>();
+
+    public virtual ICollection<UserRole> UserRoleUsers { get; set; } = new List<UserRole>();
+
+    public virtual ICollection<Visitor> VisitorCreatedByNavigations { get; set; } = new List<Visitor>();
+
+    public virtual ICollection<VisitorDevice> VisitorDeviceCreatedByNavigations { get; set; } = new List<VisitorDevice>();
+
+    public virtual ICollection<VisitorDevice> VisitorDeviceUpdatedByNavigations { get; set; } = new List<VisitorDevice>();
+
+    public virtual ICollection<Visitor> VisitorUpdatedByNavigations { get; set; } = new List<Visitor>();
+
+    public virtual ICollection<Visitor> VisitorUsers { get; set; } = new List<Visitor>();
+}
+
+// File: Models\UserDetail.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class UserDetail
+{
+    public int UserDetailsId { get; set; }
+
+    public int? UserId { get; set; }
+
+    public int? OfficeLocationId { get; set; }
+
+    public string? FirstName { get; set; }
+
+    public string? LastName { get; set; }
+
+    public string? Email { get; set; }
+
+    public string? Phone { get; set; }
+
+    public string? Address { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual OfficeLocation? OfficeLocation { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual User? User { get; set; }
+}
+
+// File: Models\UserLocation.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class UserLocation
+{
+    public int UserLocationId { get; set; }
+
+    public int? UserId { get; set; }
+
+    public int? OfficeLocationId { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual OfficeLocation? OfficeLocation { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual User? User { get; set; }
+}
+
+// File: Models\UserRole.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class UserRole
+{
+    public int UserRoleId { get; set; }
+
+    public int? UserId { get; set; }
+
+    public int? RoleId { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual Roles? Role { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual User? User { get; set; }
+}
+
+// File: Models\Visitor.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class Visitor
+{
+    public int VisitorId { get; set; }
+
+    public string? VisitorName { get; set; }
+
+    public string? Phone { get; set; }
+
+    public int? PurposeId { get; set; }
+
+    public string? HostName { get; set; }
+
+    public string? Photo { get; set; }
+
+    public DateTime? VisitDate { get; set; }
+
+    public string? VisitorPassCode { get; set; }
+
+    public DateTime? CheckInTime { get; set; }
+
+    public DateTime? CheckOutTime { get; set; }
+
+    public int? UserId { get; set; }
+
+    public int? OfficeLocationId { get; set; }
+
+    public int? Status { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual OfficeLocation? OfficeLocation { get; set; }
+
+    public virtual PurposeOfVisit? Purpose { get; set; }
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual User? User { get; set; }
+
+    public virtual ICollection<VisitorDevice> VisitorDevices { get; set; } = new List<VisitorDevice>();
+}
+
+// File: Models\VisitorDevice.cs
+using System;
+using System.Collections.Generic;
+
+namespace VMS.Models;
+
+public partial class VisitorDevice
+{
+    public int VisitorDeviceId { get; set; }
+
+    public int VisitorId { get; set; }
+
+    public int DeviceId { get; set; }
+
+    public string? SerialNumber { get; set; }
+
+    public int? CreatedBy { get; set; }
+
+    public DateTime? CreatedDate { get; set; }
+
+    public int? UpdatedBy { get; set; }
+
+    public DateTime? UpdatedDate { get; set; }
+
+    public virtual User? CreatedByNavigation { get; set; }
+
+    public virtual Device Device { get; set; } = null!;
+
+    public virtual User? UpdatedByNavigation { get; set; }
+
+    public virtual Visitor Visitor { get; set; } = null!;
+}
+
+// File: Models\DTO\AddNewPurposeDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddNewPurposeDTO
+    {
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public int CreatedBy { get; set; }
+        [Required]
+        public int UpdatedBy { get; set; }
+    }
+}
+
+// File: Models\DTO\AddNewRoleDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddNewRoleDTO
+    {
+
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public int CreatedBy { get; set; }
+        [Required]
+        public int UpdatedBy { get; set; }
+    }
+}
+
+// File: Models\DTO\AddPageControlDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddPageControlDTO
+    {
+
+       
+        [Required]
+        public int? PageId { get; set; }
+     
+    }
+}
+
+// File: Models\DTO\AddVisitorDeviceDto.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddVisitorDeviceDto
+    {
+
+        [Required]
+        public int VisitorId { get; set; }
+        // Visitor ID (foreign key)
+        [Required]
+        public int DeviceId { get; set; }           // Item ID (foreign key)
+        [Required]
+        public string? SerialNumber { get; set; }  // Serial number of the item
+        }
+    }
+
+
+
+
+// File: Models\DTO\LocationStatisticsDTO.cs
+// File: Models/DTO/LocationStatisticsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class LocationStatisticsDTO
+    {
+        public string Location { get; set; }
+        public int NumberOfSecurity { get; set; }
+        public int PassesGenerated { get; set; }
+        public int TotalVisitors { get; set; }
+    }
+}
+
+// File: Models\DTO\LoginRequest.cs
+namespace VMS.Models.DTO
+{
+    public class LoginRequest
+    {
+        public string? Username { get; set; }
+        public string? Password { get; set; }
+    }
+}
+
+// File: Models\DTO\PageDTO.cs
+namespace VMS.Models.DTO
+{
+    public class PageDTO
+    {
+        public string PageName { get; set; }
+        public string PageUrl { get; set; }
+        public int CreatedBy { get; set; }
+        public int UpdatedBy { get; set; }
+    }
+}
+
+// File: Models\DTO\PurposeStatisticsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class PurposeStatisticsDTO
+    {
+        public string Name { get; set; }
+        public int Value { get; set; }
+    }
+}
+
+// File: Models\DTO\SecurityStatisticsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class SecurityStatisticsDTO
+    {
+        public string Location { get; set; }
+        public string SecurityFirstName { get; set; }
+        public string SecurityLastName { get; set; }
+        public string PhoneNumber { get; set; }
+        public int? Status { get; set; }
+        public int VisitorsApproved { get; set; }
+    }
+}
+
+// File: Models\DTO\VisitorCreationDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class VisitorCreationDTO
+    {
+        [Required]
+        public string? Name { get; set; }
+        [Required]
+        public string? PhoneNumber { get; set; }
+       /* [Required]
+        public DateTime VisitDate { get; set; }*/
+        [Required]
+        public int PurposeOfVisitId { get; set; }
+        [Required]
+        public string PersonInContact { get; set; }
+        
+        [Required]
+        public int? OfficeLocationId { get; set; }
+
+        public List<VisitorDeviceDto>? SelectedDevice { get; set; }
+    }
+}
+
+// File: Models\DTO\VisitorDeviceDto.cs
+namespace VMS.Models.DTO
+{
+    public class VisitorDeviceDto
+    {
+        
+        public int DeviceId { get; set; }
+        public string? SerialNumber { get; set; }
+    }
+}
+
+// File: Data\VisitorManagementDbContext.cs
+using System;
+using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using VMS.Models;
+
+namespace VMS.Data;
+
+public partial class VisitorManagementDbContext : DbContext
+{
+    public VisitorManagementDbContext()
+    {
+    }
+
+    public VisitorManagementDbContext(DbContextOptions<VisitorManagementDbContext> options)
+        : base(options)
+    {
+    }
+
+    public virtual DbSet<Device> Devices { get; set; }
+
+    public virtual DbSet<OfficeLocation> OfficeLocations { get; set; }
+
+    public virtual DbSet<Page> Pages { get; set; }
+
+    public virtual DbSet<PageControl> PageControls { get; set; }
+
+    public virtual DbSet<PurposeOfVisit> PurposeOfVisits { get; set; }
+
+    public virtual DbSet<Roles> Roles { get; set; }
+
+    public virtual DbSet<User> Users { get; set; }
+
+    public virtual DbSet<UserDetail> UserDetails { get; set; }
+
+    public virtual DbSet<UserLocation> UserLocations { get; set; }
+
+    public virtual DbSet<UserRole> UserRoles { get; set; }
+
+    public virtual DbSet<Visitor> Visitors { get; set; }
+
+    public virtual DbSet<VisitorDevice> VisitorDevices { get; set; }
+
+    protected override void OnModelCreating(ModelBuilder modelBuilder)
+    {
+        /*modelBuilder
+            .UseCollation("utf8mb4_0900_ai_ci")
+            .HasCharSet("utf8mb4");*/
+
+        modelBuilder.Entity<Device>(entity =>
+        {
+            entity.HasKey(e => e.DeviceId).HasName("pk_device");
+
+            entity.ToTable("device");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_device_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_device_updated_by");
+
+            entity.Property(e => e.DeviceId).HasColumnName("device_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.DeviceName)
+                .HasMaxLength(255)
+                .HasColumnName("device_name");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.DeviceCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_device_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.DeviceUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_device_updated_by");
+        });
+
+        modelBuilder.Entity<OfficeLocation>(entity =>
+        {
+            entity.HasKey(e => e.OfficeLocationId).HasName("pk_office_location");
+
+            entity.ToTable("office_location");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_office_location_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_office_location_updated_by");
+
+            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .HasColumnName("address");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.LocationName)
+                .HasMaxLength(255)
+                .HasColumnName("location_name");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(255)
+                .HasColumnName("phone");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OfficeLocationCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_office_location_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.OfficeLocationUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_office_location_updated_by");
+        });
+
+        modelBuilder.Entity<Page>(entity =>
+        {
+            entity.HasKey(e => e.PageId).HasName("pk_page");
+
+            entity.ToTable("page");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_page_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_page_updated_by");
+
+            entity.Property(e => e.PageId).HasColumnName("page_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.PageName)
+                .HasMaxLength(255)
+                .HasColumnName("page_name");
+            entity.Property(e => e.PageUrl)
+                .HasMaxLength(255)
+                .HasColumnName("page_url");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PageCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_page_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PageUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_page_updated_by");
+        });
+
+        modelBuilder.Entity<PageControl>(entity =>
+        {
+            entity.HasKey(e => e.PageControlId).HasName("pk_page_control");
+
+            entity.ToTable("page_control");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_page_control_created_by");
+
+            entity.HasIndex(e => e.PageId, "fk_page_control_page_id");
+
+            entity.HasIndex(e => e.RoleId, "fk_page_control_role_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_page_control_updated_by");
+
+            entity.Property(e => e.PageControlId).HasColumnName("page_control_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.PageId).HasColumnName("page_id");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PageControlCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_page_control_created_by");
+
+            entity.HasOne(d => d.Page).WithMany(p => p.PageControls)
+                .HasForeignKey(d => d.PageId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_page_control_page_id");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.PageControls)
+                .HasForeignKey(d => d.RoleId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_page_control_role_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PageControlUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_page_control_updated_by");
+        });
+
+        modelBuilder.Entity<PurposeOfVisit>(entity =>
+        {
+            entity.HasKey(e => e.PurposeId).HasName("pk_purpose_of_visit");
+
+            entity.ToTable("purpose_of_visit");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_purpose_of_visit_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_purpose_of_visit_updated_by");
+
+            entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.PurposeName)
+                .HasMaxLength(255)
+                .HasColumnName("purpose_name");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.PurposeOfVisitCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_purpose_of_visit_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PurposeOfVisitUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_purpose_of_visit_updated_by");
+        });
+
+        modelBuilder.Entity<Roles>(entity =>
+        {
+            entity.HasKey(e => e.RoleId).HasName("pk_role");
+
+            entity.ToTable("role");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_role_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_role_updated_by");
+
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.RoleName)
+                .HasMaxLength(255)
+                .HasColumnName("role_name");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.RoleCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_role_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.RoleUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_role_updated_by");
+        });
+
+        modelBuilder.Entity<User>(entity =>
+        {
+            entity.HasKey(e => e.UserId).HasName("pk_user");
+
+            entity.ToTable("user");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_user_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_user_updated_by");
+
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.IsActive).HasColumnName("is_active");
+            entity.Property(e => e.IsLoggedIn).HasColumnName("is_logged_in");
+            entity.Property(e => e.Password)
+                .HasMaxLength(255)
+                .HasColumnName("password");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.Username)
+                .HasMaxLength(255)
+                .HasColumnName("username");
+            entity.Property(e => e.ValidFrom).HasColumnName("valid_from");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.InverseCreatedByNavigation)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_user_created_by");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.InverseUpdatedByNavigation)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_user_updated_by");
+        });
+
+        modelBuilder.Entity<UserDetail>(entity =>
+        {
+            entity.HasKey(e => e.UserDetailsId).HasName("pk_user_details");
+
+            entity.ToTable("user_details");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_user_details_created_by");
+
+            entity.HasIndex(e => e.OfficeLocationId, "fk_user_details_office_location_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_user_details_updated_by");
+
+            entity.HasIndex(e => e.UserId, "fk_user_details_user_id");
+
+            entity.Property(e => e.UserDetailsId).HasColumnName("user_details_id");
+            entity.Property(e => e.Address)
+                .HasMaxLength(255)
+                .HasColumnName("address");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.Email)
+                .HasMaxLength(255)
+                .HasColumnName("email");
+            entity.Property(e => e.FirstName)
+                .HasMaxLength(255)
+                .HasColumnName("first_name");
+            entity.Property(e => e.LastName)
+                .HasMaxLength(255)
+                .HasColumnName("last_name");
+            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(255)
+                .HasColumnName("phone");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.UserDetailCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_user_details_created_by");
+
+            entity.HasOne(d => d.OfficeLocation).WithMany(p => p.UserDetails)
+                .HasForeignKey(d => d.OfficeLocationId)
+                .HasConstraintName("fk_user_details_office_location_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.UserDetailUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_user_details_updated_by");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserDetailUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_details_user_id");
+        });
+
+        modelBuilder.Entity<UserLocation>(entity =>
+        {
+            entity.HasKey(e => e.UserLocationId).HasName("pk_user_location");
+
+            entity.ToTable("user_location");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_user_location_created_by");
+
+            entity.HasIndex(e => e.OfficeLocationId, "fk_user_location_office_location_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_user_location_updated_by");
+
+            entity.HasIndex(e => e.UserId, "fk_user_location_user_id");
+
+            entity.Property(e => e.UserLocationId).HasColumnName("user_location_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.UserLocationCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_user_location_created_by");
+
+            entity.HasOne(d => d.OfficeLocation).WithMany(p => p.UserLocations)
+                .HasForeignKey(d => d.OfficeLocationId)
+                .HasConstraintName("fk_user_location_office_location_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.UserLocationUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_user_location_updated_by");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserLocationUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_location_user_id");
+        });
+
+        modelBuilder.Entity<UserRole>(entity =>
+        {
+            entity.HasKey(e => e.UserRoleId).HasName("pk_user_role");
+
+            entity.ToTable("user_role");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_user_role_created_by");
+
+            entity.HasIndex(e => e.RoleId, "fk_user_role_role_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_user_role_updated_by");
+
+            entity.HasIndex(e => e.UserId, "fk_user_role_user_id");
+
+            entity.Property(e => e.UserRoleId).HasColumnName("user_role_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.UserRoleCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_user_role_created_by");
+
+            entity.HasOne(d => d.Role).WithMany(p => p.UserRoles)
+                .HasForeignKey(d => d.RoleId)
+                .HasConstraintName("fk_user_role_role_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.UserRoleUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_user_role_updated_by");
+
+            entity.HasOne(d => d.User).WithMany(p => p.UserRoleUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_user_role_user_id");
+        });
+
+        modelBuilder.Entity<Visitor>(entity =>
+        {
+            entity.HasKey(e => e.VisitorId).HasName("pk_visitor");
+
+            entity.ToTable("visitor");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_visitor_created_by");
+
+            entity.HasIndex(e => e.OfficeLocationId, "fk_visitor_location_id");
+
+            entity.HasIndex(e => e.PurposeId, "fk_visitor_purpose_id");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_visitor_updated_by");
+
+            entity.HasIndex(e => e.UserId, "fk_visitor_user_id");
+
+            entity.Property(e => e.VisitorId).HasColumnName("visitor_id");
+            entity.Property(e => e.CheckInTime)
+                .HasColumnType("timestamp")
+                .HasColumnName("check_in_time");
+            entity.Property(e => e.CheckOutTime)
+                .HasColumnType("timestamp")
+                .HasColumnName("check_out_time");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.HostName)
+                .HasMaxLength(255)
+                .HasColumnName("host_name");
+            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.Phone)
+                .HasMaxLength(255)
+                .HasColumnName("phone");
+            entity.Property(e => e.Photo)
+                .HasMaxLength(255)
+                .HasColumnName("photo");
+            entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
+            entity.Property(e => e.Status).HasColumnName("status");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.VisitDate)
+                .HasColumnType("timestamp")
+                .HasColumnName("visit_date");
+            entity.Property(e => e.VisitorName)
+                .HasMaxLength(255)
+                .HasColumnName("visitor_name");
+            entity.Property(e => e.VisitorPassCode)
+                .HasMaxLength(255)
+                .HasColumnName("visitor_pass_code");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VisitorCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_visitor_created_by");
+
+            entity.HasOne(d => d.OfficeLocation).WithMany(p => p.Visitors)
+                .HasForeignKey(d => d.OfficeLocationId)
+                .HasConstraintName("fk_visitor_location_id");
+
+            entity.HasOne(d => d.Purpose).WithMany(p => p.Visitors)
+                .HasForeignKey(d => d.PurposeId)
+                .HasConstraintName("fk_visitor_purpose_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.VisitorUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_visitor_updated_by");
+
+            entity.HasOne(d => d.User).WithMany(p => p.VisitorUsers)
+                .HasForeignKey(d => d.UserId)
+                .HasConstraintName("fk_visitor_user_id");
+        });
+
+        modelBuilder.Entity<VisitorDevice>(entity =>
+        {
+            entity.HasKey(e => e.VisitorDeviceId).HasName("pk_visitor_device");
+
+            entity.ToTable("visitor_device");
+
+            entity.HasIndex(e => e.DeviceId, "fk_device_id");
+
+            entity.HasIndex(e => e.CreatedBy, "fk_visitor_device_created_by");
+
+            entity.HasIndex(e => e.UpdatedBy, "fk_visitor_device_updated_by");
+
+            entity.HasIndex(e => e.VisitorId, "fk_visitor_id");
+
+            entity.Property(e => e.VisitorDeviceId).HasColumnName("visitor_device_id");
+            entity.Property(e => e.CreatedBy).HasColumnName("created_by");
+            entity.Property(e => e.CreatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("created_date");
+            entity.Property(e => e.DeviceId).HasColumnName("device_id");
+            entity.Property(e => e.SerialNumber)
+                .HasMaxLength(255)
+                .HasColumnName("serial_number");
+            entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
+            entity.Property(e => e.UpdatedDate)
+                .HasDefaultValueSql("CURRENT_TIMESTAMP")
+                .HasColumnType("timestamp")
+                .HasColumnName("updated_date");
+            entity.Property(e => e.VisitorId).HasColumnName("visitor_id");
+
+            entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VisitorDeviceCreatedByNavigations)
+                .HasForeignKey(d => d.CreatedBy)
+                .HasConstraintName("fk_visitor_device_created_by");
+
+            entity.HasOne(d => d.Device).WithMany(p => p.VisitorDevices)
+                .HasForeignKey(d => d.DeviceId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_device_id");
+
+            entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.VisitorDeviceUpdatedByNavigations)
+                .HasForeignKey(d => d.UpdatedBy)
+                .HasConstraintName("fk_visitor_device_updated_by");
+
+            entity.HasOne(d => d.Visitor).WithMany(p => p.VisitorDevices)
+                .HasForeignKey(d => d.VisitorId)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("fk_visitor_id");
+        });
+
+        OnModelCreatingPartial(modelBuilder);
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
+
+// File: Repository\StatisticsRepository.cs
+// File: Repository/StatisticsRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class StatisticsRepository : IStatisticsRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public StatisticsRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
+        {
+            var result = await _context.OfficeLocations
+                .GroupJoin(
+                    _context.UserDetails,
+                    ol => ol.OfficeLocationId,
+                    ud => ud.OfficeLocationId,
+                    (ol, ud) => new { ol, ud }
+                )
+                .SelectMany(
+                    x => x.ud.DefaultIfEmpty(),
+                    (x, ud) => new { x.ol, ud }
+                )
+                .GroupJoin(
+                    _context.Users,
+                    x => x.ud.UserId,
+                    u => u.UserId,
+                    (x, u) => new { x.ol, x.ud, u }
+                )
+                .SelectMany(
+                    x => x.u.DefaultIfEmpty(),
+                    (x, u) => new { x.ol, x.ud, u }
+                )
+                .GroupJoin(
+                    _context.UserRoles,
+                    x => x.u.UserId,
+                    ur => ur.UserId,
+                    (x, ur) => new { x.ol, x.ud, x.u, ur }
+                )
+                .SelectMany(
+                    x => x.ur.DefaultIfEmpty(),
+                    (x, ur) => new { x.ol, x.ud, x.u, ur }
+                )
+                .GroupJoin(
+                    _context.Roles,
+                    x => x.ur.RoleId,
+                    r => r.RoleId,
+                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
+                )
+                .SelectMany(
+                    x => x.r.DefaultIfEmpty(),
+                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
+                )
+                .GroupJoin(
+                    _context.Visitors,
+                    x => x.ol.OfficeLocationId,
+                    v => v.OfficeLocationId,
+                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
+                )
+                .SelectMany(
+                    x => x.v.DefaultIfEmpty(),
+                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
+                )
+                .GroupBy(x => new { x.ol.LocationName })
+                .Select(g => new LocationStatisticsDTO
+                {
+                    
+                    Location = g.Key.LocationName,
+                    NumberOfSecurity = g.Select(x => x.u.UserId).Where(id => id != null && g.Any(y => y.r.RoleName == "Security" && y.u.UserId == id)).Distinct().Count(),
+                    TotalVisitors = g.Select(x => x.v.VisitorPassCode).Where(code => code != null).Distinct().Count(),
+                    PassesGenerated = g.Select(x => x.v.VisitorId).Where(id => id != null).Distinct().Count()
+                })
+                .ToListAsync();
+
+            return result;
+        }
+
+
+        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
+        {
+            var sevenDaysAgo = DateTime.Now.AddDays(-7);
+
+            var securityDetails = await (from ol in _context.OfficeLocations
+                                         join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
+                                         join u in _context.Users on ud.UserId equals u.UserId
+                                         join ur in _context.UserRoles on u.UserId equals ur.UserId
+                                         join r in _context.Roles on ur.RoleId equals r.RoleId
+                                         where r.RoleName == "Security"
+                                         select new
+                                         {
+                                             ol.LocationName,
+                                             ud.FirstName,
+                                             ud.LastName,
+                                             ud.Phone,
+                                             u.IsActive,
+                                             VisitorsApproved = _context.Visitors
+                                                 .Where(v => v.UpdatedBy == u.UserId && v.VisitDate >= sevenDaysAgo)
+                                                 .Count()
+                                         } into result
+                                         select new SecurityStatisticsDTO
+                                         {
+                                             Location = result.LocationName,
+                                             SecurityFirstName = result.FirstName,
+                                             SecurityLastName = result.LastName,
+                                             PhoneNumber = result.Phone,
+                                             Status = result.IsActive,
+                                             VisitorsApproved = result.VisitorsApproved
+                                         }).OrderBy(sd => sd.Location)
+                                           .ThenBy(sd => sd.SecurityLastName)
+                                           .ThenBy(sd => sd.SecurityFirstName)
+                                           .ToListAsync();
+
+            return securityDetails;
+        }
+
+
+
+
+
+
+        /*      public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
+              {
+                  var sevenDaysAgo = DateTime.Now.AddDays(-7);
+
+                  var securityDetails = await (from ol in _context.OfficeLocations
+                                               join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
+                                               join u in _context.Users on ud.UserId equals u.UserId
+                                               join ur in _context.UserRoles on u.UserId equals ur.UserId
+                                               join r in _context.Roles on ur.RoleId equals r.RoleId
+                                               where r.RoleName == "Security"
+                                               let visitors = _context.Visitors
+                                                   .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                                               v.UserId == u.UserId &&
+                                                               v.VisitDate >= sevenDaysAgo)
+                                                   .Select(v => v.VisitorId)
+                                                   .Distinct()
+                                                   .ToList() // Convert IQueryable to List
+                                               select new SecurityStatisticsDTO
+                                               {
+                                                   Location = ol.LocationName,
+                                                   SecurityFirstName = ud.FirstName,
+                                                   SecurityLastName = ud.LastName,
+                                                   PhoneNumber = ud.Phone,
+                                                   Status = u.IsActive,
+                                                   VisitorsApproved = visitors.Count() // Use the Count property of List
+                                               }).OrderBy(sd => sd.Location)
+                                                 .ThenBy(sd => sd.SecurityLastName)
+                                                 .ThenBy(sd => sd.SecurityFirstName)
+                                                 .ToListAsync();
+
+                  return securityDetails;
+              }
+      */
+        public async Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics()
+        {
+            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+
+            var purposeStatistics = await _context.PurposeOfVisits
+                .GroupJoin(
+                    _context.Visitors.Where(v => v.VisitDate >= thirtyDaysAgo),
+                    pov => pov.PurposeId,
+                    v => v.PurposeId,
+                    (pov, visitors) => new PurposeStatisticsDTO
+                    {
+                        Name = pov.PurposeName,
+                        Value = visitors.Count()
+                    })
+                .OrderByDescending(x => x.Value)
+                .ToListAsync();
+
+            return purposeStatistics;
+        }
+
+
+    }
+}
+
+// File: Repository\IRepository\irepo folder
+
+// File: Repository\IRepository\IStatisticsRepository.cs
+// File: Repository/IRepository/IStatisticsRepository.cs
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IStatisticsRepository
+    {
+        Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics();
+        Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics();
+
+        Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics();
+
+
+    }
+}
+
+// File: Repository\IRepository\repo folder
+
+// File: Endpoints\endpoints
+

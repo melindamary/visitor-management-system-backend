@@ -21,7 +21,7 @@ public partial class UserRole
 
     public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual Role? Role { get; set; }
+    public virtual Roles? Role { get; set; }
 
     public virtual User? UpdatedByNavigation { get; set; }
 
