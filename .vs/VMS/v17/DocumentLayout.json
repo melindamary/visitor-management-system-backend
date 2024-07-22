@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "WorkspaceRootPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\",
+  "WorkspaceRootPath": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\",
   "Documents": [
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\repository\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -74,8 +74,135 @@
           "SelectedChildIndex": -1,
           "Children": [
             {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "VisitorLogController.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Controllers\\VisitorLogController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\VisitorLogController.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Controllers\\VisitorLogController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\VisitorLogController.cs",
+              "ViewState": "AQIAAFoAAAAAAAAAAAAcwHcAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T12:04:49.586Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "VMS",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\VMS.csproj",
+              "RelativeDocumentMoniker": "VMS\\VMS.csproj",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\VMS.csproj",
+              "RelativeToolTip": "VMS\\VMS.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-07-22T16:59:04.671Z",
+              "EditorCaption": ""
+            },
+            {
               "$type": "Bookmark",
-              "Name": "ST:1:0:{d212f56b-c48a-434c-a121-1c5d80b59b9f}"
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "IVisitorRepository.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IVisitorRepository.cs",
+              "RelativeDocumentMoniker": "VMS\\Repository\\IRepository\\IVisitorRepository.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IVisitorRepository.cs",
+              "RelativeToolTip": "VMS\\Repository\\IRepository\\IVisitorRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAuwA8AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T10:55:51.362Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "VisitorRepository.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Repository\\VisitorRepository.cs",
+              "RelativeDocumentMoniker": "VMS\\Repository\\VisitorRepository.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Repository\\VisitorRepository.cs",
+              "RelativeToolTip": "VMS\\Repository\\VisitorRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAB0AAAAsAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T10:56:01.136Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "Visitor.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\Visitor.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\Visitor.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\Visitor.cs",
+              "RelativeToolTip": "VMS\\Models\\Visitor.cs",
+              "ViewState": "AQIAAC0AAAAAAAAAAAAYwAsAAAACAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T13:31:27.867Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "Page.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\Page.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\Page.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\Page.cs",
+              "RelativeToolTip": "VMS\\Models\\Page.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAYAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T13:31:01.932Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "VisitorLogDTO.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\DTO\\VisitorLogDTO.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\VisitorLogDTO.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\DTO\\VisitorLogDTO.cs",
+              "RelativeToolTip": "VMS\\Models\\DTO\\VisitorLogDTO.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAA4wAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T13:30:03.82Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "UpdateVisitorPassCodeDTO.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\DTO\\UpdateVisitorPassCodeDTO.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\UpdateVisitorPassCodeDTO.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\DTO\\UpdateVisitorPassCodeDTO.cs",
+              "RelativeToolTip": "VMS\\Models\\DTO\\UpdateVisitorPassCodeDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T13:29:57.992Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "APIResponse.cs",
+              "DocumentMoniker": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\APIResponse.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\APIResponse.cs",
+              "ToolTip": "C:\\Users\\adithya.susa\\Desktop\\HTML-CSS\\Git Angular\\visitor-management-system-backend\\VMS\\Models\\APIResponse.cs",
+              "RelativeToolTip": "VMS\\Models\\APIResponse.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA4AAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T13:23:35.701Z",
+              "EditorCaption": ""
+            }
+          ]
+        },
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": -1,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{0ad07096-bba9-4900-a651-0598d26f6d24}"
             }
           ]
         }
