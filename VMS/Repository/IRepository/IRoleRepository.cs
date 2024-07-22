@@ -4,6 +4,6 @@ namespace VMS.Repository.IRepository
 {
     public interface IRoleRepository
     {
-        Task<Roles> GetRoleByIdAsync(int roleId);
+        Task<Role> GetRoleByIdAsync(int roleId);
     }
 }

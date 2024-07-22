@@ -3,8 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\repository\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\mappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\mappingconfig.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\repository\\irepository\\irolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -22,28 +26,37 @@
       "DocumentGroups": [
         {
           "DockedHeight": 200,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 0,
           "Children": [
-            {
-              "$type": "Bookmark",
-              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
-            },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "RoleRepository.cs",
-              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Repository\\RoleRepository.cs",
-              "RelativeDocumentMoniker": "VMS\\Repository\\RoleRepository.cs",
-              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Repository\\RoleRepository.cs",
-              "RelativeToolTip": "VMS\\Repository\\RoleRepository.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAA8AAAAfAAAA",
+              "Title": "MappingConfig.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\MappingConfig.cs",
+              "RelativeDocumentMoniker": "VMS\\MappingConfig.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\MappingConfig.cs",
+              "RelativeToolTip": "VMS\\MappingConfig.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAsAAAAbAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-22T17:04:37.516Z",
+              "WhenOpened": "2024-07-22T23:08:49.097Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 1,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Program.cs",
+              "RelativeDocumentMoniker": "VMS\\Program.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Program.cs",
+              "RelativeToolTip": "VMS\\Program.cs",
+              "ViewState": "AQIAAAkAAAAAAAAAAAAAABQAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T23:04:47.675Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
               "Title": "IRoleRepository.cs",
               "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IRoleRepository.cs",
               "RelativeDocumentMoniker": "VMS\\Repository\\IRepository\\IRoleRepository.cs",
@@ -56,7 +69,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "VisitorManagementDbContext.cs",
               "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
               "RelativeDocumentMoniker": "VMS\\Data\\VisitorManagementDbContext.cs",
@@ -66,6 +79,10 @@
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-22T08:48:06.19Z",
               "EditorCaption": ""
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{d78612c7-9962-4b83-95d9-268046dad23a}"
             }
           ]
         },

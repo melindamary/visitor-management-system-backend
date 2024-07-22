@@ -688,3 +688,4 @@ C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-bac
 C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-backend\VMS\obj\Debug\net8.0\VMS.genruntimeconfig.cache
 C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-backend\VMS\obj\Debug\net8.0\ref\VMS.dll
 C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-backend\VMS\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\SixLabors.ImageSharp.dll

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace VMS.Models;
 
-public partial class Roles
+public partial class Role
 {
     public int RoleId { get; set; }
 
