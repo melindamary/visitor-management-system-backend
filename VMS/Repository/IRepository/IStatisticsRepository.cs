@@ -8,5 +8,9 @@ namespace VMS.Repository.IRepository
         Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics();
         Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics();
 
+        Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics();
+        Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics();
+
+
     }
 }

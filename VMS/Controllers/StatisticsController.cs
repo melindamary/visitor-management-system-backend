@@ -28,5 +28,20 @@ namespace VMS.Controllers
             var result = await _statisticsRepository.GetSecurityStatistics();
             return Ok(result);
         }
+
+
+        [HttpGet("purpose")]
+        public async Task<ActionResult<IEnumerable<PurposeStatisticsDTO>>> GetPurposeStatistics()
+        {
+            var result = await _statisticsRepository.GetPurposeStatistics();
+            return Ok(result);
+        }
+        
+        [HttpGet("dashboard")]
+        public async Task<ActionResult<IEnumerable<DashboardStatisticsDTO>>> GetDashboardStatistics()
+        {
+            var result = await _statisticsRepository.GetDashboardStatistics();
+            return Ok(result);
+        }
     }
 }

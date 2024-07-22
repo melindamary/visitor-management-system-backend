@@ -17,68 +17,53 @@ namespace VMS.Repository
 
         public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
         {
-            var result = await _context.OfficeLocations
-                .GroupJoin(
-                    _context.UserDetails,
-                    ol => ol.OfficeLocationId,
-                    ud => ud.OfficeLocationId,
-                    (ol, ud) => new { ol, ud }
-                )
-                .SelectMany(
-                    x => x.ud.DefaultIfEmpty(),
-                    (x, ud) => new { x.ol, ud }
-                )
-                .GroupJoin(
-                    _context.Users,
-                    x => x.ud.UserId,
-                    u => u.UserId,
-                    (x, u) => new { x.ol, x.ud, u }
-                )
-                .SelectMany(
-                    x => x.u.DefaultIfEmpty(),
-                    (x, u) => new { x.ol, x.ud, u }
-                )
-                .GroupJoin(
-                    _context.UserRoles,
-                    x => x.u.UserId,
-                    ur => ur.UserId,
-                    (x, ur) => new { x.ol, x.ud, x.u, ur }
-                )
-                .SelectMany(
-                    x => x.ur.DefaultIfEmpty(),
-                    (x, ur) => new { x.ol, x.ud, x.u, ur }
-                )
-                .GroupJoin(
-                    _context.Roles,
-                    x => x.ur.RoleId,
-                    r => r.RoleId,
-                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
-                )
-                .SelectMany(
-                    x => x.r.DefaultIfEmpty(),
-                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
-                )
-                .GroupJoin(
-                    _context.Visitors,
-                    x => x.ol.OfficeLocationId,
-                    v => v.OfficeLocationId,
-                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
-                )
-                .SelectMany(
-                    x => x.v.DefaultIfEmpty(),
-                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
-                )
-                .GroupBy(x => new { x.ol.LocationName })
-                .Select(g => new LocationStatisticsDTO
-                {
-                    Location = g.Key.LocationName,
-                    NumberOfSecurity = g.Select(x => x.u.UserId).Where(id => id != null && g.Any(y => y.r.RoleName == "Security" && y.u.UserId == id)).Distinct().Count(),
-                    PassesGenerated = g.Select(x => x.v.VisitorPassCode).Where(code => code != null).Distinct().Count(),
-                    TotalVisitors = g.Select(x => x.v.VisitorId).Where(id => id != null).Distinct().Count()
-                })
-                .ToListAsync();
+            var securityCount = from ur in _context.UserRoles
+                                join ud in _context.UserDetails on ur.UserId equals ud.UserId
+                                join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.OfficeLocationId
+                                join r in _context.Roles on ur.RoleId equals r.RoleId
+                                where r.RoleName == "Security"
+                                group ol by ol.LocationName into scGroup
+                                select new
+                                {
+                                    LocationName = scGroup.Key,
+                                    NumberOfSecurity = scGroup.Count()
+                                };
 
-            return result;
+            var passesGenerated = from v in _context.Visitors
+                                  join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                  group ol by ol.LocationName into pgGroup
+                                  select new
+                                  {
+                                      LocationName = pgGroup.Key,
+                                      PassesGenerated = pgGroup.Count()
+                                  };
+
+            var totalVisitors = from v in _context.Visitors
+                                join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                where v.CheckInTime != null
+                                group ol by ol.LocationName into tvGroup
+                                select new
+                                {
+                                    LocationName = tvGroup.Key,
+                                    TotalVisitors = tvGroup.Count()
+                                };
+
+            var locationStatistics = from ol in _context.OfficeLocations
+                                     join sc in securityCount on ol.LocationName equals sc.LocationName into scLeftJoin
+                                     from sc in scLeftJoin.DefaultIfEmpty()
+                                     join pg in passesGenerated on ol.LocationName equals pg.LocationName into pgLeftJoin
+                                     from pg in pgLeftJoin.DefaultIfEmpty()
+                                     join tv in totalVisitors on ol.LocationName equals tv.LocationName into tvLeftJoin
+                                     from tv in tvLeftJoin.DefaultIfEmpty()
+                                     select new LocationStatisticsDTO
+                                     {
+                                         Location = ol.LocationName,
+                                         NumberOfSecurity = sc != null ? sc.NumberOfSecurity : 0,
+                                         PassesGenerated = pg != null ? pg.PassesGenerated : 0,
+                                         TotalVisitors = tv != null ? tv.TotalVisitors : 0
+                                     };
+
+            return await locationStatistics.ToListAsync();
         }
         public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
         {
@@ -92,7 +77,7 @@ namespace VMS.Repository
                                          where r.RoleName == "Security"
                                          let visitors = _context.Visitors
                                              .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
-                                                         v.UserId == u.UserId &&
+                                                         v.UpdatedBy == u.UserId && 
                                                          v.VisitDate >= sevenDaysAgo)
                                              .Select(v => v.VisitorId)
                                              .Distinct()
@@ -112,5 +97,46 @@ namespace VMS.Repository
 
             return securityDetails;
         }
+
+         public async Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics()
+        {
+            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+
+            var purposeStatistics = await _context.PurposeOfVisits
+                .GroupJoin(
+                    _context.Visitors.Where(v => v.VisitDate >= thirtyDaysAgo),
+                    pov => pov.PurposeId,
+                    v => v.PurposeId,
+                    (pov, visitors) => new PurposeStatisticsDTO
+                    {
+                        Name = pov.PurposeName,
+                        Value = visitors.Count()
+                    })
+                .OrderByDescending(x => x.Value)
+                .ToListAsync();
+
+            return purposeStatistics;
+        }
+
+
+
+        public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
+        {
+            var result = await (from o in _context.OfficeLocations
+                                join v in _context.Visitors on o.OfficeLocationId equals v.OfficeLocationId into vGroup
+                                from v in vGroup.DefaultIfEmpty()
+                                group new { o, v } by o.LocationName into g
+                                select new DashboardStatisticsDTO
+                                {
+                                    Location = g.Key,
+                                    PassesGenerated = g.Count(x => x.v != null),
+                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != null && x.v.CheckOutTime == null),
+                                    TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
+                                })
+                                .ToListAsync();
+
+            return result;
+        }
+
     }
 }

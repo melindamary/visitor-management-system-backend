@@ -11,6 +11,7 @@ using VMS.Repository;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+// Add this line  
 
 builder.Host.UseSerilog();
 
