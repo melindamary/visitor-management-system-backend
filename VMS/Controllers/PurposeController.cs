@@ -17,7 +17,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("get-purposes-idAndName")]
         public IEnumerable<PurposeOfVisitNameadnIdDto> GetPurposes()
         {
@@ -31,7 +31,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpPost]
         public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
         {

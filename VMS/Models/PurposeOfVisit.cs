@@ -7,7 +7,7 @@ public partial class PurposeOfVisit
 {
     public int PurposeId { get; set; }
 
-    public string? PurposeName { get; set; }
+    public string PurposeName { get; set; }
 
     public int? CreatedBy { get; set; }
 

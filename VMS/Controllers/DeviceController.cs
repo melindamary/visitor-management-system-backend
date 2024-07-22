@@ -19,7 +19,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("get-device-id-name")]
         public IEnumerable<GetDeviceIdAndNameDto> GetItems()
         {
@@ -33,7 +33,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpPost]
         public async Task<ActionResult<Device>> PostDevice(AddNewDeviceDto deviceDto)
         {

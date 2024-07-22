@@ -7,13 +7,13 @@ public partial class OfficeLocation
 {
     public int OfficeLocationId { get; set; }
 
-    public string? LocationName { get; set; }
+    public string LocationName { get; set; }
 
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public int CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 

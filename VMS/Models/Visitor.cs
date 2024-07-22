@@ -7,27 +7,27 @@ public partial class Visitor
 {
     public int VisitorId { get; set; }
 
-    public string? VisitorName { get; set; }
+    public string VisitorName { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
-    public int? PurposeId { get; set; }
+    public int PurposeId { get; set; }
 
-    public string? HostName { get; set; }
+    public string HostName { get; set; }
 
-    public byte[]? Photo { get; set; }
+    public byte[] Photo { get; set; }
 
-    public DateTime? VisitDate { get; set; }
+    public DateTime VisitDate { get; set; }
 
-    public string? VisitorPassCode { get; set; }
+    public string VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
 
     public DateTime? CheckOutTime { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? OfficeLocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
     public int? Status { get; set; }
 
