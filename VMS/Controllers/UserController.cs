@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
 using VMS.Models.DTO;
@@ -16,6 +17,7 @@ namespace VMS.Controllers
             _userService = userService;   
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("{username}")]
         public async Task<ActionResult<UserRoleDTO>> GetUserRoleByUsername(string username) {
 

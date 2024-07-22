@@ -15,7 +15,7 @@ namespace VMS.Repository
         }
         public async Task<Role> GetRoleByIdAsync(int roleId)
         {
-            return await _context.Roles.SingleOrDefaultAsync(u => u.RoleId == roleId);
+            return await _context.Roles.FirstOrDefaultAsync(u => u.RoleId == roleId);
         }
     }
 }
