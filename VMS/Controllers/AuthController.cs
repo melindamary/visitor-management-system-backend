@@ -30,7 +30,16 @@ namespace VMS.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
             if (!await _userRepository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
-                return Unauthorized("Invalid login credentials");
+            {
+                var errorResponse = new APIResponse
+                {
+                    Result = null,
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    ErrorMessages = new List<string> { "Invalid login credentials" }
+                };
+                return Unauthorized(errorResponse);
+            }
 
             var user = await _userRepository.GetUserByUsernameAsync(loginRequest.Username);
             var token = GenerateJwtToken(user);

@@ -3,16 +3,12 @@
   "WorkspaceRootPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\repository\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\rolerepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\devicecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|c:\\users\\melinda.melchizedek\\desktop\\github\\visitor-management-system-backend\\vms\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\usercontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +18,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 3,
+          "SelectedChildIndex": 1,
           "Children": [
             {
               "$type": "Bookmark",
@@ -30,42 +26,28 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "DeviceController.cs",
-              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\DeviceController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\DeviceController.cs",
-              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\DeviceController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\DeviceController.cs",
-              "ViewState": "AQIAAAoAAAAAAAAAAAAAABwAAAAtAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-21T03:29:47.393Z",
-              "IsPinned": true,
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "AuthController.cs",
-              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\AuthController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\AuthController.cs",
-              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\AuthController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\AuthController.cs",
-              "ViewState": "AQIAACsAAAAAAAAAAAAnwDoAAAAOAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-21T03:40:46.995Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "Program.cs",
-              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Program.cs",
-              "RelativeDocumentMoniker": "VMS\\Program.cs",
-              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Program.cs",
-              "RelativeToolTip": "VMS\\Program.cs",
-              "ViewState": "AQIAAEUAAAAAAAAAAAAkwFIAAABDAAAA",
+              "Title": "RoleRepository.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Repository\\RoleRepository.cs",
+              "RelativeDocumentMoniker": "VMS\\Repository\\RoleRepository.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Repository\\RoleRepository.cs",
+              "RelativeToolTip": "VMS\\Repository\\RoleRepository.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABEAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T07:16:19.838Z",
+              "WhenOpened": "2024-07-21T15:16:39.692Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "UserController.cs",
+              "DocumentMoniker": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\UserController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\UserController.cs",
+              "ToolTip": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\Controllers\\UserController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\UserController.cs",
+              "ViewState": "AQIAAAsAAAAAAAAAAAAAwBMAAABLAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T14:27:46.666Z",
               "EditorCaption": ""
             }
           ]

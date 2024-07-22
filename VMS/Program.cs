@@ -11,6 +11,8 @@ using VMS.Repository;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using VMS.Services;
+using VMS.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -56,6 +58,9 @@ builder.Services.AddDbContext<VisitorManagementDbContext>(option =>
 });
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IRoleRepository, RoleRepository>();
+builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
+builder.Services.AddScoped<IUserService, UserService>();
 
 
 //authentication for backend API
