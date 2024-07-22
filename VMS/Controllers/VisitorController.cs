@@ -15,17 +15,14 @@ namespace VMS.Controllers
     {
         private readonly IVisitorFormRepository _visitorRepository;
 
-        }
 
         /*[Authorize(Policy = "AdminOnly")]*/
-        [HttpGet]
-        public IEnumerable<Visitor> GetVisitorDetails()
         public VisitorController(IVisitorFormRepository visitorRepository)
         {
             _visitorRepository = visitorRepository;
         }
 
-        }
+        
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
