@@ -20,14 +20,14 @@ namespace VMS.Controllers
             _deviceRepository = deviceRepository;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("get-device-id-name")]
         public async Task<IEnumerable<GetDeviceIdAndNameDto>> GetItems()
         {
             return await _deviceRepository.GetDevicesAsync();
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpPost]
         public async Task<ActionResult<Device>> PostDevice(AddNewDeviceDto deviceDto)
         {

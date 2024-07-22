@@ -17,7 +17,7 @@ namespace VMS.Controllers
             _userService = userService;   
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{username}")]
         public async Task<ActionResult<UserRoleDTO>> GetUserRoleByUsername(string username) {
 
