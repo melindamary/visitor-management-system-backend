@@ -1,10 +1,13 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
+using System.Configuration;
 using System.Text.Json.Serialization;
 using VMS;
 using VMS.Data;
 using VMS.Models;
+using VMS.Repository.IRepository;
+using VMS.Repository;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +21,14 @@ builder.Services.AddControllers();
 builder.Services.AddDbContext<VisitorManagementDbContext>(option => {
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
+ 
+
+    builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
+    builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+
+// Other service registrations
+
 builder.Services.AddControllers().AddJsonOptions(options =>
 {
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.Preserve;
