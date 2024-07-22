@@ -5249,19 +5249,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\jobin.joseph\\.nuget\\packages\\": {}
+    "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
+      "projectUniqueName": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
       "projectName": "VMS",
-      "projectPath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
-      "packagesPath": "C:\\Users\\jobin.joseph\\.nuget\\packages\\",
-      "outputPath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\obj\\",
+      "projectPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
+      "packagesPath": "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\jobin.joseph\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\melinda.melchizedek\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -5359,16 +5359,8 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.302/PortableRuntimeIdentifierGraph.json"
       }
     }
-  },
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  }
 }

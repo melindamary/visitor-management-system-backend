@@ -2,7 +2,7 @@
   "version": 2,
   "dgSpecHash": "csAnDsrxllM=",
   "success": true,
-  "projectFilePath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
+  "projectFilePath": "C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\VMS.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\automapper\\12.0.1\\automapper.12.0.1.nupkg.sha512",
     "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\12.0.1\\automapper.extensions.microsoft.dependencyinjection.12.0.1.nupkg.sha512",
@@ -105,12 +105,5 @@
     "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\system.windows.extensions\\8.0.0\\system.windows.extensions.8.0.0.nupkg.sha512",
     "C:\\Users\\melinda.melchizedek\\.nuget\\packages\\zstdsharp.port\\0.8.0\\zstdsharp.port.0.8.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\melinda.melchizedek\\Desktop\\Github\\visitor-management-system-backend\\VMS\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }
