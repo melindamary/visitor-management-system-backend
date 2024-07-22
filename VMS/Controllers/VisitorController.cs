@@ -19,7 +19,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public IEnumerable<Visitor> GetVisitorDetails()
         {
@@ -27,7 +27,7 @@ namespace VMS.Controllers
 
         }
 
-        [Authorize(Policy = "AdminOnly")]
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public IEnumerable<string> GetPersonInContact()
         {
