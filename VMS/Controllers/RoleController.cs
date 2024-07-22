@@ -19,21 +19,21 @@ namespace VMS.Controllers
             this._context = _context;
         }
         [HttpGet]
-        public IEnumerable<Roles> GetRoles() { 
-            return _context.Roles.ToList<Roles>();
+        public IEnumerable<Role> GetRoles() { 
+            return _context.Roles.ToList();
         }
 
 
 
         [HttpPost]
-        public async Task<ActionResult<Roles>> PostRole(AddNewRoleDTO roleDTO)
+        public async Task<ActionResult<Role>> PostRole(AddNewRoleDTO roleDTO)
         {
             if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
             {
                 return Conflict(new { message = "role already exists" });
 
             }
-            var role = new Roles
+            var role = new Role
             {
                 RoleName = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,
@@ -50,14 +50,14 @@ namespace VMS.Controllers
 
         [HttpPost]
 
-        public async Task<ActionResult<Roles>> PostPage_Control(AddNewRoleDTO roleDTO)
+        public async Task<ActionResult<Role>> PostPage_Control(AddNewRoleDTO roleDTO)
         {
             if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
             {
                 return Conflict(new { message = "role already exists" });
 
             }
-            var role = new Roles
+            var role = new Role
             {
                 RoleName = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,

@@ -51,9 +51,9 @@ public partial class User
 
     public virtual ICollection<PurposeOfVisit> PurposeOfVisitUpdatedByNavigations { get; set; } = new List<PurposeOfVisit>();
 
-    public virtual ICollection<Roles> RoleCreatedByNavigations { get; set; } = new List<Roles>();
+    public virtual ICollection<Role> RoleCreatedByNavigations { get; set; } = new List<Role>();
 
-    public virtual ICollection<Roles> RoleUpdatedByNavigations { get; set; } = new List<Roles>();
+    public virtual ICollection<Role> RoleUpdatedByNavigations { get; set; } = new List<Role>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 
