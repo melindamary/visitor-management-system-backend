@@ -5,9 +5,9 @@ namespace VMS.Models.DTO
     public class VisitorCreationDTO
     {
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
        /* [Required]
         public DateTime VisitDate { get; set; }*/
         [Required]
@@ -16,7 +16,7 @@ namespace VMS.Models.DTO
         public string PersonInContact { get; set; }
         
         [Required]
-        public int? OfficeLocationId { get; set; }
+        public int OfficeLocationId { get; set; }
 
         public List<VisitorDeviceDto>? SelectedDevice { get; set; }
         public string ImageData { get; set; }

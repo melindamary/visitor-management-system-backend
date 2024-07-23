@@ -22,8 +22,6 @@ namespace VMS.Controllers
             _visitorRepository = visitorRepository;
         }
 
-        
-
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<IEnumerable<Visitor>> GetVisitorDetails()
@@ -31,6 +29,7 @@ namespace VMS.Controllers
             return await _visitorRepository.GetVisitorDetailsAsync();
         }
 
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<IEnumerable<string>> GetPersonInContact()
         {
@@ -55,6 +54,27 @@ namespace VMS.Controllers
             return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
         }
 
+        // Method to call the AddVisitorDevice API
+        private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
+        {
+            // Create VisitorDevice entity from AddVisitorDeviceDto
+            var visitorDevice = new VisitorDevice
+            {
+                VisitorId = addDeviceDto.VisitorId,
+                DeviceId = addDeviceDto.DeviceId,
+                SerialNumber = addDeviceDto.SerialNumber
+            };
+
+            // Add VisitorDevice to context
+            _context.VisitorDevices.Add(visitorDevice);
+
+            // Save changes to the VisitorDevices
+            _context.SaveChanges();
+
+            return visitorDevice;
+        }
+
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVisitorById(int id)
         {
