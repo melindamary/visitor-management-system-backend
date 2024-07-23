@@ -22,13 +22,20 @@ namespace VMS.Controllers
             var result = await _statisticsRepository.GetLocationStatistics();
             return Ok(result);
         }
+        /*  [HttpGet("security")]
+          public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
+          {
+              var result = await _statisticsRepository.GetSecurityStatistics();
+              return Ok(result);
+          }
+  */
+
         [HttpGet("security")]
-        public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
+        public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics([FromQuery] int days = 7)
         {
-            var result = await _statisticsRepository.GetSecurityStatistics();
+            var result = await _statisticsRepository.GetSecurityStatistics(days);
             return Ok(result);
         }
-
 
         [HttpGet("purpose")]
         public async Task<ActionResult<IEnumerable<PurposeStatisticsDTO>>> GetPurposeStatistics()
