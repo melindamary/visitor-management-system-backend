@@ -689,3 +689,13 @@ C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-bac
 C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-backend\VMS\obj\Debug\net8.0\ref\VMS.dll
 C:\Users\adithya.susa\Desktop\HTML-CSS\Git Angular\visitor-management-system-backend\VMS\bin\Debug\net8.0\SixLabors.ImageSharp.dll
 C:\Users\melinda.melchizedek\Desktop\Github\visitor-management-system-backend\VMS\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\BCrypt.Net-Next.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Abstractions.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.JsonWebTokens.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Logging.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.IdentityModel.Tokens.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\SixLabors.ImageSharp.dll
+C:\Users\aiswarya.jayadev\Desktop\VMS\visitor-management-system-backend\VMS\bin\Debug\net8.0\System.IdentityModel.Tokens.Jwt.dll
