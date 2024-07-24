@@ -1,9 +1,7 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
-using VMS.Models.DTO;
 using VMS.Models;
-using VMS.Services.IServices;
+using VMS.Repository.IRepository;
 
 namespace VMS.Controllers
 {
@@ -11,17 +9,17 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class ReportController : ControllerBase
     {
-        private IReportService _reportService;
-        public ReportController(IReportService reportService)
+        private IReportRepository _repository;
+        public ReportController(IReportRepository repository)
         {
-            _reportService = reportService;
+            _repository = repository;
         }
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
         {
-            var visitors = await _reportService.GetAllVisitorsAsync();
+            var visitors = await _repository.GetAllVisitorsAsync();
 
             if (visitors == null)
             {
@@ -40,6 +38,20 @@ namespace VMS.Controllers
                 StatusCode = HttpStatusCode.OK
             };
 
+            return Ok(response);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id) {
+
+            var visitor = await _repository.GetVisitorDetailsAsync(id);
+
+            var response = new APIResponse
+            {
+                Result = visitor,
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+            };
             return Ok(response);
         }
     }

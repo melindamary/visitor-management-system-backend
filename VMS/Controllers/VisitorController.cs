@@ -1,9 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
-using VMS.Data;
-using Microsoft.AspNetCore.Authorization;
 
 namespace VMS.Controllers
 {
