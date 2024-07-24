@@ -50,6 +50,9 @@ namespace VMS.Controllers
             return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
         }
 
+        
+
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{id}")]
         public async Task<IActionResult> GetVisitorById(int id)
         {
