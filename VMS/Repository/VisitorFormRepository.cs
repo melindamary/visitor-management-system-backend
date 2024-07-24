@@ -46,6 +46,7 @@ namespace VMS.Repository
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
+                UserId = 1,
                 CreatedBy = 1,
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
@@ -53,14 +54,31 @@ namespace VMS.Repository
                 VisitorDevices = new List<VisitorDevice>()
             };
 
-            if (!string.IsNullOrEmpty(visitorDto.ImageData))
+            /* if (!string.IsNullOrEmpty(visitorDto.ImageData))
+             {
+                 var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
+                 visitor.Photo = imageDataBytes;
+             }*/
+                            if
+                 (!
+                 string
+                 .IsNullOrEmpty(visitorDto.ImageData))
             {
-                var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
-                visitor.Photo = imageDataBytes;
+                var
+                imageDataParts = visitorDto.ImageData.Split(
+                ','
+                );
+                if
+                (imageDataParts.Length > 1)
+                {
+                    var
+                    imageDataBytes = Convert.FromBase64String(imageDataParts[1]); visitor.Photo = imageDataBytes;
+                }
             }
 
             _context.Visitors.Add(visitor);
             await _context.SaveChangesAsync();
+
 
             if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
             {
@@ -76,8 +94,9 @@ namespace VMS.Repository
                     await AddVisitorDeviceAsync(addDeviceDto);
                 }
             }
-
+            
             return visitor;
+           
         }
 
 
@@ -100,5 +119,25 @@ namespace VMS.Repository
         {
             await _context.SaveChangesAsync();
         }
+
+        // Method to call the AddVisitorDevice API
+       /* private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
+        {
+            // Create VisitorDevice entity from AddVisitorDeviceDto
+            var visitorDevice = new VisitorDevice
+            {
+                VisitorId = addDeviceDto.VisitorId,
+                DeviceId = addDeviceDto.DeviceId,
+                SerialNumber = addDeviceDto.SerialNumber
+            };
+
+            // Add VisitorDevice to context
+            *//* _context.VisitorDevices.Add(visitorDevice);*//*
+
+            // Save changes to the VisitorDevices
+            *//* _context.SaveChanges();*//*
+
+            return visitorDevice;
+        }*/
     }
 }

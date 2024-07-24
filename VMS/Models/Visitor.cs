@@ -15,11 +15,11 @@ public partial class Visitor
 
     public string HostName { get; set; }
 
-    public byte[] Photo { get; set; }
+    public byte[]? Photo { get; set; }
 
     public DateTime VisitDate { get; set; }
 
-    public string VisitorPassCode { get; set; }
+    public string? VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
 

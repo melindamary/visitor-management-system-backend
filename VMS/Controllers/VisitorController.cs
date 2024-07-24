@@ -54,25 +54,7 @@ namespace VMS.Controllers
             return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
         }
 
-        // Method to call the AddVisitorDevice API
-        private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
-        {
-            // Create VisitorDevice entity from AddVisitorDeviceDto
-            var visitorDevice = new VisitorDevice
-            {
-                VisitorId = addDeviceDto.VisitorId,
-                DeviceId = addDeviceDto.DeviceId,
-                SerialNumber = addDeviceDto.SerialNumber
-            };
-
-            // Add VisitorDevice to context
-            _context.VisitorDevices.Add(visitorDevice);
-
-            // Save changes to the VisitorDevices
-            _context.SaveChanges();
-
-            return visitorDevice;
-        }
+        
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{id}")]

@@ -72,6 +72,11 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
 builder.Services.AddScoped<VisitorService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
+
+
 
 
 //authentication for backend API
