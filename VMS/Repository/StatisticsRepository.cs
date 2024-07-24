@@ -15,58 +15,86 @@ namespace VMS.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
+
+        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics(int days)
         {
-            var securityCount = from ur in _context.UserRoles
-                                join ud in _context.UserDetails on ur.UserId equals ud.UserId
-                                join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.OfficeLocationId
-                                join r in _context.Roles on ur.RoleId equals r.RoleId
-                                where r.RoleName == "Security"
-                                group ol by ol.LocationName into scGroup
-                                select new
-                                {
-                                    LocationName = scGroup.Key,
-                                    NumberOfSecurity = scGroup.Count()
-                                };
+            var startDate = DateTime.Now.AddDays(-days);
 
-            var passesGenerated = from v in _context.Visitors
-                                  join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
-                                  group ol by ol.LocationName into pgGroup
-                                  select new
-                                  {
-                                      LocationName = pgGroup.Key,
-                                      PassesGenerated = pgGroup.Count()
-                                  };
+            var query = from ol in _context.OfficeLocations
+                        let securityCount = _context.UserRoles
+                            .Count(ur => ur.Role.RoleName == "Security" &&
+                                         _context.UserDetails.Any(ud => ud.UserId == ur.UserId &&
+                                                                        ud.OfficeLocationId == ol.OfficeLocationId))
+                        let passesGenerated = _context.Visitors
+                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                        v.VisitDate >= startDate)
+                        let totalVisitors = _context.Visitors
+                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                        v.CheckInTime != null &&
+                                        v.VisitDate >= startDate)
+                        select new LocationStatisticsDTO
+                        {
+                            Location = ol.LocationName,
+                            NumberOfSecurity = securityCount,
+                            PassesGenerated = passesGenerated,
+                            TotalVisitors = totalVisitors
+                        };
 
-            var totalVisitors = from v in _context.Visitors
-                                join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
-                                where v.CheckInTime != null
-                                group ol by ol.LocationName into tvGroup
-                                select new
-                                {
-                                    LocationName = tvGroup.Key,
-                                    TotalVisitors = tvGroup.Count()
-                                };
-
-            var locationStatistics = from ol in _context.OfficeLocations
-                                     join sc in securityCount on ol.LocationName equals sc.LocationName into scLeftJoin
-                                     from sc in scLeftJoin.DefaultIfEmpty()
-                                     join pg in passesGenerated on ol.LocationName equals pg.LocationName into pgLeftJoin
-                                     from pg in pgLeftJoin.DefaultIfEmpty()
-                                     join tv in totalVisitors on ol.LocationName equals tv.LocationName into tvLeftJoin
-                                     from tv in tvLeftJoin.DefaultIfEmpty()
-                                     select new LocationStatisticsDTO
-                                     {
-                                         Location = ol.LocationName,
-                                         NumberOfSecurity = sc != null ? sc.NumberOfSecurity : 0,
-                                         PassesGenerated = pg != null ? pg.PassesGenerated : 0,
-                                         TotalVisitors = tv != null ? tv.TotalVisitors : 0
-                                     };
-
-            return await locationStatistics.ToListAsync();
+            return await query.ToListAsync();
         }
 
+        /*        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
+                {
+                    var securityCount = from ur in _context.UserRoles
+                                        join ud in _context.UserDetails on ur.UserId equals ud.UserId
+                                        join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.OfficeLocationId
+                                        join r in _context.Roles on ur.RoleId equals r.RoleId
+                                        where r.RoleName == "Security"
+                                        group ol by ol.LocationName into scGroup
+                                        select new
+                                        {
+                                            LocationName = scGroup.Key,
+                                            NumberOfSecurity = scGroup.Count()
+                                        };
 
+                    var passesGenerated = from v in _context.Visitors
+                                          join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                          group ol by ol.LocationName into pgGroup
+                                          select new
+                                          {
+                                              LocationName = pgGroup.Key,
+                                              PassesGenerated = pgGroup.Count()
+                                          };
+
+                    var totalVisitors = from v in _context.Visitors
+                                        join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                        where v.CheckInTime != null
+                                        group ol by ol.LocationName into tvGroup
+                                        select new
+                                        {
+                                            LocationName = tvGroup.Key,
+                                            TotalVisitors = tvGroup.Count()
+                                        };
+
+                    var locationStatistics = from ol in _context.OfficeLocations
+                                             join sc in securityCount on ol.LocationName equals sc.LocationName into scLeftJoin
+                                             from sc in scLeftJoin.DefaultIfEmpty()
+                                             join pg in passesGenerated on ol.LocationName equals pg.LocationName into pgLeftJoin
+                                             from pg in pgLeftJoin.DefaultIfEmpty()
+                                             join tv in totalVisitors on ol.LocationName equals tv.LocationName into tvLeftJoin
+                                             from tv in tvLeftJoin.DefaultIfEmpty()
+                                             select new LocationStatisticsDTO
+                                             {
+                                                 Location = ol.LocationName,
+                                                 NumberOfSecurity = sc != null ? sc.NumberOfSecurity : 0,
+                                                 PassesGenerated = pg != null ? pg.PassesGenerated : 0,
+                                                 TotalVisitors = tv != null ? tv.TotalVisitors : 0
+                                             };
+
+                    return await locationStatistics.ToListAsync();
+                }
+
+        */
         public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics(int days)
         {
             var startDate = DateTime.Now.AddDays(-days);

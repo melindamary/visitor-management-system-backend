@@ -15,13 +15,27 @@ namespace VMS.Controllers
         {
             _statisticsRepository = statisticsRepository;
         }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
+        [HttpGet("location")]
+        public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics([FromQuery] int days =7)
         {
-            var result = await _statisticsRepository.GetLocationStatistics();
-            return Ok(result);
+            try
+            {
+                var statistics = await _statisticsRepository.GetLocationStatistics(days);
+                return Ok(statistics);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while retrieving location statistics.");
+            }
         }
+
+        /*        [HttpGet]
+                public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
+                {
+                    var result = await _statisticsRepository.GetLocationStatistics();
+                    return Ok(result);
+                }*/
         /*  [HttpGet("security")]
           public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
           {

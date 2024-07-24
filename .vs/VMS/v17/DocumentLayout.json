@@ -3,44 +3,8 @@
   "WorkspaceRootPath": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\statisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\statisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\dto\\securitystatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\securitystatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\statisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\statisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\irepository\\istatisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\irepository\\istatisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\dashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\dashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\data\\dashboarddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\data\\dashboarddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\irepository\\idashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\irepository\\idashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\activevisitorsignalrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\activevisitorsignalrcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\visitorcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -51,16 +15,64 @@
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\rolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\statisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\statisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\dashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\dashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\avhubs\\visitorhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\avhubs\\visitorhub.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\data\\visitormanagementdbcontext.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\irepository\\istatisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\irepository\\istatisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\statisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\statisticsrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\vms.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\vms.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\dto\\securitystatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\securitystatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\dto\\locationstatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\locationstatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\controllers\\dashboardcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\data\\dashboarddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\data\\dashboarddata.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\repository\\irepository\\idashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\repository\\irepository\\idashboardrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\dto\\purposestatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\purposestatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\pagecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\pagecontrol.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\models\\dto\\locationstatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|solutionrelative:vms\\models\\dto\\locationstatisticsdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
       "AbsoluteMoniker": "D:0:0:{D66EB5D3-8CE2-439F-AEBA-1971E9F3CF24}|VMS\\VMS.csproj|d:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\vms\\controllers\\pagerolecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
@@ -120,84 +132,45 @@
         },
         {
           "DockedWidth": 361,
-          "SelectedChildIndex": 1,
+          "SelectedChildIndex": 2,
           "Children": [
             {
               "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "SecurityStatisticsDTO.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
-              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
-              "RelativeToolTip": "VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAAAAAAAA",
+              "DocumentIndex": 2,
+              "Title": "RoleController.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\RoleController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\RoleController.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\RoleController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\RoleController.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAmwBYAAAAyAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-19T09:29:31.509Z",
+              "WhenOpened": "2024-07-16T09:51:03.531Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "VisitorController.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\VisitorController.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\VisitorController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAG0AAAANAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T19:37:39.043Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
               "DocumentIndex": 0,
-              "Title": "StatisticsController.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\StatisticsController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\StatisticsController.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\StatisticsController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\StatisticsController.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAC4AAAAeAAAA",
+              "Title": "ActiveVisitorsignalRController.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\ActiveVisitorsignalRController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\ActiveVisitorsignalRController.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\ActiveVisitorsignalRController.cs*",
+              "RelativeToolTip": "VMS\\Controllers\\ActiveVisitorsignalRController.cs*",
+              "ViewState": "AQIAABMAAAAAAAAAAAAQwBkAAAA7AAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T15:06:41.155Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "StatisticsRepository.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\StatisticsRepository.cs",
-              "RelativeDocumentMoniker": "VMS\\Repository\\StatisticsRepository.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\StatisticsRepository.cs",
-              "RelativeToolTip": "VMS\\Repository\\StatisticsRepository.cs",
-              "ViewState": "AQIAAEcAAAAAAAAAAAAwwGIAAAAJAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T15:06:08.153Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 3,
-              "Title": "IStatisticsRepository.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
-              "RelativeDocumentMoniker": "VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
-              "RelativeToolTip": "VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
-              "ViewState": "AQIAAAIAAAAAAAAAAAAqwAsAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T15:05:24.991Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 4,
-              "Title": "VisitorManagementDbContext.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
-              "RelativeDocumentMoniker": "VMS\\Data\\VisitorManagementDbContext.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
-              "RelativeToolTip": "VMS\\Data\\VisitorManagementDbContext.cs",
-              "ViewState": "AQIAAFcCAAAAAAAAAAAAAEICAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-21T19:45:17.34Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 6,
-              "Title": "DashboardController.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\DashboardController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\DashboardController.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\DashboardController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\DashboardController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAA4AAAAFAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-22T04:57:23.817Z",
+              "WhenOpened": "2024-07-24T07:02:44.613Z",
               "EditorCaption": ""
             },
             {
@@ -208,27 +181,144 @@
               "RelativeDocumentMoniker": "VMS\\Program.cs",
               "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Program.cs",
               "RelativeToolTip": "VMS\\Program.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAADYAAAAAAAAA",
+              "ViewState": "AQIAADAAAAAAAAAAAAAAADoAAAAtAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-18T15:07:56.5Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "IStatisticsRepository.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
+              "RelativeDocumentMoniker": "VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
+              "RelativeToolTip": "VMS\\Repository\\IRepository\\IStatisticsRepository.cs",
+              "ViewState": "AQIAAAQAAAAAAAAAAAAvwA4AAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T15:05:24.991Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
               "DocumentIndex": 7,
+              "Title": "VisitorManagementDbContext.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
+              "RelativeDocumentMoniker": "VMS\\Data\\VisitorManagementDbContext.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Data\\VisitorManagementDbContext.cs",
+              "RelativeToolTip": "VMS\\Data\\VisitorManagementDbContext.cs",
+              "ViewState": "AQIAACcAAAAAAAAAAAAiwFcCAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-21T19:45:17.34Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "StatisticsController.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\StatisticsController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\StatisticsController.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\StatisticsController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\StatisticsController.cs",
+              "ViewState": "AQIAAC8AAAAAAAAAAAA3wDgAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T15:06:41.155Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "LocationStatisticsDTO.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
+              "RelativeToolTip": "VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T18:43:43.884Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
               "Title": "DashboardRepository.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\DashboardRepository.cs",
               "RelativeDocumentMoniker": "VMS\\Repository\\DashboardRepository.cs",
               "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\DashboardRepository.cs",
               "RelativeToolTip": "VMS\\Repository\\DashboardRepository.cs",
-              "ViewState": "AQIAAAgAAAAAAAAAAAAuwBIAAAAEAAAA",
+              "ViewState": "AQIAAAMAAAAAAAAAAAAAABcAAAApAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2024-07-22T04:49:13.759Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 6,
+              "Title": "VisitorHub.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\AVHubs\\VisitorHub.cs",
+              "RelativeDocumentMoniker": "VMS\\AVHubs\\VisitorHub.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\AVHubs\\VisitorHub.cs",
+              "RelativeToolTip": "VMS\\AVHubs\\VisitorHub.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-24T06:53:04.472Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "VMS",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
+              "RelativeDocumentMoniker": "VMS\\VMS.csproj",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\VMS.csproj",
+              "RelativeToolTip": "VMS\\VMS.csproj",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABoAAABJAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2024-07-23T20:03:20.238Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "SecurityStatisticsDTO.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
+              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
+              "RelativeToolTip": "VMS\\Models\\DTO\\SecurityStatisticsDTO.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAIAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-19T09:29:31.509Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "StatisticsRepository.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\StatisticsRepository.cs",
+              "RelativeDocumentMoniker": "VMS\\Repository\\StatisticsRepository.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\StatisticsRepository.cs",
+              "RelativeToolTip": "VMS\\Repository\\StatisticsRepository.cs",
+              "ViewState": "AQIAABIAAAAAAAAAAAA1wCEAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-18T15:06:08.153Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "DashboardController.cs",
+              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\DashboardController.cs",
+              "RelativeDocumentMoniker": "VMS\\Controllers\\DashboardController.cs",
+              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\DashboardController.cs",
+              "RelativeToolTip": "VMS\\Controllers\\DashboardController.cs",
+              "ViewState": "AQIAAAYAAAAAAAAAAIBJwA4AAAAFAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-07-22T04:57:23.817Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
               "Title": "DashboardData.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Data\\DashboardData.cs",
               "RelativeDocumentMoniker": "VMS\\Data\\DashboardData.cs",
@@ -241,7 +331,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 15,
               "Title": "IDashboardRepository.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Repository\\IRepository\\IDashboardRepository.cs",
               "RelativeDocumentMoniker": "VMS\\Repository\\IRepository\\IDashboardRepository.cs",
@@ -254,33 +344,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
-              "Title": "VisitorController.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\VisitorController.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\VisitorController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\VisitorController.cs",
-              "ViewState": "AQIAAEMAAAAAAAAAAAAkwE8AAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-21T19:37:39.043Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 11,
-              "Title": "RoleController.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\RoleController.cs",
-              "RelativeDocumentMoniker": "VMS\\Controllers\\RoleController.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\RoleController.cs",
-              "RelativeToolTip": "VMS\\Controllers\\RoleController.cs",
-              "ViewState": "AQIAAAwAAAAAAAAAAAA8wBoAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T09:51:03.531Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 16,
               "Title": "PurposeStatisticsDTO.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\PurposeStatisticsDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\PurposeStatisticsDTO.cs",
@@ -293,7 +357,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 17,
               "Title": "PageControl.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\PageControl.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\PageControl.cs",
@@ -306,7 +370,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 18,
               "Title": "PageRoleController.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\PageRoleController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\PageRoleController.cs",
@@ -319,33 +383,20 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
-              "Title": "LocationStatisticsDTO.cs",
-              "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
-              "RelativeDocumentMoniker": "VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
-              "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
-              "RelativeToolTip": "VMS\\Models\\DTO\\LocationStatisticsDTO.cs",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAuwAUAAAAWAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T18:43:43.884Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 19,
               "Title": "Get-CodeContext.ps1",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Get-CodeContext.ps1",
               "RelativeDocumentMoniker": "VMS\\Get-CodeContext.ps1",
               "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Get-CodeContext.ps1",
               "RelativeToolTip": "VMS\\Get-CodeContext.ps1",
-              "ViewState": "AQIAAAMAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "ViewState": "AQIAAAAAAAAAAAAAAIBJwAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001001|",
               "WhenOpened": "2024-07-18T18:39:41.342Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 23,
               "Title": "AddNewPurposeDTO.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
@@ -353,23 +404,25 @@
               "RelativeToolTip": "VMS\\Models\\DTO\\AddNewPurposeDTO.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T03:42:25.139Z"
+              "WhenOpened": "2024-07-18T03:42:25.139Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 20,
               "Title": "PageController.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\PageController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\PageController.cs",
               "ToolTip": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\PageController.cs",
               "RelativeToolTip": "VMS\\Controllers\\PageController.cs",
-              "ViewState": "AQIAAAkAAAAAAAAAAAAAAE4AAAAAAAAA",
+              "ViewState": "AQIAAAYAAAAAAAAAAIBJwE4AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T03:36:03.683Z"
+              "WhenOpened": "2024-07-18T03:36:03.683Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 22,
               "Title": "LoginRequest.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\LoginRequest.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\LoginRequest.cs",
@@ -377,11 +430,12 @@
               "RelativeToolTip": "VMS\\Models\\DTO\\LoginRequest.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-18T03:42:52.723Z"
+              "WhenOpened": "2024-07-18T03:42:52.723Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 21,
               "Title": "AddVisitorDeviceDto.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddVisitorDeviceDto.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddVisitorDeviceDto.cs",
@@ -389,11 +443,12 @@
               "RelativeToolTip": "VMS\\Models\\DTO\\AddVisitorDeviceDto.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-17T12:54:13.139Z"
+              "WhenOpened": "2024-07-17T12:54:13.139Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 24,
               "Title": "AddNewRoleDTO.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddNewRoleDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddNewRoleDTO.cs",
@@ -401,11 +456,12 @@
               "RelativeToolTip": "VMS\\Models\\DTO\\AddNewRoleDTO.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAuwA0AAAAFAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-17T04:26:50.511Z"
+              "WhenOpened": "2024-07-17T04:26:50.511Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 25,
               "Title": "AddPageControlDTO.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Models\\DTO\\AddPageControlDTO.cs",
               "RelativeDocumentMoniker": "VMS\\Models\\DTO\\AddPageControlDTO.cs",
@@ -413,11 +469,12 @@
               "RelativeToolTip": "VMS\\Models\\DTO\\AddPageControlDTO.cs",
               "ViewState": "AQIAAAAAAAAAAAAAAAAAAA0AAAAAAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-17T07:10:05.795Z"
+              "WhenOpened": "2024-07-17T07:10:05.795Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 26,
               "Title": "PurposeController.cs",
               "DocumentMoniker": "D:\\expertion training\\spacilisation\\projectilp\\visitor-management-system-backend\\VMS\\Controllers\\PurposeController.cs",
               "RelativeDocumentMoniker": "VMS\\Controllers\\PurposeController.cs",
@@ -425,7 +482,8 @@
               "RelativeToolTip": "VMS\\Controllers\\PurposeController.cs",
               "ViewState": "AQIAABUAAAAAAAAAAAAYwCEAAAAsAAAA",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-07-16T09:39:44.031Z"
+              "WhenOpened": "2024-07-16T09:39:44.031Z",
+              "EditorCaption": ""
             }
           ]
         }

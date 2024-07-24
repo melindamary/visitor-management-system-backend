@@ -34,6 +34,50 @@ namespace VMS.Controllers
     }
 }
 
+// File: Controllers\DashboardController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Threading.Channels;
+using VMS.Repository.IRepository;
+using VMS.Data;
+
+namespace VMS.Controllers
+{
+
+    [ApiController]
+    [Route("api/[controller]")]
+    public class DashboardController : ControllerBase
+    {
+        private readonly IDashboardRepository _dashboardRepository;
+
+        public DashboardController(IDashboardRepository dashboardRepository)
+        {
+            _dashboardRepository = dashboardRepository;
+        }
+
+/*        [HttpGet("active-visitors")]
+        public ActionResult<int> GetActiveVisitors()
+        {
+            var activeVisitors = _dashboardRepository.GetActiveVisitors();
+            return Ok(activeVisitors);
+        }
+
+        [HttpGet("scheduled-visitors")]
+        public ActionResult<int> GetScheduledVisitors()
+        {
+            var scheduledVisitors = _dashboardRepository.GetScheduledVisitors();
+            return Ok(scheduledVisitors);
+        }
+
+        [HttpGet("total-visitors")]
+        public ActionResult<int> GetTotalVisitors()
+        {
+            var totalVisitors = _dashboardRepository.GetTotalVisitors();
+            return Ok(totalVisitors);
+        }*/
+    }
+
+}
+
 // File: Controllers\DeviceController.cs
 using Microsoft.AspNetCore.Mvc;
 using System.Linq;
@@ -374,20 +418,41 @@ namespace VMS.Controllers
         {
             _statisticsRepository = statisticsRepository;
         }
-
-        [HttpGet]
-        public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
+        [HttpGet("location")]
+        public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics([FromQuery] int days =7)
         {
-            var result = await _statisticsRepository.GetLocationStatistics();
-            return Ok(result);
+            try
+            {
+                var statistics = await _statisticsRepository.GetLocationStatistics(days);
+                return Ok(statistics);
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, "An error occurred while retrieving location statistics.");
+            }
         }
+
+        /*        [HttpGet]
+                public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
+                {
+                    var result = await _statisticsRepository.GetLocationStatistics();
+                    return Ok(result);
+                }*/
+        /*  [HttpGet("security")]
+          public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
+          {
+              var result = await _statisticsRepository.GetSecurityStatistics();
+              return Ok(result);
+          }
+  */
+
         [HttpGet("security")]
-        public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
+        public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics([FromQuery] int days = 7)
         {
-            var result = await _statisticsRepository.GetSecurityStatistics();
+            var result = await _statisticsRepository.GetSecurityStatistics(days);
             return Ok(result);
         }
-
 
         [HttpGet("purpose")]
         public async Task<ActionResult<IEnumerable<PurposeStatisticsDTO>>> GetPurposeStatistics()
@@ -395,8 +460,13 @@ namespace VMS.Controllers
             var result = await _statisticsRepository.GetPurposeStatistics();
             return Ok(result);
         }
-
-
+        
+        [HttpGet("dashboard")]
+        public async Task<ActionResult<IEnumerable<DashboardStatisticsDTO>>> GetDashboardStatistics()
+        {
+            var result = await _statisticsRepository.GetDashboardStatistics();
+            return Ok(result);
+        }
     }
 }
 
@@ -533,6 +603,17 @@ namespace VMS.Models
         public Object Result { get; set; }
         public HttpStatusCode StatusCode { get; set; }
         public List<string> ErrorMessages { get; set; }
+    }
+}
+
+// File: Models\DashboardData.cs
+namespace VMS.Models
+{
+    public class DashboardData
+    {
+        public int ActiveVisitors { get; set; }
+        public int ScheduledVisitors { get; set; }
+        public int TotalVisitors { get; set; }
     }
 }
 
@@ -1063,6 +1144,18 @@ namespace VMS.Models.DTO
 
 
 
+// File: Models\DTO\DashboardStatisticsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class DashboardStatisticsDTO
+    {
+        public string Location { get; set; }
+        public int PassesGenerated { get; set; }
+        public int ActiveVisitors { get; set; }
+        public int TotalVisitors { get; set; }
+    }
+}
+
 // File: Models\DTO\LocationStatisticsDTO.cs
 // File: Models/DTO/LocationStatisticsDTO.cs
 namespace VMS.Models.DTO
@@ -1155,6 +1248,28 @@ namespace VMS.Models.DTO
         
         public int DeviceId { get; set; }
         public string? SerialNumber { get; set; }
+    }
+}
+
+// File: Data\DashboardData.cs
+
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using VMS.Models;
+
+
+namespace VMS.Data
+{
+    public class DashboardData
+    {
+        public int ActiveVisitors { get; set; }
+        public int ScheduledVisitors { get; set; }
+        public int TotalVisitors { get; set; }
+        public IEnumerable<Visitor> Visitors { get; set; }
+
     }
 }
 
@@ -1759,11 +1874,50 @@ public partial class VisitorManagementDbContext : DbContext
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
 }
 
+// File: Repository\DashboardRepository.cs
+using Microsoft.EntityFrameworkCore;
+using System.Threading.Channels;
+using VMS.Data;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+
+    public class DashboardRepository : IDashboardRepository
+    {
+        private readonly DashboardData _context; // Replace with your actual DbContext  
+
+        public DashboardRepository(DashboardData context)
+        {
+            _context = context;
+        }
+
+    /*    public int GetActiveVisitors()
+        {
+            // Implement logic to get active visitors from the database  
+            return _context.Visitors.Count(v => v.IsActive); // Example query  
+        }
+
+        public int GetScheduledVisitors()
+        {
+            // Implement logic to get scheduled visitors  
+
+            return _context.Visitors.Count(v => v.VisitorId);
+        }
+
+        public int GetTotalVisitors()
+        {
+            // Implement logic to get total visitors  
+            return _context.Visitors.Count();
+        }*/
+
+    }
+}
+
 // File: Repository\StatisticsRepository.cs
 // File: Repository/StatisticsRepository.cs
 using Microsoft.EntityFrameworkCore;
 using VMS.Data;
-using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
@@ -1778,149 +1932,151 @@ namespace VMS.Repository
             _context = context;
         }
 
-        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
-        {
-            var result = await _context.OfficeLocations
-                .GroupJoin(
-                    _context.UserDetails,
-                    ol => ol.OfficeLocationId,
-                    ud => ud.OfficeLocationId,
-                    (ol, ud) => new { ol, ud }
-                )
-                .SelectMany(
-                    x => x.ud.DefaultIfEmpty(),
-                    (x, ud) => new { x.ol, ud }
-                )
-                .GroupJoin(
-                    _context.Users,
-                    x => x.ud.UserId,
-                    u => u.UserId,
-                    (x, u) => new { x.ol, x.ud, u }
-                )
-                .SelectMany(
-                    x => x.u.DefaultIfEmpty(),
-                    (x, u) => new { x.ol, x.ud, u }
-                )
-                .GroupJoin(
-                    _context.UserRoles,
-                    x => x.u.UserId,
-                    ur => ur.UserId,
-                    (x, ur) => new { x.ol, x.ud, x.u, ur }
-                )
-                .SelectMany(
-                    x => x.ur.DefaultIfEmpty(),
-                    (x, ur) => new { x.ol, x.ud, x.u, ur }
-                )
-                .GroupJoin(
-                    _context.Roles,
-                    x => x.ur.RoleId,
-                    r => r.RoleId,
-                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
-                )
-                .SelectMany(
-                    x => x.r.DefaultIfEmpty(),
-                    (x, r) => new { x.ol, x.ud, x.u, x.ur, r }
-                )
-                .GroupJoin(
-                    _context.Visitors,
-                    x => x.ol.OfficeLocationId,
-                    v => v.OfficeLocationId,
-                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
-                )
-                .SelectMany(
-                    x => x.v.DefaultIfEmpty(),
-                    (x, v) => new { x.ol, x.ud, x.u, x.ur, x.r, v }
-                )
-                .GroupBy(x => new { x.ol.LocationName })
-                .Select(g => new LocationStatisticsDTO
-                {
-                    
-                    Location = g.Key.LocationName,
-                    NumberOfSecurity = g.Select(x => x.u.UserId).Where(id => id != null && g.Any(y => y.r.RoleName == "Security" && y.u.UserId == id)).Distinct().Count(),
-                    TotalVisitors = g.Select(x => x.v.VisitorPassCode).Where(code => code != null).Distinct().Count(),
-                    PassesGenerated = g.Select(x => x.v.VisitorId).Where(id => id != null).Distinct().Count()
-                })
-                .ToListAsync();
 
-            return result;
+        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics(int days)
+        {
+            var startDate = DateTime.Now.AddDays(-days);
+
+            var query = from ol in _context.OfficeLocations
+                        let securityCount = _context.UserRoles
+                            .Count(ur => ur.Role.RoleName == "Security" &&
+                                         _context.UserDetails.Any(ud => ud.UserId == ur.UserId &&
+                                                                        ud.OfficeLocationId == ol.OfficeLocationId))
+                        let passesGenerated = _context.Visitors
+                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                        v.VisitDate >= startDate)
+                        let totalVisitors = _context.Visitors
+                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                        v.CheckInTime != null &&
+                                        v.VisitDate >= startDate)
+                        select new LocationStatisticsDTO
+                        {
+                            Location = ol.LocationName,
+                            NumberOfSecurity = securityCount,
+                            PassesGenerated = passesGenerated,
+                            TotalVisitors = totalVisitors
+                        };
+
+            return await query.ToListAsync();
         }
 
+        /*        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics()
+                {
+                    var securityCount = from ur in _context.UserRoles
+                                        join ud in _context.UserDetails on ur.UserId equals ud.UserId
+                                        join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.OfficeLocationId
+                                        join r in _context.Roles on ur.RoleId equals r.RoleId
+                                        where r.RoleName == "Security"
+                                        group ol by ol.LocationName into scGroup
+                                        select new
+                                        {
+                                            LocationName = scGroup.Key,
+                                            NumberOfSecurity = scGroup.Count()
+                                        };
 
-        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
+                    var passesGenerated = from v in _context.Visitors
+                                          join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                          group ol by ol.LocationName into pgGroup
+                                          select new
+                                          {
+                                              LocationName = pgGroup.Key,
+                                              PassesGenerated = pgGroup.Count()
+                                          };
+
+                    var totalVisitors = from v in _context.Visitors
+                                        join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                        where v.CheckInTime != null
+                                        group ol by ol.LocationName into tvGroup
+                                        select new
+                                        {
+                                            LocationName = tvGroup.Key,
+                                            TotalVisitors = tvGroup.Count()
+                                        };
+
+                    var locationStatistics = from ol in _context.OfficeLocations
+                                             join sc in securityCount on ol.LocationName equals sc.LocationName into scLeftJoin
+                                             from sc in scLeftJoin.DefaultIfEmpty()
+                                             join pg in passesGenerated on ol.LocationName equals pg.LocationName into pgLeftJoin
+                                             from pg in pgLeftJoin.DefaultIfEmpty()
+                                             join tv in totalVisitors on ol.LocationName equals tv.LocationName into tvLeftJoin
+                                             from tv in tvLeftJoin.DefaultIfEmpty()
+                                             select new LocationStatisticsDTO
+                                             {
+                                                 Location = ol.LocationName,
+                                                 NumberOfSecurity = sc != null ? sc.NumberOfSecurity : 0,
+                                                 PassesGenerated = pg != null ? pg.PassesGenerated : 0,
+                                                 TotalVisitors = tv != null ? tv.TotalVisitors : 0
+                                             };
+
+                    return await locationStatistics.ToListAsync();
+                }
+
+        */
+        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics(int days)
         {
-            var sevenDaysAgo = DateTime.Now.AddDays(-7);
-
+            var startDate = DateTime.Now.AddDays(-days);
             var securityDetails = await (from ol in _context.OfficeLocations
                                          join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
                                          join u in _context.Users on ud.UserId equals u.UserId
                                          join ur in _context.UserRoles on u.UserId equals ur.UserId
                                          join r in _context.Roles on ur.RoleId equals r.RoleId
                                          where r.RoleName == "Security"
-                                         select new
-                                         {
-                                             ol.LocationName,
-                                             ud.FirstName,
-                                             ud.LastName,
-                                             ud.Phone,
-                                             u.IsActive,
-                                             VisitorsApproved = _context.Visitors
-                                                 .Where(v => v.UpdatedBy == u.UserId && v.VisitDate >= sevenDaysAgo)
-                                                 .Count()
-                                         } into result
+                                         let visitors = _context.Visitors
+                                             .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                                         v.UpdatedBy == u.UserId &&
+                                                         v.VisitDate >= startDate)
+                                             .Select(v => v.VisitorId)
+                                             .Distinct()
+                                             .ToList()
                                          select new SecurityStatisticsDTO
                                          {
-                                             Location = result.LocationName,
-                                             SecurityFirstName = result.FirstName,
-                                             SecurityLastName = result.LastName,
-                                             PhoneNumber = result.Phone,
-                                             Status = result.IsActive,
-                                             VisitorsApproved = result.VisitorsApproved
+                                             Location = ol.LocationName,
+                                             SecurityFirstName = ud.FirstName,
+                                             SecurityLastName = ud.LastName,
+                                             PhoneNumber = ud.Phone,
+                                             Status = u.IsActive,
+                                             VisitorsApproved = visitors.Count
                                          }).OrderBy(sd => sd.Location)
                                            .ThenBy(sd => sd.SecurityLastName)
                                            .ThenBy(sd => sd.SecurityFirstName)
                                            .ToListAsync();
-
             return securityDetails;
         }
 
 
+        /*        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
+                {
+                    var sevenDaysAgo = DateTime.Now.AddDays(-7);
 
+                    var securityDetails = await (from ol in _context.OfficeLocations
+                                                 join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
+                                                 join u in _context.Users on ud.UserId equals u.UserId
+                                                 join ur in _context.UserRoles on u.UserId equals ur.UserId
+                                                 join r in _context.Roles on ur.RoleId equals r.RoleId
+                                                 where r.RoleName == "Security"
+                                                 let visitors = _context.Visitors
+                                                     .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                                                                 v.UpdatedBy == u.UserId && 
+                                                                 v.VisitDate >= sevenDaysAgo)
+                                                     .Select(v => v.VisitorId)
+                                                     .Distinct()
+                                                     .ToList() // Convert IQueryable to List
+                                                 select new SecurityStatisticsDTO
+                                                 {
+                                                     Location = ol.LocationName,
+                                                     SecurityFirstName = ud.FirstName,
+                                                     SecurityLastName = ud.LastName,
+                                                     PhoneNumber = ud.Phone,
+                                                     Status = u.IsActive,
+                                                     VisitorsApproved = visitors.Count() // Use the Count property of List
+                                                 }).OrderBy(sd => sd.Location)
+                                                   .ThenBy(sd => sd.SecurityLastName)
+                                                   .ThenBy(sd => sd.SecurityFirstName)
+                                                   .ToListAsync();
 
-
-
-        /*      public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
-              {
-                  var sevenDaysAgo = DateTime.Now.AddDays(-7);
-
-                  var securityDetails = await (from ol in _context.OfficeLocations
-                                               join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
-                                               join u in _context.Users on ud.UserId equals u.UserId
-                                               join ur in _context.UserRoles on u.UserId equals ur.UserId
-                                               join r in _context.Roles on ur.RoleId equals r.RoleId
-                                               where r.RoleName == "Security"
-                                               let visitors = _context.Visitors
-                                                   .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
-                                                               v.UserId == u.UserId &&
-                                                               v.VisitDate >= sevenDaysAgo)
-                                                   .Select(v => v.VisitorId)
-                                                   .Distinct()
-                                                   .ToList() // Convert IQueryable to List
-                                               select new SecurityStatisticsDTO
-                                               {
-                                                   Location = ol.LocationName,
-                                                   SecurityFirstName = ud.FirstName,
-                                                   SecurityLastName = ud.LastName,
-                                                   PhoneNumber = ud.Phone,
-                                                   Status = u.IsActive,
-                                                   VisitorsApproved = visitors.Count() // Use the Count property of List
-                                               }).OrderBy(sd => sd.Location)
-                                                 .ThenBy(sd => sd.SecurityLastName)
-                                                 .ThenBy(sd => sd.SecurityFirstName)
-                                                 .ToListAsync();
-
-                  return securityDetails;
-              }
-      */
+                    return securityDetails;
+                }
+        */
         public async Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics()
         {
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
@@ -1942,23 +2098,58 @@ namespace VMS.Repository
         }
 
 
+
+        public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
+        {
+            var result = await (from o in _context.OfficeLocations
+                                join v in _context.Visitors on o.OfficeLocationId equals v.OfficeLocationId into vGroup
+                                from v in vGroup.DefaultIfEmpty()
+                                group new { o, v } by o.LocationName into g
+                                select new DashboardStatisticsDTO
+                                {
+                                    Location = g.Key,
+                                    PassesGenerated = g.Count(x => x.v != null),
+                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != null && x.v.CheckOutTime == null),
+                                    TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
+                                })
+                                .ToListAsync();
+
+            return result;
+        }
+
     }
+}
+
+// File: Repository\IRepository\IDashboardRepository.cs
+using System.Threading.Channels;
+using VMS.Data;
+namespace VMS.Repository.IRepository
+{
+    public interface IDashboardRepository
+    {
+/*        Task StreamDashboardDataAsync(ChannelWriter<DashboardData> writer);
+*/    }
 }
 
 // File: Repository\IRepository\irepo folder
 
 // File: Repository\IRepository\IStatisticsRepository.cs
-// File: Repository/IRepository/IStatisticsRepository.cs
+using VMS.Repository;
 using VMS.Models.DTO;
 
 namespace VMS.Repository.IRepository
 {
     public interface IStatisticsRepository
     {
-        Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics();
-        Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics();
+        Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics(int days);
+
+        /*        Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics();
+        */        /*        Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics();
+                */
+        Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics(int days);
 
         Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics();
+        Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics();
 
 
     }

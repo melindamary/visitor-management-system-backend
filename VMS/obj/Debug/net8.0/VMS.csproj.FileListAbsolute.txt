@@ -535,3 +535,16 @@ D:\expertion training\spacilisation\projectilp\visitor-management-system-backend
 D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\obj\Debug\net8.0\VMS.pdb
 D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\obj\Debug\net8.0\VMS.genruntimeconfig.cache
 D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\obj\Debug\net8.0\ref\VMS.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.Connections.Abstractions.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Client.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.Http.Connections.Common.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Client.Core.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Common.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.AspNetCore.SignalR.Protocols.Json.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.Extensions.DependencyInjection.Abstractions.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.Extensions.Features.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.Extensions.Logging.Abstractions.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Microsoft.Extensions.Options.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\Newtonsoft.Json.dll
+D:\expertion training\spacilisation\projectilp\visitor-management-system-backend\VMS\bin\Debug\net8.0\System.Net.WebSockets.WebSocketProtocol.dll
