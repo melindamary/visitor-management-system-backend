@@ -47,16 +47,22 @@ namespace VMS.Repository
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
                 CreatedBy = 1,
+                UserId=1,
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
                 VisitorDevices = new List<VisitorDevice>()
             };
 
+
             if (!string.IsNullOrEmpty(visitorDto.ImageData))
             {
-                var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
-                visitor.Photo = imageDataBytes;
+                var imageDataParts = visitorDto.ImageData.Split(',');
+                if (imageDataParts.Length > 1)
+                {
+                    var imageDataBytes = Convert.FromBase64String(imageDataParts[1]);
+                    visitor.Photo = imageDataBytes;
+                }
             }
 
             _context.Visitors.Add(visitor);

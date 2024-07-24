@@ -4,7 +4,6 @@ using VMS.Repository.IRepository;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Data;
-using Microsoft.AspNetCore.Authorization;
 
 namespace VMS.Controllers
 {
@@ -66,4 +65,3 @@ namespace VMS.Controllers
 
     }
 }
-
