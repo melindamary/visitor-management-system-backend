@@ -225,6 +225,7 @@ public partial class VisitorManagementDbContext : DbContext
             entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("purpose_name");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.UpdatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

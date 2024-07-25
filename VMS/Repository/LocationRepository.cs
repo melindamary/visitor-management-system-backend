@@ -17,8 +17,8 @@ namespace VMS.Repository
             return await _context.OfficeLocations
                 .Select(d => new GetLocationIdAndNameDTO
                 {
-                    Id = d.OfficeLocationId,
-                    Name = d.LocationName
+                    Id = d.Id,
+                    Name = d.Name
                 })
                 .ToListAsync();
         }
