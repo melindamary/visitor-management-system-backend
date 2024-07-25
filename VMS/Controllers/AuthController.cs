@@ -1,8 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Security.Claims;
 using System.Text;
@@ -17,19 +15,19 @@ namespace VMS.Controllers
 
     public class AuthController : ControllerBase
     {
-        private readonly IUserRepository _userRepository;
+        private readonly IUserRepository _repository;
         private readonly IConfiguration _configuration;
 
-        public AuthController(IUserRepository userRepository, IConfiguration configuration)
+        public AuthController(IUserRepository repository, IConfiguration configuration)
         {
-            _userRepository = userRepository;
+            _repository = repository;
             _configuration = configuration;
         }
 
         [HttpPost]
         public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
         {
-            if (!await _userRepository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
+            if (!await _repository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
             {
                 var errorResponse = new APIResponse
                 {
@@ -41,7 +39,7 @@ namespace VMS.Controllers
                 return Unauthorized(errorResponse);
             }
 
-            var user = await _userRepository.GetUserByUsernameAsync(loginRequest.Username);
+            var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
             var token = GenerateJwtToken(user);
 
             var loginResponse = new LoginResponseDTO

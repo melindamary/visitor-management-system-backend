@@ -1,8 +1,6 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
-using VMS.Models.DTO;
 using VMS.Services.IServices;
 
 namespace VMS.Controllers

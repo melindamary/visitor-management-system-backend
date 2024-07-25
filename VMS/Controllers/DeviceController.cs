@@ -1,10 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-
-using VMS.Models;
 using VMS.Data;
+using VMS.Models;
 using VMS.Models.DTO;
-using Microsoft.AspNetCore.Authorization;
 using VMS.Repository.IRepository;
 
 namespace VMS.Controllers

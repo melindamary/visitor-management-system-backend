@@ -1,17 +1,15 @@
-using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
 using System.Configuration;
 using System.Text.Json.Serialization;
 using VMS;
 using VMS.Data;
-using VMS.Models;
-using VMS.Repository.IRepository;
 using VMS.Repository;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
-using Microsoft.OpenApi.Models;
+using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
 
@@ -71,12 +69,12 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
 builder.Services.AddScoped<VisitorService>();
-builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
 
 
+builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 
 //authentication for backend API
