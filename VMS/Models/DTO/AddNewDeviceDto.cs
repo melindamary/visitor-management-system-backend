@@ -2,7 +2,7 @@
 
 namespace VMS.Models.DTO
 {
-    public class AddNewDeviceDto
+    public class AddNewDeviceDTO
     {
         [Required]
         public string? deviceName { get; set; }

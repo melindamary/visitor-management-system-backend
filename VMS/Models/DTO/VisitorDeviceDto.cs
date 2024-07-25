@@ -1,6 +1,6 @@
 ﻿namespace VMS.Models.DTO
 {
-    public class VisitorDeviceDto
+    public class VisitorDeviceDTO
     {
         
         public int DeviceId { get; set; }
