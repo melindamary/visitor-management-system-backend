@@ -29,6 +29,21 @@ namespace VMS.Repository
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
         }
+
+        public async Task UpdateLoggedInStatusAsync(string username) {
+
+            var user = await GetUserByUsernameAsync(username);
+            if (user.IsLoggedIn == 0)
+            {
+                user.IsLoggedIn = 1;
+            }
+            else if (user.IsLoggedIn == 1) 
+            { 
+                user.IsLoggedIn = 0;
+            }
+            await _context.SaveChangesAsync();
+
+        }
         public async Task<bool> ValidateUserAsync(string username, string password)
         {
             var user = await GetUserByUsernameAsync(username);

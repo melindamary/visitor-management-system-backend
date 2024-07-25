@@ -40,6 +40,9 @@ namespace VMS.Controllers
             }
 
             var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
+
+            await _repository.UpdateLoggedInStatusAsync(user.Username);
+
             var token = GenerateJwtToken(user);
 
             var loginResponse = new LoginResponseDTO
