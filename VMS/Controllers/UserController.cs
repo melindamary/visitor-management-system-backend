@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
+using VMS.Models.DTO;
 using VMS.Services.IServices;
 
 namespace VMS.Controllers
@@ -34,12 +35,12 @@ namespace VMS.Controllers
             return Ok(response);
         }
 
-     /*   [HttpPost("Add-User")]
-        public async Task<ActionResult<APIResponse>> AddUser(AddNewUserDTO addNewUserDTO)
+        [HttpPost]
+        public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto
+            )
         {
-
-
-          
-        }*/
+             await _userService.AddUserAsync(addNewUserDto);
+            return Ok();
+        }
     }
 }

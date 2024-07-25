@@ -19,10 +19,7 @@ namespace VMS.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<UserRole> AddVisitorDeviceAsync(AddUserRoleDTO addUserRoleDto)
-        {
-            throw new NotImplementedException();
-        }
+     
 
         public async Task<UserRole> GetUserRoleByUserIdAsync(int userId)
         {

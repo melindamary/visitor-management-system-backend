@@ -11,7 +11,7 @@ public partial class User
 
     public string Password { get; set; }
 
-    public DateOnly? ValidFrom { get; set; }
+    public DateTime? ValidFrom { get; set; }
 
     public int? IsActive { get; set; }
 
