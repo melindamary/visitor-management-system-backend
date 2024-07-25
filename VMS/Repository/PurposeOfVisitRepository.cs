@@ -38,10 +38,10 @@ namespace VMS.Repository
             return purpose;
         }
 
-        public async Task<IEnumerable<PurposeOfVisitNameadnIdDto>> GetPurposesAsync()
+        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposesAsync()
         {
             return await _context.PurposeOfVisits
-                .Select(p => new PurposeOfVisitNameadnIdDto
+                .Select(p => new PurposeOfVisitNameadnIdDTO
                 {
                     PurposeId = p.Id,
                     PurposeName = p.Name

@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
 using VMS.Models;
+using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
 namespace VMS.Repository
@@ -12,6 +13,18 @@ namespace VMS.Repository
         public UserRepository(VisitorManagementDbContext context) { 
             _context = context;
         }
+
+        public Task<User> AddNewUserAsync(AddNewUserDTO addNewUserDTO)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<User> GetUserByUsernameAsync(string username)
         {
             return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);

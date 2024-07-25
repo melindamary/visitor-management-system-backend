@@ -2,7 +2,7 @@
 
 namespace VMS.Models.DTO
 {
-    public class PurposeOfVisitNameadnIdDto
+    public class PurposeOfVisitNameadnIdDTO
     {
         [Required]
         public int PurposeId { get; set; }

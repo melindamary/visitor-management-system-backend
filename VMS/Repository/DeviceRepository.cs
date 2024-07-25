@@ -15,7 +15,7 @@ namespace VMS.Repository
         {
             _context = context;
         }
-        public async Task<Device> AddDeviceAsync(AddNewDeviceDto deviceDto)
+        public async Task<Device> AddDeviceAsync(AddNewDeviceDTO deviceDto)
         {
             if (_context.Devices.Any(d => d.Name == deviceDto.deviceName))
             {
@@ -37,10 +37,10 @@ namespace VMS.Repository
             return device;
         }
 
-        public async Task<IEnumerable<GetDeviceIdAndNameDto>> GetDevicesAsync()
+        public async Task<IEnumerable<GetDeviceIdAndNameDTO>> GetDevicesAsync()
         {
             return await _context.Devices
-                .Select(d => new GetDeviceIdAndNameDto
+                .Select(d => new GetDeviceIdAndNameDTO
                 {
                     DeviceId = d.Id,
                     DeviceName = d.Name

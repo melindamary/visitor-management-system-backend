@@ -2,11 +2,11 @@
 
 namespace VMS.Models.DTO
 {
-    public class GetDeviceIdAndNameDTO
+    public class GetLocationIdAndNameDTO
     {
         [Required]
-        public int DeviceId { get; set; }
+        public int Id { get; set; }
         [Required]
-        public string DeviceName { get; set; }
+        public string Name { get; set; }
     }
 }

@@ -14,7 +14,7 @@ namespace VMS.Repository
         {
             _context = context;
         }
-        public async Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDto addDeviceDto)
+        public async Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDTO addDeviceDto)
         {
             var visitorDevice = new VisitorDevice
             {
@@ -84,7 +84,7 @@ namespace VMS.Repository
             {
                 foreach (var selectedDevice in visitorDto.SelectedDevice)
                 {
-                    var addDeviceDto = new AddVisitorDeviceDto
+                    var addDeviceDto = new AddVisitorDeviceDTO
                     {
                         VisitorId = visitor.Id,
                         DeviceId = selectedDevice.DeviceId,

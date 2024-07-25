@@ -12,21 +12,17 @@ namespace VMS.Controllers
     {
         private readonly IVisitorFormRepository _visitorRepository;
 
-
-        /*[Authorize(Policy = "AdminOnly")]*/
         public VisitorController(IVisitorFormRepository visitorRepository)
         {
             _visitorRepository = visitorRepository;
         }
 
-        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<IEnumerable<Visitor>> GetVisitorDetails()
         {
             return await _visitorRepository.GetVisitorDetailsAsync();
         }
 
-        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<IEnumerable<string>> GetPersonInContact()
         {
@@ -69,5 +65,5 @@ namespace VMS.Controllers
 
 
     }
-    }
+}
 

@@ -18,7 +18,7 @@ namespace VMS.Models.DTO
         [Required]
         public int OfficeLocationId { get; set; }
 
-        public List<VisitorDeviceDto>? SelectedDevice { get; set; }
+        public List<VisitorDeviceDTO>? SelectedDevice { get; set; }
         public string ImageData { get; set; }
     }
 }

@@ -19,10 +19,10 @@ namespace VMS.Controllers
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("get-purposes-idAndName")]
-        public IEnumerable<PurposeOfVisitNameadnIdDto> GetPurposes()
+        public IEnumerable<PurposeOfVisitNameadnIdDTO> GetPurposes()
         {
             return _context.PurposeOfVisits
-                   .Select(p => new PurposeOfVisitNameadnIdDto
+                   .Select(p => new PurposeOfVisitNameadnIdDTO
                    {
                        PurposeId = p.Id,
                        PurposeName = p.Name
