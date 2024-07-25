@@ -16,19 +16,19 @@ namespace VMS.Repository
         public async Task<IEnumerable<VisitorReportDetailsDTO>> GetAllVisitorsAsync()
         {
             var visitors = await (from visitor in _context.Visitors
-                                  join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.PurposeId
-                                  join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.OfficeLocationId
-                                  join user in _context.UserDetails on visitor.UserId equals user.UserId
+                                  join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
+                                  join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
+                                  join user in _context.UserDetails on visitor.StaffId equals user.UserId
                                   where visitor.CheckInTime != null && visitor.CheckOutTime != null
                                   select new VisitorReportDetailsDTO
                                   {
-                                      VisitorId = visitor.VisitorId,
-                                      VisitorName = visitor.VisitorName,
+                                      VisitorId = visitor.Id,
+                                      VisitorName = visitor.Name,
                                       Phone = visitor.Phone,
                                       VisitDate = visitor.VisitDate,
                                       HostName = visitor.HostName,
-                                      PurposeName = purpose.PurposeName,
-                                      LocationName = location.LocationName,
+                                      PurposeName = purpose.Name,
+                                      LocationName = location.Name,
                                       StaffName = user.FirstName + " " + user.LastName,
                                       StaffPhoneNumber = user.Phone,
                                       CheckInTime = visitor.CheckInTime,
@@ -41,31 +41,31 @@ namespace VMS.Repository
         {
 
             var visitorDetails = await (from visitor in _context.Visitors
-                                        join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.PurposeId
-                                        join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.OfficeLocationId
-                                        where visitor.VisitorId == id && visitor.CheckInTime != null && visitor.CheckOutTime != null
+                                        join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
+                                        join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
+                                        where visitor.Id == id && visitor.CheckInTime != null && visitor.CheckOutTime != null
                                         select new
                                         {
                                             Visitor = new VisitorDetailsDTO
                                             {
-                                                Name = visitor.VisitorName,
+                                                Name = visitor.Name,
                                                 Phone = visitor.Phone,
                                                 VisitDate = visitor.VisitDate,
                                                 HostName = visitor.HostName,
-                                                OfficeLocation = location.LocationName,
+                                                OfficeLocation = location.Name,
                                                 CheckInTime = visitor.CheckInTime,
                                                 CheckOutTime = visitor.CheckOutTime,
-                                                VisitPurpose = purpose.PurposeName,
+                                                VisitPurpose = purpose.Name,
                                                 Photo = Convert.ToBase64String(visitor.Photo),
                                                 DeviceCount = _context.VisitorDevices.Count(u => u.VisitorId == id)
                                             },
                                             Devices =(from visitorDevice in _context.VisitorDevices
-                                                       join device in _context.Devices on visitorDevice.DeviceId equals device.DeviceId
+                                                       join device in _context.Devices on visitorDevice.DeviceId equals device.Id
                                                        where visitorDevice.VisitorId == id
                                                        select new DeviceDetailsDTO
                                                        {
                                                            SerialNumber = visitorDevice.SerialNumber,
-                                                           Name = device.DeviceName
+                                                           Name = device.Name
                                                        }).ToList()
                                         }).FirstOrDefaultAsync();
 

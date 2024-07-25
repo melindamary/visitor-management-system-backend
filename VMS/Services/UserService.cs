@@ -26,7 +26,7 @@ namespace VMS.Services
                 return null; // User not found
             }
 
-            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.UserId);
+            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.Id);
 
             if (userRole == null)
             {
@@ -37,9 +37,9 @@ namespace VMS.Services
 
             return new UserRoleDTO
             {
-                UserId = user.UserId,
+                UserId = user.Id,
                 Username = user.Username,
-                RoleName = role?.RoleName ?? "Unknown" // Handle cases where role might not be found
+                RoleName = role?.Name ?? "Unknown" // Handle cases where role might not be found
             };
 
 

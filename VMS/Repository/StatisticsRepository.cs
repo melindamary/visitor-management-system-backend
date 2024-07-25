@@ -19,10 +19,10 @@ namespace VMS.Repository
         {
             var securityCount = from ur in _context.UserRoles
                                 join ud in _context.UserDetails on ur.UserId equals ud.UserId
-                                join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.OfficeLocationId
-                                join r in _context.Roles on ur.RoleId equals r.RoleId
-                                where r.RoleName == "Security"
-                                group ol by ol.LocationName into scGroup
+                                join ol in _context.OfficeLocations on ud.OfficeLocationId equals ol.Id
+                                join r in _context.Roles on ur.RoleId equals r.Id
+                                where r.Name == "Security"
+                                group ol by ol.Name into scGroup
                                 select new
                                 {
                                     LocationName = scGroup.Key,
@@ -30,8 +30,8 @@ namespace VMS.Repository
                                 };
 
             var passesGenerated = from v in _context.Visitors
-                                  join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
-                                  group ol by ol.LocationName into pgGroup
+                                  join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.Id
+                                  group ol by ol.Name into pgGroup
                                   select new
                                   {
                                       LocationName = pgGroup.Key,
@@ -39,9 +39,9 @@ namespace VMS.Repository
                                   };
 
             var totalVisitors = from v in _context.Visitors
-                                join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.OfficeLocationId
+                                join ol in _context.OfficeLocations on v.OfficeLocationId equals ol.Id
                                 where v.CheckInTime != null
-                                group ol by ol.LocationName into tvGroup
+                                group ol by ol.Name into tvGroup
                                 select new
                                 {
                                     LocationName = tvGroup.Key,
@@ -49,15 +49,15 @@ namespace VMS.Repository
                                 };
 
             var locationStatistics = from ol in _context.OfficeLocations
-                                     join sc in securityCount on ol.LocationName equals sc.LocationName into scLeftJoin
+                                     join sc in securityCount on ol.Name equals sc.LocationName into scLeftJoin
                                      from sc in scLeftJoin.DefaultIfEmpty()
-                                     join pg in passesGenerated on ol.LocationName equals pg.LocationName into pgLeftJoin
+                                     join pg in passesGenerated on ol.Name equals pg.LocationName into pgLeftJoin
                                      from pg in pgLeftJoin.DefaultIfEmpty()
-                                     join tv in totalVisitors on ol.LocationName equals tv.LocationName into tvLeftJoin
+                                     join tv in totalVisitors on ol.Name equals tv.LocationName into tvLeftJoin
                                      from tv in tvLeftJoin.DefaultIfEmpty()
                                      select new LocationStatisticsDTO
                                      {
-                                         Location = ol.LocationName,
+                                         Location = ol.Name,
                                          NumberOfSecurity = sc != null ? sc.NumberOfSecurity : 0,
                                          PassesGenerated = pg != null ? pg.PassesGenerated : 0,
                                          TotalVisitors = tv != null ? tv.TotalVisitors : 0
@@ -70,21 +70,21 @@ namespace VMS.Repository
             var sevenDaysAgo = DateTime.Now.AddDays(-7);
 
             var securityDetails = await (from ol in _context.OfficeLocations
-                                         join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
-                                         join u in _context.Users on ud.UserId equals u.UserId
-                                         join ur in _context.UserRoles on u.UserId equals ur.UserId
-                                         join r in _context.Roles on ur.RoleId equals r.RoleId
-                                         where r.RoleName == "Security"
+                                         join ud in _context.UserDetails on ol.Id equals ud.OfficeLocationId
+                                         join u in _context.Users on ud.UserId equals u.Id
+                                         join ur in _context.UserRoles on u.Id equals ur.UserId
+                                         join r in _context.Roles on ur.RoleId equals r.Id
+                                         where r.Name == "Security"
                                          let visitors = _context.Visitors
-                                             .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
-                                                         v.UpdatedBy == u.UserId && 
+                                             .Where(v => v.OfficeLocationId == ol.Id &&
+                                                         v.UpdatedBy == u.Id && 
                                                          v.VisitDate >= sevenDaysAgo)
-                                             .Select(v => v.VisitorId)
+                                             .Select(v => v.Id)
                                              .Distinct()
                                              .ToList() // Convert IQueryable to List
                                          select new SecurityStatisticsDTO
                                          {
-                                             Location = ol.LocationName,
+                                             Location = ol.Name,
                                              SecurityFirstName = ud.FirstName,
                                              SecurityLastName = ud.LastName,
                                              PhoneNumber = ud.Phone,
@@ -105,11 +105,11 @@ namespace VMS.Repository
             var purposeStatistics = await _context.PurposeOfVisits
                 .GroupJoin(
                     _context.Visitors.Where(v => v.VisitDate >= thirtyDaysAgo),
-                    pov => pov.PurposeId,
+                    pov => pov.Id,
                     v => v.PurposeId,
                     (pov, visitors) => new PurposeStatisticsDTO
                     {
-                        Name = pov.PurposeName,
+                        Name = pov.Name,
                         Value = visitors.Count()
                     })
                 .OrderByDescending(x => x.Value)
@@ -123,9 +123,9 @@ namespace VMS.Repository
         public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
         {
             var result = await (from o in _context.OfficeLocations
-                                join v in _context.Visitors on o.OfficeLocationId equals v.OfficeLocationId into vGroup
+                                join v in _context.Visitors on o.Id equals v.OfficeLocationId into vGroup
                                 from v in vGroup.DefaultIfEmpty()
-                                group new { o, v } by o.LocationName into g
+                                group new { o, v } by o.Name into g
                                 select new DashboardStatisticsDTO
                                 {
                                     Location = g.Key,

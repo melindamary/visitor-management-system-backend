@@ -31,7 +31,7 @@ namespace VMS.Controllers
             try
             {
                 var device = await _deviceRepository.AddDeviceAsync(deviceDto);
-                return CreatedAtAction(nameof(PostDevice), new { id = device.DeviceId }, device);
+                return CreatedAtAction(nameof(PostDevice), new { id = device.Id }, device);
             }
             catch (InvalidOperationException ex)
             {

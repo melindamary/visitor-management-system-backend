@@ -94,7 +94,7 @@ namespace VMS.Repository
             }
 
             // Check if the VisitorPassCode already exists
-            bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode && v.VisitorId != id);
+            bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode && v.Id != id);
             if (passCodeExists)
             {
                 throw new ArgumentException("This visitor pass code has already been allocated.");

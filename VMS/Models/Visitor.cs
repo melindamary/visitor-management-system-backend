@@ -5,9 +5,9 @@ namespace VMS.Models;
 
 public partial class Visitor
 {
-    public int VisitorId { get; set; }
+    public int Id { get; set; }
 
-    public string VisitorName { get; set; }
+    public string Name { get; set; }
 
     public string Phone { get; set; }
 
@@ -25,7 +25,7 @@ public partial class Visitor
 
     public DateTime? CheckOutTime { get; set; }
 
-    public int UserId { get; set; }
+    public int StaffId { get; set; }
 
     public int OfficeLocationId { get; set; }
 

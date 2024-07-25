@@ -11,8 +11,8 @@ namespace VMS
             //syntax : CreateMap<POCO class, DTO class>().ReverseMap();
             CreateMap<Role, AddNewRoleDTO>().ReverseMap();
             CreateMap<Visitor, VisitorLogDTO>()
-            .ForMember(dest => dest.PurposeName, opt => opt.MapFrom(src => src.Purpose.PurposeName))
-            .ForMember(dest => dest.DeviceName, opt => opt.MapFrom(src => src.VisitorDevices.FirstOrDefault().Device.DeviceName));
+            .ForMember(dest => dest.PurposeName, opt => opt.MapFrom(src => src.Purpose.Name))
+            .ForMember(dest => dest.DeviceName, opt => opt.MapFrom(src => src.VisitorDevices.FirstOrDefault().Device.Name));
 
             // Reverse mapping from VisitorLogDTO to Visitor if needed
             CreateMap<VisitorLogDTO, Visitor>()

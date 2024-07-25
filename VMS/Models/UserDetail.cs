@@ -5,7 +5,7 @@ namespace VMS.Models;
 
 public partial class UserDetail
 {
-    public int UserDetailsId { get; set; }
+    public int Id { get; set; }
 
     public int UserId { get; set; }
 

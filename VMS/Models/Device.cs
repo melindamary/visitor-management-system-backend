@@ -5,9 +5,9 @@ namespace VMS.Models;
 
 public partial class Device
 {
-    public int DeviceId { get; set; }
+    public int Id { get; set; }
 
-    public string? DeviceName { get; set; }
+    public string? Name { get; set; }
 
     public int? CreatedBy { get; set; }
 

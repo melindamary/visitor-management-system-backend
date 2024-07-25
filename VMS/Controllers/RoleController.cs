@@ -28,14 +28,14 @@ namespace VMS.Controllers
         [HttpPost]
         public async Task<ActionResult<Role>> PostRole(AddNewRoleDTO roleDTO)
         {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
+            if (_context.Roles.Any(p => p.Name == roleDTO.Name))
             {
                 return Conflict(new { message = "role already exists" });
 
             }
             var role = new Role
             {
-                RoleName = roleDTO.Name,
+                Name = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,
                 UpdatedBy = roleDTO.UpdatedBy,
 
@@ -44,7 +44,7 @@ namespace VMS.Controllers
             };
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role});
+            return CreatedAtAction(nameof(PostRole), new { id = role.Id, role});
         }
 
 
@@ -52,14 +52,14 @@ namespace VMS.Controllers
 
         public async Task<ActionResult<Role>> PostPage_Control(AddNewRoleDTO roleDTO)
         {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
+            if (_context.Roles.Any(p => p.Name == roleDTO.Name))
             {
                 return Conflict(new { message = "role already exists" });
 
             }
             var role = new Role
             {
-                RoleName = roleDTO.Name,
+                Name = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,
                 UpdatedBy = roleDTO.UpdatedBy,
 
@@ -68,7 +68,7 @@ namespace VMS.Controllers
             };
             _context.Roles.Add(role);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role });
+            return CreatedAtAction(nameof(PostRole), new { id = role.Id, role });
         }
 
     }

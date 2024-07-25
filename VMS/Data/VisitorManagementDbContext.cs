@@ -48,7 +48,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Device>(entity =>
         {
-            entity.HasKey(e => e.DeviceId).HasName("pk_device");
+            entity.HasKey(e => e.Id).HasName("pk_device");
 
             entity.ToTable("device");
 
@@ -56,13 +56,13 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_device_updated_by");
 
-            entity.Property(e => e.DeviceId).HasColumnName("device_id");
+            entity.Property(e => e.Id).HasColumnName("device_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.DeviceName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("device_name");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -82,7 +82,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<OfficeLocation>(entity =>
         {
-            entity.HasKey(e => e.OfficeLocationId).HasName("pk_office_location");
+            entity.HasKey(e => e.Id).HasName("pk_office_location");
 
             entity.ToTable("office_location");
 
@@ -90,7 +90,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_office_location_updated_by");
 
-            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.Id).HasColumnName("office_location_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
@@ -99,7 +99,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.LocationName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("location_name");
             entity.Property(e => e.Phone)
@@ -122,7 +122,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Page>(entity =>
         {
-            entity.HasKey(e => e.PageId).HasName("pk_page");
+            entity.HasKey(e => e.Id).HasName("pk_page");
 
             entity.ToTable("page");
 
@@ -130,16 +130,16 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_page_updated_by");
 
-            entity.Property(e => e.PageId).HasColumnName("page_id");
+            entity.Property(e => e.Id).HasColumnName("page_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.PageName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("page_name");
-            entity.Property(e => e.PageUrl)
+            entity.Property(e => e.Url)
                 .HasMaxLength(255)
                 .HasColumnName("page_url");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -159,7 +159,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<PageControl>(entity =>
         {
-            entity.HasKey(e => e.PageControlId).HasName("pk_page_control");
+            entity.HasKey(e => e.Id).HasName("pk_page_control");
 
             entity.ToTable("page_control");
 
@@ -171,7 +171,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_page_control_updated_by");
 
-            entity.Property(e => e.PageControlId).HasColumnName("page_control_id");
+            entity.Property(e => e.Id).HasColumnName("page_control_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -208,7 +208,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<PurposeOfVisit>(entity =>
         {
-            entity.HasKey(e => e.PurposeId).HasName("pk_purpose_of_visit");
+            entity.HasKey(e => e.Id).HasName("pk_purpose_of_visit");
 
             entity.ToTable("purpose_of_visit");
 
@@ -216,13 +216,13 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_purpose_of_visit_updated_by");
 
-            entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
+            entity.Property(e => e.Id).HasColumnName("purpose_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.PurposeName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("purpose_name");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -242,7 +242,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Role>(entity =>
         {
-            entity.HasKey(e => e.RoleId).HasName("pk_role");
+            entity.HasKey(e => e.Id).HasName("pk_role");
 
             entity.ToTable("role");
 
@@ -250,13 +250,13 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_role_updated_by");
 
-            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.Id).HasColumnName("role_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.RoleName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("role_name");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -276,7 +276,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<User>(entity =>
         {
-            entity.HasKey(e => e.UserId).HasName("pk_user");
+            entity.HasKey(e => e.Id).HasName("pk_user");
 
             entity.ToTable("user");
 
@@ -284,7 +284,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_user_updated_by");
 
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Id).HasColumnName("user_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -316,7 +316,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<UserDetail>(entity =>
         {
-            entity.HasKey(e => e.UserDetailsId).HasName("pk_user_details");
+            entity.HasKey(e => e.Id).HasName("pk_user_details");
 
             entity.ToTable("user_details");
 
@@ -328,7 +328,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_details_user_id");
 
-            entity.Property(e => e.UserDetailsId).HasColumnName("user_details_id");
+            entity.Property(e => e.Id).HasColumnName("user_details_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
@@ -376,7 +376,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<UserLocation>(entity =>
         {
-            entity.HasKey(e => e.UserLocationId).HasName("pk_user_location");
+            entity.HasKey(e => e.Id).HasName("pk_user_location");
 
             entity.ToTable("user_location");
 
@@ -388,7 +388,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_location_user_id");
 
-            entity.Property(e => e.UserLocationId).HasColumnName("user_location_id");
+            entity.Property(e => e.Id).HasColumnName("user_location_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -421,7 +421,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<UserRole>(entity =>
         {
-            entity.HasKey(e => e.UserRoleId).HasName("pk_user_role");
+            entity.HasKey(e => e.Id).HasName("pk_user_role");
 
             entity.ToTable("user_role");
 
@@ -433,7 +433,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_role_user_id");
 
-            entity.Property(e => e.UserRoleId).HasColumnName("user_role_id");
+            entity.Property(e => e.Id).HasColumnName("user_role_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -466,7 +466,7 @@ public partial class VisitorManagementDbContext : DbContext
 
         modelBuilder.Entity<Visitor>(entity =>
         {
-            entity.HasKey(e => e.VisitorId).HasName("pk_visitor");
+            entity.HasKey(e => e.Id).HasName("pk_visitor");
 
             entity.ToTable("visitor");
 
@@ -478,9 +478,9 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_visitor_updated_by");
 
-            entity.HasIndex(e => e.UserId, "fk_visitor_user_id");
+            entity.HasIndex(e => e.Id, "fk_visitor_user_id");
 
-            entity.Property(e => e.VisitorId).HasColumnName("visitor_id");
+            entity.Property(e => e.Id).HasColumnName("visitor_id");
             entity.Property(e => e.CheckInTime)
                 .HasColumnType("timestamp")
                 .HasColumnName("check_in_time");
@@ -509,11 +509,11 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("updated_date");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.StaffId).HasColumnName("user_id");
             entity.Property(e => e.VisitDate)
                 .HasColumnType("timestamp")
                 .HasColumnName("visit_date");
-            entity.Property(e => e.VisitorName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("visitor_name");
             entity.Property(e => e.VisitorPassCode)
@@ -537,13 +537,13 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasConstraintName("fk_visitor_updated_by");
 
             entity.HasOne(d => d.User).WithMany(p => p.VisitorUsers)
-                .HasForeignKey(d => d.UserId)
+                .HasForeignKey(d => d.Id)
                 .HasConstraintName("fk_visitor_user_id");
         });
 
         modelBuilder.Entity<VisitorDevice>(entity =>
         {
-            entity.HasKey(e => e.VisitorDeviceId).HasName("pk_visitor_device");
+            entity.HasKey(e => e.Id).HasName("pk_visitor_device");
 
             entity.ToTable("visitor_device");
 
@@ -555,7 +555,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.VisitorId, "fk_visitor_id");
 
-            entity.Property(e => e.VisitorDeviceId).HasColumnName("visitor_device_id");
+            entity.Property(e => e.Id).HasColumnName("visitor_device_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

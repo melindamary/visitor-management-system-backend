@@ -5,9 +5,9 @@ namespace VMS.Models;
 
 public partial class OfficeLocation
 {
-    public int OfficeLocationId { get; set; }
+    public int Id { get; set; }
 
-    public string LocationName { get; set; }
+    public string Name { get; set; }
 
     public string Address { get; set; }
 

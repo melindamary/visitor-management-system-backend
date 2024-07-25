@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="EndPoints\**" />
+    <Content Remove="EndPoints\**" />
+    <EmbeddedResource Remove="EndPoints\**" />
+    <None Remove="EndPoints\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <None Remove="code_context.txt" />
   </ItemGroup>
 
@@ -26,10 +33,6 @@
     <PackageReference Include="Serilog.AspNetCore" Version="8.0.1" />
     <PackageReference Include="SixLabors.ImageSharp" Version="3.1.5" />
     <PackageReference Include="Swashbuckle.AspNetCore" Version="6.4.0" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="EndPoints\" />
   </ItemGroup>
 
 </Project>

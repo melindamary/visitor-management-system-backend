@@ -43,8 +43,8 @@ namespace VMS.Controllers
         {
             var page = new Page
             {
-                PageName = pageDto.PageName,
-                PageUrl = pageDto.PageUrl,
+                Name = pageDto.PageName,
+                Url = pageDto.PageUrl,
                 CreatedBy = pageDto.CreatedBy,
                 UpdatedBy = pageDto.UpdatedBy,
                 CreatedDate = DateTime.Now,
@@ -54,7 +54,7 @@ namespace VMS.Controllers
             _context.Pages.Add(page);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetPage), new { id = page.PageId }, page);
+            return CreatedAtAction(nameof(GetPage), new { id = page.Id }, page);
         }
 
         [HttpPut("{id}")]
@@ -67,8 +67,8 @@ namespace VMS.Controllers
                 return NotFound();
             }
 
-            page.PageName = pageDto.PageName;
-            page.PageUrl = pageDto.PageUrl;
+            page.Name = pageDto.PageName;
+            page.Url = pageDto.PageUrl;
             page.UpdatedBy = pageDto.UpdatedBy;
             page.UpdatedDate = DateTime.Now;
 

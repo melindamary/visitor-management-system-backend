@@ -5,10 +5,11 @@ namespace VMS.Models;
 
 public partial class PurposeOfVisit
 {
-    public int PurposeId { get; set; }
+    public int Id { get; set; }
 
-    public string PurposeName { get; set; }
+    public string Name { get; set; }
 
+    public int Status { get; set; }
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }

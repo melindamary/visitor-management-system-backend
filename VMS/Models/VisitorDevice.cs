@@ -5,7 +5,7 @@ namespace VMS.Models;
 
 public partial class VisitorDevice
 {
-    public int VisitorDeviceId { get; set; }
+    public int Id { get; set; }
 
     public int VisitorId { get; set; }
 

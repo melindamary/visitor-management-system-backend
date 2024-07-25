@@ -41,12 +41,12 @@ namespace VMS.Repository
 
             var visitor = new Visitor
             {
-                VisitorName = visitorDto.Name,
+                Name = visitorDto.Name,
                 Phone = visitorDto.PhoneNumber,
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                UserId = 1,
+                StaffId = 1,
                 CreatedBy = 1,
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
@@ -86,7 +86,7 @@ namespace VMS.Repository
                 {
                     var addDeviceDto = new AddVisitorDeviceDto
                     {
-                        VisitorId = visitor.VisitorId,
+                        VisitorId = visitor.Id,
                         DeviceId = selectedDevice.DeviceId,
                         SerialNumber = selectedDevice.SerialNumber,
                     };
@@ -107,7 +107,7 @@ namespace VMS.Repository
 
         public async Task<Visitor> GetVisitorByIdAsync(int id)
         {
-            return await _context.Visitors.FirstOrDefaultAsync(v => v.VisitorId == id);
+            return await _context.Visitors.FirstOrDefaultAsync(v => v.Id == id);
         }
 
         public async Task<IEnumerable<Visitor>> GetVisitorDetailsAsync()

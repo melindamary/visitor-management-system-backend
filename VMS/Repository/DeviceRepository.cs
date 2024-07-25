@@ -17,14 +17,14 @@ namespace VMS.Repository
         }
         public async Task<Device> AddDeviceAsync(AddNewDeviceDto deviceDto)
         {
-            if (_context.Devices.Any(d => d.DeviceName == deviceDto.deviceName))
+            if (_context.Devices.Any(d => d.Name == deviceDto.deviceName))
             {
                 throw new InvalidOperationException("Device already exists");
             }
 
             var device = new Device
             {
-                DeviceName = deviceDto.deviceName,
+                Name = deviceDto.deviceName,
                 CreatedBy = 1,
                 UpdatedBy = 1,
                 CreatedDate = DateTime.Now,
@@ -42,8 +42,8 @@ namespace VMS.Repository
             return await _context.Devices
                 .Select(d => new GetDeviceIdAndNameDto
                 {
-                    DeviceId = d.DeviceId,
-                    DeviceName = d.DeviceName
+                    DeviceId = d.Id,
+                    DeviceName = d.Name
                 })
                 .ToListAsync();
         }

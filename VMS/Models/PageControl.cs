@@ -5,7 +5,7 @@ namespace VMS.Models;
 
 public partial class PageControl
 {
-    public int PageControlId { get; set; }
+    public int Id { get; set; }
 
     public int RoleId { get; set; }
 

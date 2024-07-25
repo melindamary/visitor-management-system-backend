@@ -24,8 +24,8 @@ namespace VMS.Controllers
             return _context.PurposeOfVisits
                    .Select(p => new PurposeOfVisitNameadnIdDto
                    {
-                       PurposeId = p.PurposeId,
-                       PurposeName = p.PurposeName
+                       PurposeId = p.Id,
+                       PurposeName = p.Name
                    })
                    .ToList();
 
@@ -35,14 +35,14 @@ namespace VMS.Controllers
         [HttpPost]
         public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
         {
-            if (_context.PurposeOfVisits.Any(p => p.PurposeName == purposeDto.purposeName))
+            if (_context.PurposeOfVisits.Any(p => p.Name == purposeDto.purposeName))
             {
                 return Conflict(new { message = "Purpose already exists" });
             }
 
             var purpose = new PurposeOfVisit
             {
-                PurposeName = purposeDto.purposeName,
+                Name = purposeDto.purposeName,
                 CreatedBy = 1,
                 UpdatedBy = 1,
                 CreatedDate = DateTime.Now,
@@ -52,7 +52,7 @@ namespace VMS.Controllers
             _context.PurposeOfVisits.Add(purpose);
             await _context.SaveChangesAsync();
 
-            return CreatedAtAction(nameof(PostPurpose), new { id = purpose.PurposeId }, purpose);
+            return CreatedAtAction(nameof(PostPurpose), new { id = purpose.Id }, purpose);
         }
     }
 }

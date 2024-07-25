@@ -29,7 +29,7 @@ namespace VMS.Controllers
             try
             {
                 var purpose = await _purposeOfVisitRepository.AddPurposeAsync(purposeDto);
-                return CreatedAtAction(nameof(PostPurpose), new { id = purpose.PurposeId }, purpose);
+                return CreatedAtAction(nameof(PostPurpose), new { id = purpose.Id }, purpose);
             }
             catch (InvalidOperationException ex)
             {

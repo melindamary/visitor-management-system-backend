@@ -5,11 +5,11 @@ namespace VMS.Models;
 
 public partial class Page
 {
-    public int PageId { get; set; }
+    public int Id { get; set; }
 
-    public string? PageName { get; set; }
+    public string? Name { get; set; }
 
-    public string? PageUrl { get; set; }
+    public string? Url { get; set; }
 
     public int? CreatedBy { get; set; }
 
