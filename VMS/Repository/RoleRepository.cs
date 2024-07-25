@@ -14,6 +14,12 @@ namespace VMS.Repository
         {
             _context = context;
         }
+
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+
         public async Task<Role> GetRoleByIdAsync(int roleId)
         {
             return await _context.Roles.FirstOrDefaultAsync(u => u.Id == roleId);

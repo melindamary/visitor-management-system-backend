@@ -36,11 +36,44 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto
-            )
+        public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
         {
              await _userService.AddUserAsync(addNewUserDto);
             return Ok();
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var userDetail = await _userService.GetUserByIdAsync(id);
+            if (userDetail == null)
+            {
+                return NotFound();
+            }
+            return Ok(userDetail);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<List<UserOverviewDTO>>> GetAllUsersOverview()
+        {
+            var userOverviews = await _userService.GetAllUsersOverviewAsync();
+            return Ok(userOverviews);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+        {
+            if (id != updateUserDto.UserId)
+            {
+                return BadRequest();
+            }
+
+            var result = await _userService.UpdateUserAsync(updateUserDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
         }
     }
 }

@@ -7,6 +7,8 @@ namespace VMS.Repository.IRepository
     {
         Task<UserRole> GetUserRoleByUserIdAsync(int userId);
         Task AddUserRoleAsync(UserRole userRole);
-       
+        Task<List<UserRole>> GetAllUserRolesAsync();
+        Task UpdateUserRoleAsync(UserRole userRole);
+
     }
 }

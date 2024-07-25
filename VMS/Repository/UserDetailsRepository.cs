@@ -18,5 +18,22 @@ namespace VMS.Repository
             _context.UserDetails.Add(userDetail);
             await _context.SaveChangesAsync();
         }
+
+        public async Task<List<UserDetail>> GetAllUserDetailsAsync()
+        {
+            return await _context.UserDetails.ToListAsync();
+        }
+
+        public async Task<UserDetail> GetUserDetailByUserIdAsync(int userId)
+        {
+            return await _context.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
+
+        }
+
+        public async Task UpdateUserDetailAsync(UserDetail userDetail)
+        {
+            _context.UserDetails.Update(userDetail);
+            await _context.SaveChangesAsync();
+        }
     }
 }
