@@ -19,7 +19,7 @@ public partial class Visitor
 
     public DateTime VisitDate { get; set; }
 
-    public string VisitorPassCode { get; set; }
+    public string? VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
 
