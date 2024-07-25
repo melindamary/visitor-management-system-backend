@@ -49,6 +49,24 @@ namespace VMS.Repository
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<PurposeOfVisit>> GetPurposeListAsync() {
+
+            var purposeList = await (from purpose in _context.PurposeOfVisits
+                                     select new PurposeOfVisit { 
+                                      Id = purpose.Id,
+                                      Name = purpose.Name,
+                                      Status = purpose.Status,
+                                      CreatedBy = purpose.CreatedBy,
+                                      UpdatedBy = purpose.UpdatedBy,
+                                      CreatedDate = purpose.CreatedDate,
+                                      UpdatedDate = purpose.UpdatedDate
+
+                                     }).ToListAsync();
+
+            return purposeList;
+                    
+                
+        }
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();

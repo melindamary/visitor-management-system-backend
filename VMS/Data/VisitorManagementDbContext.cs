@@ -479,7 +479,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_visitor_updated_by");
 
-            entity.HasIndex(e => e.Id, "fk_visitor_user_id");
+            entity.HasIndex(e => e.StaffId, "fk_visitor_user_id");
 
             entity.Property(e => e.Id).HasColumnName("visitor_id");
             entity.Property(e => e.CheckInTime)
@@ -538,7 +538,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasConstraintName("fk_visitor_updated_by");
 
             entity.HasOne(d => d.User).WithMany(p => p.VisitorUsers)
-                .HasForeignKey(d => d.Id)
+                .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("fk_visitor_user_id");
         });
 
