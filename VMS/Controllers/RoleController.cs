@@ -6,6 +6,7 @@ using VMS.Data;
 using VMS.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using VMS.Repository.IRepository;
 namespace VMS.Controllers
 {
     [ApiController]
@@ -13,63 +14,19 @@ namespace VMS.Controllers
     public class RoleController : ControllerBase
     {
 
-        private VisitorManagementDbContext _context;
-        public RoleController(VisitorManagementDbContext _context)
+        private readonly IRoleRepository _roleRepository;
+        public RoleController(IRoleRepository roleRepository)
         {
-            this._context = _context;
+            this._roleRepository = roleRepository;
         }
-        [HttpGet]
-        public IEnumerable<Role> GetRoles() { 
-            return _context.Roles.ToList();
-        }
-
-
-
-        [HttpPost]
-        public async Task<ActionResult<Role>> PostRole(AddNewRoleDTO roleDTO)
+        
+        [HttpGet("get-role-id-name")]
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndName()
         {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
-            {
-                return Conflict(new { message = "role already exists" });
+            return await _roleRepository.GetRoleIdAndNameAsync();
+        }    
 
-            }
-            var role = new Role
-            {
-                RoleName = roleDTO.Name,
-                CreatedBy = roleDTO.CreatedBy,
-                UpdatedBy = roleDTO.UpdatedBy,
-
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role});
-        }
-
-
-        [HttpPost]
-
-        public async Task<ActionResult<Role>> PostPage_Control(AddNewRoleDTO roleDTO)
-        {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
-            {
-                return Conflict(new { message = "role already exists" });
-
-            }
-            var role = new Role
-            {
-                RoleName = roleDTO.Name,
-                CreatedBy = roleDTO.CreatedBy,
-                UpdatedBy = roleDTO.UpdatedBy,
-
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role });
-        }
+        
 
     }
    

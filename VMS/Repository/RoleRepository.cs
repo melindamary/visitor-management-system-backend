@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
 using VMS.Models;
+using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
 namespace VMS.Repository
@@ -17,5 +18,19 @@ namespace VMS.Repository
         {
             return await _context.Roles.FirstOrDefaultAsync(u => u.RoleId == roleId);
         }
+
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync()
+        {
+
+            return await _context.Roles
+                .Select(d => new GetRoleIdAndNameDTO
+                {
+                    Id = d.RoleId,
+                   Name = d.RoleName
+                })
+                .ToListAsync();
+        }
+
+       
     }
 }

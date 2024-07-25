@@ -2,7 +2,7 @@
 
 namespace VMS.Models.DTO
 {
-    public class AddVisitorDeviceDto
+    public class AddVisitorDeviceDTO
     {
 
      

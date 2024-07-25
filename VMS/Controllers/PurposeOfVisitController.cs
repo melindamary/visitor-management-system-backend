@@ -18,7 +18,7 @@ namespace VMS.Controllers
         }
 
         [HttpGet("get-purposes-id-Name")]
-        public async Task<IEnumerable<PurposeOfVisitNameadnIdDto>> GetPurposes()
+        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposes()
         {
             return await _purposeOfVisitRepository.GetPurposesAsync();
         }

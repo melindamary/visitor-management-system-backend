@@ -9,7 +9,7 @@ namespace VMS.Repository.IRepository
         Task<IEnumerable<string>> GetPersonInContactAsync();
         Task<Visitor> GetVisitorByIdAsync(int id);
         Task<Visitor> CreateVisitorAsync(VisitorCreationDTO visitorDto);
-        Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDto addDeviceDto);
+        Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDTO addDeviceDto);
         Task SaveAsync();
     }
 }

@@ -5,8 +5,8 @@ namespace VMS.Repository.IRepository
 {
     public interface IDeviceRepository
     {
-        Task<IEnumerable<GetDeviceIdAndNameDto>> GetDevicesAsync();
-        Task<Device> AddDeviceAsync(AddNewDeviceDto deviceDto);
+        Task<IEnumerable<GetDeviceIdAndNameDTO>> GetDevicesAsync();
+        Task<Device> AddDeviceAsync(AddNewDeviceDTO deviceDto);
         Task SaveAsync();
     }
 }

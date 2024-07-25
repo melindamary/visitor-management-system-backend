@@ -75,6 +75,7 @@ builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
+builder.Services.AddScoped<IlocationRepository, LocationRepository>();
 
 
 
@@ -105,9 +106,7 @@ builder.Services.AddAuthorization(options =>
 });
  
 
-    builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
-    builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
-builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+   
 
 // Other service registrations
 

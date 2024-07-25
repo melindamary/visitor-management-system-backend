@@ -19,7 +19,8 @@ namespace VMS.Controllers
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{username}")]
-        public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) {
+        public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) 
+        {
 
             var userRole = await _userService.GetUserRoleByUsername(username);
 
@@ -34,5 +35,13 @@ namespace VMS.Controllers
             response.StatusCode = HttpStatusCode.OK;
             return Ok(response);
         }
+
+     /*   [HttpPost("Add-User")]
+        public async Task<ActionResult<APIResponse>> AddUser(AddNewUserDTO addNewUserDTO)
+        {
+
+
+          
+        }*/
     }
 }
