@@ -1,6 +1,9 @@
-﻿namespace VMS.Repository.IRepository
+﻿using VMS.Models;
+
+namespace VMS.Repository.IRepository
 {
-    public class IUserDetailsRepository
+    public interface IUserDetailsRepository
     {
+        Task AddUserDetailAsync(UserDetail userDetail);
     }
 }

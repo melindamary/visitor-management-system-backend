@@ -1,4 +1,5 @@
 ﻿using VMS.Models;
+using VMS.Models.DTO;
 
 namespace VMS.Repository.IRepository
 {
@@ -6,5 +7,6 @@ namespace VMS.Repository.IRepository
     {
         Task<UserRole> GetUserRoleByUserIdAsync(int userId);
         Task AddUserRoleAsync(UserRole userRole);
+        Task<UserRole> AddVisitorDeviceAsync(AddUserRoleDTO addUserRoleDto);
     }
 }

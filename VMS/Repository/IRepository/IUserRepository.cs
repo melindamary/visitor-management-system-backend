@@ -7,7 +7,8 @@ namespace VMS.Repository.IRepository
     {
         Task<User> GetUserByUsernameAsync(string username);
         Task<bool> ValidateUserAsync(string username, string password);
-        Task AddUserAsync(User user);
+        Task<User> AddNewUserAsync(AddNewUserDTO addNewUserDTO);
+       
 
     }
 }

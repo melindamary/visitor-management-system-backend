@@ -14,6 +14,11 @@ namespace VMS.Repository
             _context = context;
         }
 
+        public Task<User> AddNewUserAsync(AddNewUserDTO addNewUserDTO)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task AddUserAsync(User user)
         {
             _context.Users.Add(user);
