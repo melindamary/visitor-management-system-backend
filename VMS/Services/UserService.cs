@@ -7,6 +7,7 @@ using VMS.Services.IServices;
 
 namespace VMS.Services
 {
+    
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
@@ -14,6 +15,11 @@ namespace VMS.Services
         private readonly IRoleRepository _roleRepository;
         private readonly IUserDetailsRepository _userDetailRepository;
         private readonly IUserLocationRepository _userLocationRepository;
+
+        public const int _activeStatus = 1;
+        public const int _isLoggeedIn = 0;
+
+
 
         public UserService(IUserRepository userRepository, IUserLocationRepository userLocationRepository,
             IUserDetailsRepository userDetailRepository,
@@ -62,8 +68,9 @@ namespace VMS.Services
             {
                 Username = addNewUserDto.UserName,
                 Password = addNewUserDto.Password,
-                CreatedDate = DateTime.UtcNow,
-                IsActive = 1,
+                CreatedDate = DateTime.Now,
+                IsActive = _activeStatus,
+                IsLoggedIn = _isLoggeedIn,
                 ValidFrom = addNewUserDto.ValidFrom
             };
 
@@ -78,21 +85,21 @@ namespace VMS.Services
                 Phone = addNewUserDto.Phone,
                 Address = addNewUserDto.Address,
                 OfficeLocationId = addNewUserDto.OfficeLocationId,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.Now
             };
             Console.WriteLine(userDetail.UserId);
             var userRole = new UserRole
             {
                 UserId = user.Id,
                 RoleId = addNewUserDto.RoleId,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.Now
             };
 
             var userLocation = new UserLocation
             {
                 UserId = user.Id,
                 OfficeLocationId = addNewUserDto.OfficeLocationId,
-                CreatedDate = DateTime.UtcNow
+                CreatedDate = DateTime.Now
             };
 
             await _userDetailRepository.AddUserDetailAsync(userDetail);
