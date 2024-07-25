@@ -12,9 +12,14 @@ using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
+using VMS.AVHubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
+builder.Services.AddSignalR();
+
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 // Add this line  
 
@@ -118,9 +123,10 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.AllowAnyOrigin()
+        policy.WithOrigins("http://localhost:4200")
               .AllowAnyMethod()
-              .AllowAnyHeader();
+              .AllowAnyHeader()
+              .AllowCredentials();
     });
 });
 
@@ -138,6 +144,11 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+app.UseStaticFiles();
+app.UseRouting();
+
+app.UseAuthorization();
+app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
 app.UseCors("CorsPolicy");
 app.Run();
 
