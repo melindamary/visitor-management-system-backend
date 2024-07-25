@@ -12,7 +12,7 @@
         public string HostName { get; set; }
 
         public string Photo { get; set; }
-        public int NumberOfDevices { get; set; }
+        public int DeviceCount { get; set; }
         public List<DeviceDetailsDTO> DevicesCarried { get; set; }
 
 

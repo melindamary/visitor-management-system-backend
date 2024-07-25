@@ -45,6 +45,15 @@ namespace VMS.Controllers
         public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id) {
 
             var visitor = await _repository.GetVisitorDetailsAsync(id);
+            if (visitor == null) {
+                var errorResponse = new APIResponse
+                {
+                    Result = null,
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.NotFound,
+                };
+                return NotFound(errorResponse);
+            }
 
             var response = new APIResponse
             {

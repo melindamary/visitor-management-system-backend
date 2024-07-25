@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
+using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
@@ -43,22 +44,39 @@ namespace VMS.Repository
                                         join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.PurposeId
                                         join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.OfficeLocationId
                                         where visitor.VisitorId == id && visitor.CheckInTime != null && visitor.CheckOutTime != null
-                                        select new VisitorDetailsDTO
+                                        select new
                                         {
-                                            Name = visitor.VisitorName,
-                                            Phone = visitor.Phone,
-                                            VisitDate = visitor.VisitDate,
-                                            HostName = visitor.HostName,
-                                            OfficeLocation = location.LocationName,
-                                            CheckInTime = visitor.CheckInTime,
-                                            CheckOutTime = visitor.CheckOutTime,
-                                            VisitPurpose = purpose.PurposeName,
-                                            Photo = Convert.ToBase64String(visitor.Photo)
-
+                                            Visitor = new VisitorDetailsDTO
+                                            {
+                                                Name = visitor.VisitorName,
+                                                Phone = visitor.Phone,
+                                                VisitDate = visitor.VisitDate,
+                                                HostName = visitor.HostName,
+                                                OfficeLocation = location.LocationName,
+                                                CheckInTime = visitor.CheckInTime,
+                                                CheckOutTime = visitor.CheckOutTime,
+                                                VisitPurpose = purpose.PurposeName,
+                                                Photo = Convert.ToBase64String(visitor.Photo),
+                                                DeviceCount = _context.VisitorDevices.Count(u => u.VisitorId == id)
+                                            },
+                                            Devices =(from visitorDevice in _context.VisitorDevices
+                                                       join device in _context.Devices on visitorDevice.DeviceId equals device.DeviceId
+                                                       where visitorDevice.VisitorId == id
+                                                       select new DeviceDetailsDTO
+                                                       {
+                                                           SerialNumber = visitorDevice.SerialNumber,
+                                                           Name = device.DeviceName
+                                                       }).ToList()
                                         }).FirstOrDefaultAsync();
 
 
-            return visitorDetails;
+            if (visitorDetails == null)
+        return null;
+
+    // Assign devices to visitor details
+    visitorDetails.Visitor.DevicesCarried = visitorDetails.Devices;
+
+    return visitorDetails.Visitor;
         }
     }
 }
