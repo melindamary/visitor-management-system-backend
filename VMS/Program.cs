@@ -11,6 +11,8 @@ using VMS.AVHubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
+
+
 builder.Services.AddSignalR();
 
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
@@ -55,8 +57,9 @@ app.UseHttpsRedirection();
 app.MapControllers();
 app.UseStaticFiles();
 app.UseRouting();
+
 app.UseAuthorization();
-app.MapHub<VisitorHub>("/ActiveVisitorsignalR").RequireCors("CorsPolicy");
+app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
 app.UseCors("CorsPolicy");
 app.Run();
 
