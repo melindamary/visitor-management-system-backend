@@ -13,12 +13,17 @@ using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
 using VMS.AVHubs;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 
 var builder = WebApplication.CreateBuilder(args);
 
 
 builder.Services.AddSignalR();
+/*builder.Services.AddHostedService<PostgresListenerService>();
+*/
 
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 // Add this line  
@@ -27,7 +32,15 @@ builder.Host.UseSerilog();
 
 // Add services to the container.
 builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<PostgresListenerService>();
 
+/*builder.Services.AddHostedService<PostgresListenerService>();
+*/builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.Console()
+    .WriteTo.File("Logs/myapp-.log", rollingInterval: RollingInterval.Day)
+    .CreateLogger();
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddMvc();
 builder.Services.AddSwaggerGen(option => {
@@ -74,6 +87,8 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
 builder.Services.AddScoped<VisitorService>();
+/*builder.Services.AddScoped<VisitorMonitorService>();
+*/
 builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
@@ -147,7 +162,9 @@ app.UseStaticFiles();
 app.UseRouting();
 
 app.UseAuthorization();
+
 app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
+
 app.UseCors("CorsPolicy");
 app.Run();
 

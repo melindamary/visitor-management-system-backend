@@ -31,7 +31,7 @@ namespace VMS.Controllers
         }
     }
 }
-*/
+*//*
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
@@ -48,29 +48,46 @@ namespace VMS.Controllers
     public class ActiveVisitorsignalRController : ControllerBase
     {
 
-        private readonly IHubContext<VisitorHub> _hubContext;
         private readonly VisitorManagementDbContext _context;
+        private readonly IHubContext<VisitorHub> _hubContext;
 
-        public ActiveVisitorsignalRController(IHubContext<VisitorHub> hubContext, VisitorManagementDbContext context)
+
+        public ActiveVisitorsignalRController(VisitorManagementDbContext context)
         {
-            _hubContext = hubContext;
             _context = context;
-        }
+            _hubContext = hubContext;
 
-        [HttpGet]
-        public async Task<IActionResult> UpdateVisitorCount()
+        }
+        [HttpGet("test-connection")]
+        public async Task<IActionResult> TestConnection()
         {
-            // Add a new visitor
-            _context.Visitors.Add(new Visitor());
-            await _context.SaveChangesAsync();
-
-            // Get the updated visitor count
-            int count = await _context.Visitors.CountAsync();
-
-            // Send the updated visitor count to all clients
-            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", count);
-
-            return Ok(count);
+            try
+            {
+                // Try to fetch the count of visitors
+                var visitorCount = await _context.Visitors.CountAsync();
+                return Ok($"Connection successful. Visitor count: {visitorCount}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Connection failed: {ex.Message}");
+            }
         }
+
+        *//*        [HttpGet]
+                public async Task<IActionResult> UpdateVisitorCount()
+                {
+                    // Add a new visitor
+                    _context.Visitors.Add(new Visitor());
+                    await _context.SaveChangesAsync();
+
+                    // Get the updated visitor count
+                    int count = await _context.Visitors.CountAsync();
+
+                    // Send the updated visitor count to all clients
+                    await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", count);
+
+                    return Ok(count);
+                }*//*
     }
 }
+*/
