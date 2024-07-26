@@ -63,9 +63,25 @@ namespace VMS.Repository
 
                                      }).ToListAsync();
 
-            return purposeList;
-                    
-                
+            return purposeList;    
+        }
+
+        public async Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO)
+        {
+            var purpose = await _context.PurposeOfVisits.FindAsync(updatePurposeRequestDTO.Id);
+            if (purpose == null)
+            {
+                return false;
+            }
+            purpose.Name = updatePurposeRequestDTO.Purpose;
+            purpose.UpdatedBy = updatePurposeRequestDTO.UserId;
+            purpose.UpdatedDate = DateTime.Now;
+            purpose.Status = 1;
+
+            _context.PurposeOfVisits.Update(purpose);
+            await _context.SaveChangesAsync();
+
+            return true;
         }
         public async Task SaveAsync()
         {

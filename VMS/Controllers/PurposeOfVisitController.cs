@@ -45,7 +45,6 @@ namespace VMS.Controllers
 
             if (purposes == null) {
                 var errorResponse = new APIResponse { 
-                    Result = null,
                     StatusCode = HttpStatusCode.NotFound,
                     ErrorMessages = new List<string> {"No purposes of visit found" }
                 };
@@ -57,10 +56,30 @@ namespace VMS.Controllers
             {
                 Result = purposes,
                 StatusCode = HttpStatusCode.OK,
-                ErrorMessages = null,
             };
 
             return Ok(purposes);
+
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<APIResponse>> UpdatePurpose([FromBody] PurposeUpdateRequestDTO updatePurposeRequestDTO)
+        {
+            var result = await _repository.UpdatePurposeAsync(updatePurposeRequestDTO);
+            if (!result) {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "Purpose does not exist" }
+                };
+                return NotFound(errorResponse);
+            }
+            return new APIResponse
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                ErrorMessages = null
+            };
 
         }
     }
