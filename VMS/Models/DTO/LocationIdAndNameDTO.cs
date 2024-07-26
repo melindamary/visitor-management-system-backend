@@ -2,7 +2,7 @@
 
 namespace VMS.Models.DTO
 {
-    public class GetLocationIdAndNameDTO
+    public class LocationIdAndNameDTO
     {
         [Required]
         public int Id { get; set; }

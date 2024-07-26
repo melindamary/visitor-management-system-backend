@@ -4,6 +4,6 @@ namespace VMS.Repository.IRepository
 {
     public interface IlocationRepository
     {
-        Task<IEnumerable<GetLocationIdAndNameDTO>> GetLocationIdAndNameAsync();
+        Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync();
     }
 }
