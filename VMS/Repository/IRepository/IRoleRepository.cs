@@ -6,5 +6,6 @@ namespace VMS.Repository.IRepository
     {
         Task<Role> GetRoleByIdAsync(int roleId);
         Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync();
+        Task<List<Role>> GetAllRolesAsync();
     }
 }

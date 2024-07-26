@@ -9,6 +9,8 @@ namespace VMS.Repository
     public class VisitorFormRepository : IVisitorFormRepository
     {
         private readonly VisitorManagementDbContext _context;
+        public const int _systemUserId = 1;
+        public const string _deafaultPassCode = "0";
 
         public VisitorFormRepository(VisitorManagementDbContext context)
         {
@@ -21,8 +23,8 @@ namespace VMS.Repository
                 VisitorId = addDeviceDto.VisitorId,
                 DeviceId = addDeviceDto.DeviceId,
                 SerialNumber = addDeviceDto.SerialNumber,
-                CreatedBy = 1,
-                UpdatedBy = 1
+                CreatedBy = _systemUserId,
+                UpdatedBy = _systemUserId
             };
 
             _context.VisitorDevices.Add(visitorDevice);
@@ -46,8 +48,9 @@ namespace VMS.Repository
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                StaffId = 1,
-                CreatedBy = 1,
+                StaffId = _systemUserId,
+                CreatedBy = _systemUserId,
+                VisitorPassCode= _deafaultPassCode,
                 VisitDate = DateTime.Now.Date,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,

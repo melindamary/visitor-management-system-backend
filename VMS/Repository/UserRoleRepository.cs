@@ -19,14 +19,20 @@ namespace VMS.Repository
             await _context.SaveChangesAsync();
         }
 
-        public Task<UserRole> AddVisitorDeviceAsync(AddUserRoleDTO addUserRoleDto)
+        public async Task<List<UserRole>> GetAllUserRolesAsync()
         {
-            throw new NotImplementedException();
+            return await _context.UserRoles.ToListAsync();
         }
 
         public async Task<UserRole> GetUserRoleByUserIdAsync(int userId)
         {
             return await _context.UserRoles.SingleOrDefaultAsync(r => r.UserId == userId);
+        }
+
+        public async Task UpdateUserRoleAsync(UserRole userRole)
+        {
+            _context.UserRoles.Update(userRole);
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
+using VMS.Models.DTO;
 using VMS.Services.IServices;
 
 namespace VMS.Controllers
@@ -34,12 +35,45 @@ namespace VMS.Controllers
             return Ok(response);
         }
 
-     /*   [HttpPost("Add-User")]
-        public async Task<ActionResult<APIResponse>> AddUser(AddNewUserDTO addNewUserDTO)
+        [HttpPost]
+        public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
         {
+             await _userService.AddUserAsync(addNewUserDto);
+            return Ok();
+        }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetUserById(int id)
+        {
+            var userDetail = await _userService.GetUserByIdAsync(id);
+            if (userDetail == null)
+            {
+                return NotFound();
+            }
+            return Ok(userDetail);
+        }
 
-          
-        }*/
+        [HttpGet]
+        public async Task<ActionResult<List<UserOverviewDTO>>> GetAllUsersOverview()
+        {
+            var userOverviews = await _userService.GetAllUsersOverviewAsync();
+            return Ok(userOverviews);
+        }
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+        {
+            if (id != updateUserDto.UserId)
+            {
+                return BadRequest();
+            }
+
+            var result = await _userService.UpdateUserAsync(updateUserDto);
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
     }
 }

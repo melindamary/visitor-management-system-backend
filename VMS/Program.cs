@@ -78,6 +78,8 @@ builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
 builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
 builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>();
 builder.Services.AddScoped<IlocationRepository, LocationRepository>();
+builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
+builder.Services.AddScoped<IUserLocationRepository, UserLocationRepository>();
 
 
 builder.Services.AddScoped<IReportRepository, ReportRepository>();

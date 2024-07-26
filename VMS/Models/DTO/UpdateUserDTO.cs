@@ -1,25 +1,16 @@
 ﻿namespace VMS.Models.DTO
 {
-    public class AddNewUserDTO
+    public class UpdateUserDTO
     {
-        // User properties
-        public string UserName { get; set; }
+        public int UserId { get; set; }
+        public string Username { get; set; }
         public string Password { get; set; }
-        public DateTime? ValidFrom { get; set; }
-
-        // UserDetail properties
-        public int OfficeLocationId { get; set; }
         public string FirstName { get; set; }
         public string LastName { get; set; }
         public string Phone { get; set; }
         public string Address { get; set; }
-
-        // UserRole property
+        public int OfficeLocationId { get; set; }
         public int RoleId { get; set; }
-
-       
-
-
-
+        public DateTime? ValidFrom { get; set; }
     }
 }

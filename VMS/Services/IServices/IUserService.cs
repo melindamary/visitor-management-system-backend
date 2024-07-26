@@ -6,6 +6,10 @@ namespace VMS.Services.IServices
     public interface IUserService
     {
      Task<ActionResult<UserRoleDTO>> GetUserRoleByUsername(string username);
-       
+     Task AddUserAsync(AddNewUserDTO addNewUserDto);
+        Task<UserDetailDTO> GetUserByIdAsync(int userId);
+        Task<List<UserOverviewDTO>> GetAllUsersOverviewAsync();
+        Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDto);
+
     }
 }
