@@ -15,7 +15,7 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
-        public async Task<IEnumerable<GetLocationIdAndNameDTO>> GetLocationIdAndName()
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndName()
         {
             return await _repository.GetLocationIdAndNameAsync();
         }

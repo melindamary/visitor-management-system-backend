@@ -12,10 +12,10 @@ namespace VMS.Repository
         {
             _context = context;
         }
-        public async Task<IEnumerable<GetLocationIdAndNameDTO>> GetLocationIdAndNameAsync()
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
         {
             return await _context.OfficeLocations
-                .Select(d => new GetLocationIdAndNameDTO
+                .Select(d => new LocationIdAndNameDTO
                 {
                     Id = d.Id,
                     Name = d.Name
