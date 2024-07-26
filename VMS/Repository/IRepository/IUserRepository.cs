@@ -10,5 +10,7 @@ namespace VMS.Repository.IRepository
         Task<User> AddNewUserAsync(AddNewUserDTO addNewUserDTO);
         Task UpdateLoggedInStatusAsync(string username);
 
+        Task<LocationIdAndNameDTO> GetUserLocationAsync(int userId);
+
     }
 }

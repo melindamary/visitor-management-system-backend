@@ -39,7 +39,12 @@ namespace VMS.Controllers
                 return Unauthorized(errorResponse);
             }
 
+            APIResponse response = new APIResponse();
             var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
+            var location = await _repository.GetUserLocationAsync(user.Id);
+            if (location == null) {
+                response.ErrorMessages.Add("Location not found for user");
+            }
 
             await _repository.UpdateLoggedInStatusAsync(user.Username);
 
@@ -48,13 +53,15 @@ namespace VMS.Controllers
             var loginResponse = new LoginResponseDTO
             {
                 Username = user.Username,
-                Token = token
+                Token = token,
+                Location = location.Name
             };
 
-            APIResponse response = new APIResponse();
+            
             response.Result = loginResponse;
             response.IsSuccess = true;
             response.StatusCode = HttpStatusCode.OK;
+            response.ErrorMessages = null;
             return Ok(response);
 
         }

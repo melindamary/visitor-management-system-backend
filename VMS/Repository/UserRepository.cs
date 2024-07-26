@@ -57,8 +57,22 @@ namespace VMS.Repository
         }
         private bool VerifyPasswordHash(string password, string storedHash)
         {
-            // Implement your hash verification logic here
+            // Implement hash verification logic here
             return true;
+        }
+
+        public async Task<LocationIdAndNameDTO> GetUserLocationAsync(int id)
+        {
+           var userLocation = await (from user in _context.UserDetails
+                                     join location in _context.OfficeLocations on user.OfficeLocationId equals location.Id
+                                     where user.Id == id
+                                     select new LocationIdAndNameDTO
+                                     {
+                                      Id = location.Id,
+                                      Name = location.Name
+                                     }).FirstOrDefaultAsync();
+            return userLocation;
+        
         }
     }
 }
