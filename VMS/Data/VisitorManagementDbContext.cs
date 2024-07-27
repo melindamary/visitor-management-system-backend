@@ -1,22 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using Microsoft.EntityFrameworkCore;
 using System.Reflection;
-using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 using VMS.Models;
 
 namespace VMS.Data;
 
 public partial class VisitorManagementDbContext : DbContext
 {
-    public VisitorManagementDbContext()
-    {
-    }
+    public VisitorManagementDbContext() {}
 
     public VisitorManagementDbContext(DbContextOptions<VisitorManagementDbContext> options)
-        : base(options)
-    {
-    }
+        : base(options){}
     public virtual DbSet<Device> Devices { get; set; }
     public virtual DbSet<OfficeLocation> OfficeLocations { get; set; }
     public virtual DbSet<Page> Pages { get; set; }

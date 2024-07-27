@@ -1,6 +1,5 @@
 ﻿namespace VMS.Data.Configurations
 {
-    // Configurations/DeviceConfiguration.cs
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using VMS.Models;

@@ -1,5 +1,4 @@
-﻿// File: Repository/StatisticsRepository.cs
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;

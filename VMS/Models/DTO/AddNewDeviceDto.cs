@@ -6,8 +6,10 @@ namespace VMS.Models.DTO
     {
         [Required]
         public string? deviceName { get; set; }
+
         [Required]
         public int CreatedBy { get; set; }
+
         [Required]
         public int UpdatedBy { get; set; }
     }

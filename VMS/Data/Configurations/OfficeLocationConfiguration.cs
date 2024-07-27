@@ -1,6 +1,5 @@
 ﻿namespace VMS.Data.Configurations
 {
-   
     using Microsoft.EntityFrameworkCore;
     using Microsoft.EntityFrameworkCore.Metadata.Builders;
     using VMS.Models;

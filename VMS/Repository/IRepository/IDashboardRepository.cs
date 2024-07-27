@@ -1,6 +1,4 @@
-﻿using System.Threading.Channels;
-using VMS.Data;
-namespace VMS.Repository.IRepository
+﻿namespace VMS.Repository.IRepository
 {
     public interface IDashboardRepository
     {

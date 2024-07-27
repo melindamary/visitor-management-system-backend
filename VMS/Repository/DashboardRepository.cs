@@ -1,6 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
-using System.Threading.Channels;
-using VMS.Data;
+﻿using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
 namespace VMS.Repository

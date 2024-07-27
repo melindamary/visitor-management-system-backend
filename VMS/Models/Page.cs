@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace VMS.Models;
-
+﻿namespace VMS.Models;
 public partial class Page
 {
     public int Id { get; set; }
