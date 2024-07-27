@@ -12,8 +12,8 @@ using VMS.Data;
 namespace VMS.Migrations
 {
     [DbContext(typeof(VisitorManagementDbContext))]
-    [Migration("20240725115549_UpdateColumnVisitorPassCodeInVisitor")]
-    partial class UpdateColumnVisitorPassCodeInVisitor
+    [Migration("20240727123914_AddStatusColumnToOfficeLocationTable")]
+    partial class AddStatusColumnToOfficeLocationTable
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -105,6 +105,10 @@ namespace VMS.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("phone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
