@@ -4,15 +4,14 @@ using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using Serilog;
 using System.Text;
-using System.Configuration;
 using System.Text.Json.Serialization;
 using VMS;
+using VMS.AVHubs;
 using VMS.Data;
 using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
-using VMS.AVHubs;
 
 
 var builder = WebApplication.CreateBuilder(args);
