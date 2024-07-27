@@ -80,8 +80,6 @@ builder.Services.AddScoped<IPurposeOfVisitRepository, PurposeOfVisitRepository>(
 builder.Services.AddScoped<IlocationRepository, LocationRepository>();
 builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
 builder.Services.AddScoped<IUserLocationRepository, UserLocationRepository>();
-
-
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
 
 
@@ -107,7 +105,8 @@ builder.Services.AddAuthentication(x =>
 
 builder.Services.AddAuthorization(options =>
 {
-    options.AddPolicy("AdminOnly", policy => policy.RequireUserName("admin"));
+    options.AddPolicy("AdminOnly", policy => policy.RequireRole("Admin"));
+    options.AddPolicy("Security", policy => policy.RequireRole("Security"));
 });
  
 
@@ -133,6 +132,8 @@ builder.Services.AddCors(options =>
 
 
 var app = builder.Build();
+app.UseCors("CorsPolicy");
+app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
@@ -146,10 +147,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.MapControllers();
 app.UseStaticFiles();
-app.UseRouting();
 
-app.UseAuthorization();
 app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
-app.UseCors("CorsPolicy");
 app.Run();
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
 using VMS.Repository.IRepository;
@@ -15,7 +16,7 @@ namespace VMS.Controllers
             _repository = repository;
         }
 
-        /*[Authorize(Policy = "AdminOnly")]*/
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet]
         public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
         {
@@ -30,7 +31,7 @@ namespace VMS.Controllers
                 };
                 return NotFound(errorResponse);
             }
-
+            Console.WriteLine("Reports:", visitors);
             var response = new APIResponse
             {
                 Result = visitors,
@@ -41,6 +42,7 @@ namespace VMS.Controllers
             return Ok(response);
         }
 
+        [Authorize(Policy = "AdminOnly")]
         [HttpGet("{id}")]
         public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id) {
 

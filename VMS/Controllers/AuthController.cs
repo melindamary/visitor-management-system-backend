@@ -7,6 +7,7 @@ using System.Text;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
+using VMS.Services.IServices;
 
 namespace VMS.Controllers
 {
@@ -17,10 +18,12 @@ namespace VMS.Controllers
     {
         private readonly IUserRepository _repository;
         private readonly IConfiguration _configuration;
+        private readonly IUserService _service;
 
-        public AuthController(IUserRepository repository, IConfiguration configuration)
+        public AuthController(IUserRepository repository, IUserService service, IConfiguration configuration)
         {
             _repository = repository;
+            _service = service;
             _configuration = configuration;
         }
 
@@ -40,21 +43,30 @@ namespace VMS.Controllers
             }
 
             APIResponse response = new APIResponse();
+
             var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
             var location = await _repository.GetUserLocationAsync(user.Id);
             if (location == null) {
                 response.ErrorMessages.Add("Location not found for user");
             }
 
+            var userRole = await _service.GetUserRoleByUsernameAsync(user.Username);
+            Console.WriteLine(userRole.Value.RoleName);
+
+            if (userRole == null) {
+                response.ErrorMessages.Add("Role not found for user");
+            }
+
             await _repository.UpdateLoggedInStatusAsync(user.Username);
 
-            var token = GenerateJwtToken(user);
+            var token = GenerateJwtToken(user, userRole.Value.RoleName);
 
             var loginResponse = new LoginResponseDTO
             {
                 Username = user.Username,
                 Token = token,
-                Location = location.Name
+                Location = location.Name,
+                Role = userRole.Value.RoleName
             };
 
             
@@ -66,16 +78,17 @@ namespace VMS.Controllers
 
         }
 
-        private string GenerateJwtToken(User user)
+        private string GenerateJwtToken(User user, string userRole)
         {
+            var tokenHandler = new JwtSecurityTokenHandler();
             var claims = new[]
             {
                 new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                 new Claim(ClaimTypes.Name, user.Username),
-                new Claim(ClaimTypes.Role, "admin")
+                new Claim(ClaimTypes.Role, userRole)
             };
 
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["ApiSettings:Key"]));
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["ApiSettings:Key"]));
             var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -85,7 +98,7 @@ namespace VMS.Controllers
                 SigningCredentials = creds
             };
 
-            var tokenHandler = new JwtSecurityTokenHandler();
+            
             var token = tokenHandler.CreateToken(tokenDescriptor);
 
             return tokenHandler.WriteToken(token);

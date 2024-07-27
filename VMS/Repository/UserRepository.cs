@@ -14,8 +14,6 @@ namespace VMS.Repository
             _context = context;
         }
 
-      
-
         public async Task AddUserAsync(User user)
         {
             _context.Users.Add(user);
