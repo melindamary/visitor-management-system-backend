@@ -103,6 +103,10 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("phone");
 
+                    b.Property<int>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("updated_by");

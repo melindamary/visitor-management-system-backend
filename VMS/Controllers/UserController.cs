@@ -21,7 +21,7 @@ namespace VMS.Controllers
         public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) 
         {
 
-            var userRole = await _userService.GetUserRoleByUsername(username);
+            var userRole = await _userService.GetUserRoleByUsernameAsync(username);
 
             if (userRole == null)
             {

@@ -1,7 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using VMS.Data;
 using VMS.Models;
-using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
 namespace VMS.Repository
@@ -26,7 +25,11 @@ namespace VMS.Repository
 
         public async Task<UserRole> GetUserRoleByUserIdAsync(int userId)
         {
-            return await _context.UserRoles.SingleOrDefaultAsync(r => r.UserId == userId);
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userRole == null) {
+                Console.WriteLine("User does not have role");
+            }
+            return userRole;
         }
 
         public async Task UpdateUserRoleAsync(UserRole userRole)

@@ -31,7 +31,7 @@ namespace VMS.Repository
             return await _context.Roles
                 .Select(d => new GetRoleIdAndNameDTO
                 {
-                    Id = d.Id,
+                   Id = d.Id,
                    Name = d.Name
                 })
                 .ToListAsync();

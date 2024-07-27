@@ -1,13 +1,12 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VMS.Models;
 using VMS.Models.DTO;
-using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services.IServices;
 
 namespace VMS.Services
 {
-    
+
     public class UserService : IUserService
     {
         private readonly IUserRepository _userRepository;
@@ -17,7 +16,7 @@ namespace VMS.Services
         private readonly IUserLocationRepository _userLocationRepository;
 
         public const int _activeStatus = 1;
-        public const int _isLoggeedIn = 0;
+        public const int _isLoggedIn = 0;
 
 
 
@@ -34,16 +33,16 @@ namespace VMS.Services
 
       
 
-        public async Task<ActionResult<UserRoleDTO>> GetUserRoleByUsername(string username)
+        public async Task<ActionResult<UserRoleDTO>> GetUserRoleByUsernameAsync(string username)
         {
-            var user = await _userRepository.GetUserByUsernameAsync(username);
+            var user = await _userRepository.GetUserByUsernameAsync(username); //this is working
 
             if (user == null)
             {
                 return null; // User not found
             }
 
-            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.Id);
+            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.Id); //returns UserRole
 
             if (userRole == null)
             {
@@ -56,10 +55,9 @@ namespace VMS.Services
             {
                 UserId = user.Id,
                 Username = user.Username,
-                RoleName = role?.Name ?? "Unknown" // Handle cases where role might not be found
+                RoleId = userRole.RoleId,
+                RoleName = role?.Name ?? "Role does not exist for user" // Handle cases where role might not be found
             };
-
-
         }
 
         public async Task AddUserAsync(AddNewUserDTO addNewUserDto)
@@ -70,7 +68,7 @@ namespace VMS.Services
                 Password = addNewUserDto.Password,
                 CreatedDate = DateTime.Now,
                 IsActive = _activeStatus,
-                IsLoggedIn = _isLoggeedIn,
+                IsLoggedIn = _isLoggedIn,
                 ValidFrom = addNewUserDto.ValidFrom
             };
 
