@@ -1,4 +1,4 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿/*using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using VMS.Models;
 using VMS.Data;
@@ -93,4 +93,4 @@ namespace VMS.Controllers
             return NoContent();
         }
     }
-}
+}*/

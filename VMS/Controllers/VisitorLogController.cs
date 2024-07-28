@@ -33,7 +33,6 @@ namespace VMS.Controllers
                 var checkedOutVisitorsCount = await _visitorRepository.GetCheckedOutVisitorsCountToday();
                 var upcomingVisitors = await _visitorRepository.GetUpcomingVisitorsToday();
                 var activeVisitors = await _visitorRepository.GetActiveVisitorsToday();
-                var visitorsToday = await _visitorService.GetVisitorDetailsToday();
 
                 var result = new
                 {
@@ -42,7 +41,6 @@ namespace VMS.Controllers
                     CheckedOutVisitorsCount = checkedOutVisitorsCount,
                     UpcomingVisitors = upcomingVisitors,
                     ActiveVisitors = activeVisitors,
-                    VisitorsToday = visitorsToday
                 };
 
                 response.IsSuccess = true;
