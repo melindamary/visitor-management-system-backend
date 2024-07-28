@@ -2,8 +2,8 @@
 {
     public class VisitorLogDTO
     {
-        public int VisitorId { get; set; }
-        public string? VisitorName { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
         public string? Phone { get; set; }
         public string? PurposeName { get; set; }
         public DateTime? CheckInTime { get; set; }

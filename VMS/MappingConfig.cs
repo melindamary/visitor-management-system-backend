@@ -17,6 +17,18 @@ namespace VMS
             // Reverse mapping from VisitorLogDTO to Visitor if needed
             CreateMap<VisitorLogDTO, Visitor>()
                 .ForMember(dest => dest.Purpose, opt => opt.Ignore());
+
+            CreateMap<OfficeLocation, LocationDetailsDTO>().ReverseMap();
+
+            CreateMap<AddOfficeLocationDTO, OfficeLocation>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
+                .ForMember(dest => dest.CreatedDate, opt => opt.Ignore());
+
+            CreateMap<UpdateLocationDTO, OfficeLocation>()
+                .ForMember(dest => dest.Id, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdatedDate, opt => opt.Ignore())
+                .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore());
         }
     }
 }
