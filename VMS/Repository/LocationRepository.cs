@@ -16,7 +16,6 @@ namespace VMS.Repository
             _context = context;
             _mapper = mapper;
         }
-        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
 
         public async Task<IEnumerable<LocationDetailsDTO>> GetAllLocationDetailsAsync()
         {
@@ -58,7 +57,7 @@ namespace VMS.Repository
         }
     
 
-    public async Task<IEnumerable<GetLocationIdAndNameDTO>> GetLocationIdAndNameAsync()
+    public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
         {
             return await _context.OfficeLocations
                 .Select(d => new LocationIdAndNameDTO
