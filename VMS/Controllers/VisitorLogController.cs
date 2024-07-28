@@ -9,31 +9,30 @@ namespace VMS.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class VisitorLogController:ControllerBase
+    public class VisitorLogController : ControllerBase
     {
-        private readonly IVisitorRepository _visitorRepository;
-        private readonly VisitorService _visitorService;
+        private readonly IVisitorRepository _repository;
 
-        public VisitorLogController(IVisitorRepository visitorRepository, VisitorService visitorService)
+        public VisitorLogController(IVisitorRepository repository, VisitorService visitorService)
         {
-            _visitorRepository = visitorRepository;
-            _visitorService = visitorService;
+            _repository = repository;
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(APIResponse), 200)]
-        [ProducesResponseType(typeof(APIResponse), 500)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
         public async Task<ActionResult<APIResponse>> GetVisitorLogToday()
         {
             var response = new APIResponse();
             try
             {
-                var activeVisitorsCount = await _visitorRepository.GetActiveVisitorsCountToday();
-                var totalVisitorsCount = await _visitorRepository.GetTotalVisitorsCountToday();
-                var checkedOutVisitorsCount = await _visitorRepository.GetCheckedOutVisitorsCountToday();
-                var upcomingVisitors = await _visitorRepository.GetUpcomingVisitorsToday();
-                var activeVisitors = await _visitorRepository.GetActiveVisitorsToday();
-                var visitorsToday = await _visitorService.GetVisitorDetailsToday();
+                var activeVisitorsCount = await _repository.GetActiveVisitorsCountToday();
+                var totalVisitorsCount = await _repository.GetTotalVisitorsCountToday();
+                var checkedOutVisitorsCount = await _repository.GetCheckedOutVisitorsCountToday();
+                var upcomingVisitors = await _repository.GetUpcomingVisitorsToday();
+                var activeVisitors = await _repository.GetActiveVisitorsToday();
+                var checkedOutVisitors = await _repository.GetCheckedOutVisitorsToday();
+                var visitorsToday = await _repository.GetVisitorDetailsToday();
 
                 var result = new
                 {
@@ -42,7 +41,8 @@ namespace VMS.Controllers
                     CheckedOutVisitorsCount = checkedOutVisitorsCount,
                     UpcomingVisitors = upcomingVisitors,
                     ActiveVisitors = activeVisitors,
-                    VisitorsToday = visitorsToday
+                    VisitorsToday = visitorsToday,
+                    CheckedOutVisitors = checkedOutVisitors
                 };
 
                 response.IsSuccess = true;
@@ -68,8 +68,25 @@ namespace VMS.Controllers
             var response = new APIResponse();
             try
             {
-                var checkedInVisitor = await _visitorRepository.UpdateCheckInTimeAndCardNumber(id, updateVisitorPassCode);
+                // Check if the model state is valid
+                if (!ModelState.IsValid)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    response.ErrorMessages.Add("Invalid input data.");
 
+                    // Collect all validation errors
+                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        response.ErrorMessages.Add(error.ErrorMessage);
+                    }
+                    return BadRequest(response);
+                }
+
+                // Call the repository method to update the visitor details
+                var checkedInVisitor = await _repository.UpdateCheckInTimeAndCardNumber(id, updateVisitorPassCode);
+
+                // If the visitor is not found, return a NotFound response
                 if (checkedInVisitor == null)
                 {
                     response.IsSuccess = false;
@@ -78,6 +95,7 @@ namespace VMS.Controllers
                     return NotFound(response);
                 }
 
+                // If successful, return the updated visitor details
                 response.IsSuccess = true;
                 response.StatusCode = HttpStatusCode.OK;
                 response.Result = checkedInVisitor;
@@ -85,10 +103,19 @@ namespace VMS.Controllers
             }
             catch (ArgumentException ex)
             {
+                // Handle business logic errors
                 response.IsSuccess = false;
                 response.StatusCode = HttpStatusCode.BadRequest;
                 response.ErrorMessages.Add(ex.Message);
                 return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle unexpected errors
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                response.ErrorMessages.Add("An unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
             }
         }
 
@@ -99,21 +126,30 @@ namespace VMS.Controllers
         public async Task<IActionResult> UpdateCheckOutTime(int id)
         {
             var response = new APIResponse();
-            var checkedOutVisitor = await _visitorRepository.UpdateCheckOutTime(id);
+            try
+            {
+                var checkedOutVisitor = await _repository.UpdateCheckOutTime(id);
 
-            if (checkedOutVisitor == null)
+                if (checkedOutVisitor == null)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages.Add("Visitor not found.");
+                    return NotFound(response);
+                }
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = checkedOutVisitor;
+                return Ok(response);
+            }
+            catch (Exception ex)
             {
                 response.IsSuccess = false;
-                response.StatusCode = HttpStatusCode.NotFound;
-                response.ErrorMessages.Add("Visitor not found.");
-                return NotFound(response);
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                response.ErrorMessages.Add("An unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
             }
-
-            response.IsSuccess = true;
-            response.StatusCode = HttpStatusCode.OK;
-            response.Result = checkedOutVisitor;
-            return Ok(response);
         }
     }
 }
-
