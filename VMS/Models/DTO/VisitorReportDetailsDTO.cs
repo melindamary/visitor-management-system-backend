@@ -20,5 +20,11 @@
         public DateTime? CheckInTime { get; set; }
 
         public DateTime? CheckOutTime { get; set; }
+
+        public string Photo { get; set; }
+        public int DeviceCount { get; set; }
+        public List<DeviceDetailsDTO> Devices { get; set; }
+
+
     }
 }
