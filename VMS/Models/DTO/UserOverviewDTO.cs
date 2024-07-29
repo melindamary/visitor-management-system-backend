@@ -2,6 +2,7 @@
 {
     public class UserOverviewDTO
     {
+        public int userId { get; set; }
         public string Username { get; set; }
         public string RoleName { get; set; }
         public string Location { get; set; }

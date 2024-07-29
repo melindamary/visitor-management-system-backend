@@ -3,9 +3,9 @@ public partial class UserLocation
 {
     public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? OfficeLocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
     public int? CreatedBy { get; set; }
 

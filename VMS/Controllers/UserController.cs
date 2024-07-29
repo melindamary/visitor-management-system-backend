@@ -38,42 +38,104 @@ namespace VMS.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
         {
-             await _userService.AddUserAsync(addNewUserDto);
-            return Ok();
+            try
+            {
+                await _userService.AddUserAsync(addNewUserDto);
+
+                var successResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = "User created successfully"
+                };
+
+                return Ok(successResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    ErrorMessages = new List<string> { ex.Message }
+                };
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetUserById(int id)
+        public async Task<ActionResult<APIResponse>> GetUserById(int id)
         {
+           
             var userDetail = await _userService.GetUserByIdAsync(id);
             if (userDetail == null)
             {
-                return NotFound();
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No User found" }
+                };
+                return NotFound(errorResponse);
             }
+            var response = new APIResponse
+            {
+                Result = userDetail,
+                StatusCode = HttpStatusCode.OK,
+            };
             return Ok(userDetail);
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<UserOverviewDTO>>> GetAllUsersOverview()
+        public async Task<ActionResult<APIResponse>> GetAllUsersOverview()
         {
             var userOverviews = await _userService.GetAllUsersOverviewAsync();
+            if (userOverviews == null)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No User found" }
+                };
+                return NotFound(errorResponse);
+            }
+            var response = new APIResponse
+            {
+                Result = userOverviews,
+                StatusCode = HttpStatusCode.OK,
+            };
+
             return Ok(userOverviews);
         }
-        [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+       [HttpPut("{id}")]
+public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+{
+    if (id != updateUserDto.UserId)
+    {
+        var errorResponse = new APIResponse
         {
-            if (id != updateUserDto.UserId)
-            {
-                return BadRequest();
-            }
-
-            var result = await _userService.UpdateUserAsync(updateUserDto);
-            if (!result)
-            {
-                return NotFound();
-            }
-
-            return NoContent();
-        }
+            StatusCode = HttpStatusCode.BadRequest,
+            ErrorMessages = new List<string> { "User ID mismatch" }
+        };
+        return BadRequest(errorResponse);
     }
+
+    var result = await _userService.UpdateUserAsync(updateUserDto);
+    if (!result)
+    {
+        var errorResponse = new APIResponse
+        {
+            StatusCode = HttpStatusCode.NotFound,
+            ErrorMessages = new List<string> { "User not found" }
+        };
+        return NotFound(errorResponse);
+    }
+
+    var successResponse = new APIResponse
+    {
+        StatusCode = HttpStatusCode.OK,
+        Result = "User updated successfully"
+    };
+
+    return Ok(successResponse);
+}
+ }
 }

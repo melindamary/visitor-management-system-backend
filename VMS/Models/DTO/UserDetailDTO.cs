@@ -9,7 +9,9 @@
         public string Phone { get; set; }
         public string Address { get; set; }
         public string RoleName { get; set; }
-        public int? OfficeLocationId { get; set; }
+        public int RoleId { get; set; }
+        public string OfficeLocation { get; set; }
+        public int OfficeLocationId { get; set; }
        
         public int? IsActive { get; set; }
         public DateTime? ValidFrom { get; set; }

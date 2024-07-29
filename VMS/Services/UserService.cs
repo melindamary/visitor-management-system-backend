@@ -1,8 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using VMS.Models;
 using VMS.Models.DTO;
+using Microsoft.AspNetCore.Identity;
+using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services.IServices;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace VMS.Services
 {
@@ -14,6 +17,7 @@ namespace VMS.Services
         private readonly IRoleRepository _roleRepository;
         private readonly IUserDetailsRepository _userDetailRepository;
         private readonly IUserLocationRepository _userLocationRepository;
+        private readonly IlocationRepository _locationRepository;
 
         public const int _activeStatus = 1;
         public const int _isLoggedIn = 0;
@@ -21,7 +25,7 @@ namespace VMS.Services
 
 
         public UserService(IUserRepository userRepository, IUserLocationRepository userLocationRepository,
-            IUserDetailsRepository userDetailRepository,
+            IUserDetailsRepository userDetailRepository,IlocationRepository locationRepository,
             IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;
@@ -29,6 +33,7 @@ namespace VMS.Services
             _roleRepository = roleRepository;
             _userDetailRepository = userDetailRepository;  
             _userLocationRepository = userLocationRepository;
+            _locationRepository = locationRepository;
         }
 
       
@@ -62,15 +67,21 @@ namespace VMS.Services
 
         public async Task AddUserAsync(AddNewUserDTO addNewUserDto)
         {
+            var passwordHasher = new PasswordHasher<User>();
+
+            // Create the user object
             var user = new User
             {
                 Username = addNewUserDto.UserName,
-                Password = addNewUserDto.Password,
                 CreatedDate = DateTime.Now,
                 IsActive = _activeStatus,
                 IsLoggedIn = _isLoggedIn,
                 ValidFrom = addNewUserDto.ValidFrom
             };
+
+            // Hash the password and set it
+            user.Password = passwordHasher.HashPassword(user, addNewUserDto.Password);
+
 
             await _userRepository.AddUserAsync(user);
            
@@ -116,8 +127,9 @@ namespace VMS.Services
 
             var userDetail = await _userDetailRepository.GetUserDetailByUserIdAsync(userId);
             var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(userId);
-            var role = await _roleRepository.GetRoleByIdAsync(userRole.RoleId);
+            var role = await _roleRepository.GetRoleByIdAsync(userRole.RoleId);           
             var userLocation = await _userLocationRepository.GetUserLocationByUserIdAsync(userId);
+            var locations = await _locationRepository.GetLocationByIdAsync(userLocation.OfficeLocationId);
 
             return new UserDetailDTO
             {
@@ -128,7 +140,9 @@ namespace VMS.Services
                 Phone = userDetail.Phone,
                 Address = userDetail.Address,
                 RoleName = role?.Name ?? "Unknown",
-                OfficeLocationId = userLocation.OfficeLocationId,               
+                RoleId = role.Id,
+                OfficeLocation = locations.Name,     
+                OfficeLocationId = locations.Id,
                 IsActive = user.IsActive,
                 ValidFrom = user.ValidFrom
             };
@@ -140,21 +154,32 @@ namespace VMS.Services
             var userDetails = await _userDetailRepository.GetAllUserDetailsAsync();
             var userRoles = await _userRoleRepository.GetAllUserRolesAsync();
             var roles = await _roleRepository.GetAllRolesAsync();
+            var locations = await _locationRepository.GetAllLocationAsync();
             var userLocations = await _userLocationRepository.GetAllUserLocationsAsync();
+
+
+            if (users == null || userDetails == null || userRoles == null || roles == null || locations == null || userLocations == null)
+            {
+                throw new InvalidOperationException("One or more data sources returned null.");
+            }
 
             var userOverviews = from user in users
                                 join detail in userDetails on user.Id equals detail.UserId
                                 join userRole in userRoles on user.Id equals userRole.UserId
                                 join role in roles on userRole.RoleId equals role.Id
-                                join location in userLocations on user.Id equals location.UserId
+                                join userLocation in userLocations on user.Id equals userLocation.UserId
+                                join location in locations on userLocation.OfficeLocationId equals location.Id
+                                where userLocation.OfficeLocationId != null
                                 select new UserOverviewDTO
                                 {
+                                    userId = user.Id,
                                     Username = user.Username,
                                     RoleName = role.Name,
-                                    Location = location.OfficeLocationId.ToString(), // Assuming OfficeLocationId represents location
+                                    Location = location.Name ?? "Unknown", // Assuming 'Name' is the property that contains the location name
                                     FullName = $"{detail.FirstName} {detail.LastName}",
                                     IsActive = user.IsActive == 1
                                 };
+
 
             return userOverviews.ToList();
         }
@@ -164,8 +189,14 @@ namespace VMS.Services
             if (user == null) return false;
 
             user.Username = updateUserDto.Username;
-            user.Password = updateUserDto.Password;
+            // Only update the password if a new password is provided
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                var passwordHasher = new PasswordHasher<User>();
+                user.Password = passwordHasher.HashPassword(user, updateUserDto.Password);
+            }
             user.ValidFrom = updateUserDto.ValidFrom;
+            user.IsActive = updateUserDto.IsActive;
 
             await _userRepository.UpdateUserAsync(user);
 

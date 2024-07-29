@@ -58,6 +58,12 @@ namespace VMS.Repository
     
 
     public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
+        public async Task<List<OfficeLocation>> GetAllLocationAsync()
+        {
+            return await _context.OfficeLocations.ToListAsync();
+        }
+
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
         {
             return await _context.OfficeLocations
                 .Select(d => new LocationIdAndNameDTO
@@ -68,5 +74,10 @@ namespace VMS.Repository
                 .ToListAsync();
         }
         
+
+        public async Task<OfficeLocation> GetLocationByIdAsync(int officeLocationId)
+        {
+            return await _context.OfficeLocations.FirstOrDefaultAsync(u => u.Id == officeLocationId);
+        }
     }
 }
