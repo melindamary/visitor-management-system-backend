@@ -56,8 +56,6 @@ namespace VMS.Repository
             return result > 0;
         }
     
-
-    public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
         public async Task<List<OfficeLocation>> GetAllLocationAsync()
         {
             return await _context.OfficeLocations.ToListAsync();
