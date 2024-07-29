@@ -10,88 +10,44 @@ namespace VMS.Services
     public class VisitorService
     {
         private readonly VisitorManagementDbContext _context;
-        private readonly IMapper _mapper;
 
-        public VisitorService(VisitorManagementDbContext context, IMapper mapper)
+        public VisitorService(VisitorManagementDbContext context)
         {
             _context = context;
-            _mapper = mapper;
         }
 
-        public string ConvertImageToBase64(byte[] imageBytes, int quality)
+
+        public async Task<int> GetVisitorCountAsync()
         {
-            using (var image = Image.Load(imageBytes))
-            using (var compressedStream = new MemoryStream())
             {
-                var encoder = new JpegEncoder { Quality = quality };
-                image.Save(compressedStream, encoder);
-                return Convert.ToBase64String(compressedStream.ToArray());
+                var today = DateTime.Today;
+
+                // Use LINQ to get the count of visitors where check-in time is not null, check-out time is null, and check-in time is today
+                return await _context.Visitors
+                    .CountAsync(v => v.CheckInTime != null
+                                     && v.CheckOutTime == null
+                                     && v.CheckInTime.Value.Date == today);
             }
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday()
+        public async Task<int> GetTotalVisitorsCountAsync()
         {
-            DateTime today = DateTime.Today;
-
-            var visitorDetail = await _context.Visitors
-                .Include(v => v.Purpose)
-                .Include(v => v.VisitorDevices)
-                    .ThenInclude(vd => vd.Device)
-                .Where(v => v.VisitDate == today)
-                .ToListAsync();
-            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetail);
-            foreach (var dto in visitorLogDtos)
-            {
-                if (dto.Photo != null)
-                {
-                    dto.PhotoBase64 = Convert.ToBase64String(dto.Photo);
-                }
-            }
-
-            return visitorLogDtos;
-
-        }
-        public async Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday()
-        {
-            DateTime today = DateTime.Today;
-            var upcomingVisitors = await _context.Visitors
-                .Include(v => v.Purpose)
-                .Include(v => v.VisitorDevices)
-                    .ThenInclude(vd => vd.Device)
-                .Where(v => v.CheckInTime == null && v.VisitDate == today)
-                .ToListAsync();
-            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(upcomingVisitors);
-            foreach (var dto in visitorLogDtos)
-            {
-                if (dto.Photo != null)
-                {
-                    dto.PhotoBase64 = Convert.ToBase64String(dto.Photo);
-                }
-            }
-
-            return visitorLogDtos;
+            var today = DateTime.Today;
+            return await _context.Visitors.CountAsync(
+                v => v.CheckInTime != null
+                && v.CheckInTime.Value.Date == today
+                );
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday()
+        public async Task<int> GetScheduledVisitorsCountAsync()
         {
-            DateTime today = DateTime.Today;
-            var activeVisitors = await _context.Visitors
-                .Include(v => v.Purpose)
-                .Include(v => v.VisitorDevices)
-                    .ThenInclude(vd => vd.Device)
-                .Where(v => v.CheckInTime != null && v.CheckOutTime == null && v.VisitDate == today)
-                .ToListAsync();
-
-            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(activeVisitors);
-            foreach (var dto in visitorLogDtos)
-            {
-                if (dto.Photo != null)
-                {
-                    dto.PhotoBase64 = Convert.ToBase64String(dto.Photo);
-                }
-            }
-
-            return visitorLogDtos;
+            var today = DateTime.Today;
+            return await _context.Visitors
+                .CountAsync(v => v.CheckInTime != null
+                                 && v.CheckOutTime != null
+                                 && v.CheckInTime.Value.Date == today);
         }
     }
 }
+
+
