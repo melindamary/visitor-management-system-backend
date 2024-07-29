@@ -16,7 +16,7 @@ namespace VMS.Controllers
             _repository = repository;
         }
 
-        [Authorize(Policy = "AdminOnly")]
+       /* [Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
         {

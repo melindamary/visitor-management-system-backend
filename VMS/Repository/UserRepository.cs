@@ -59,6 +59,7 @@ namespace VMS.Repository
         {
             var user = await GetUserByUsernameAsync(username);
             if (user == null) return false;
+            
             else if(password == user.Password) return true;
             else return false;
             // Assume a method to verify password hash

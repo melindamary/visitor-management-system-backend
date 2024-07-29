@@ -8,9 +8,11 @@ namespace VMS.Repository.IRepository
         Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposesAsync();
         Task<PurposeOfVisit> AddPurposeAsync(AddNewPurposeDTO purposeDto);
 
-        Task<IEnumerable<PurposeOfVisit>> GetPurposeListAsync();
+        Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync();
 
         Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO);
+
+        Task<bool> DeletePurposeAsync(int id);
         Task SaveAsync();
     }
 }

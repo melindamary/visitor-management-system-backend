@@ -49,21 +49,26 @@ namespace VMS.Repository
                 .ToListAsync();
         }
 
-        public async Task<IEnumerable<PurposeOfVisit>> GetPurposeListAsync() {
+        public async Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync()
+        {
 
             var purposeList = await (from purpose in _context.PurposeOfVisits
-                                     select new PurposeOfVisit { 
-                                      Id = purpose.Id,
-                                      Name = purpose.Name,
-                                      Status = purpose.Status,
-                                      CreatedBy = purpose.CreatedBy,
-                                      UpdatedBy = purpose.UpdatedBy,
-                                      CreatedDate = purpose.CreatedDate,
-                                      UpdatedDate = purpose.UpdatedDate
+                                     join user in _context.UserDetails
+                                     on purpose.UpdatedBy equals user.UserId into userGroup
+                                     from user in userGroup.DefaultIfEmpty()
+                                     select new PurposeOfVisitDTO
+                                     {
+                                         Id = purpose.Id,
+                                         Name = purpose.Name,
+                                         Status = purpose.Status,
+                                         CreatedBy = purpose.CreatedBy,
+                                         UpdatedBy = user != null ? user.FirstName + " " + user.LastName : null,
+                                         CreatedDate = purpose.CreatedDate,
+                                         UpdatedDate = purpose.UpdatedDate
 
                                      }).ToListAsync();
 
-            return purposeList;    
+            return purposeList;
         }
 
         public async Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO)
@@ -73,8 +78,10 @@ namespace VMS.Repository
             {
                 return false;
             }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == updatePurposeRequestDTO.Username);
+            Console.WriteLine(updatePurposeRequestDTO.Username);
             purpose.Name = updatePurposeRequestDTO.Purpose;
-            purpose.UpdatedBy = updatePurposeRequestDTO.UserId;
+            purpose.UpdatedBy = user.Id;
             purpose.UpdatedDate = DateTime.Now;
             purpose.Status = 1;
 
@@ -83,6 +90,20 @@ namespace VMS.Repository
 
             return true;
         }
+
+        public async Task<bool> DeletePurposeAsync(int id)
+        {
+            var purpose = await _context.PurposeOfVisits.FirstOrDefaultAsync(u => u.Id == id);
+            if (purpose == null)
+            {
+                return false;
+            }
+
+            _context.PurposeOfVisits.Remove(purpose);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
         public async Task SaveAsync()
         {
             await _context.SaveChangesAsync();
