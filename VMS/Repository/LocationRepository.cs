@@ -30,15 +30,23 @@ namespace VMS.Repository
         {
             var newLocation = _mapper.Map<OfficeLocation>(locationdDTO);
 
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == locationdDTO.Username);
+            if (user != null)
+            {
+                newLocation.CreatedBy = user.Id;
+            }
+            else
+            {
+                newLocation.CreatedBy = 1;
+            }
             newLocation.CreatedDate = DateTime.Now;
-            newLocation.CreatedBy = 1; // Replace with actual user ID
 
             _context.OfficeLocations.Add(newLocation);
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
 
-        public async Task<bool> UpdateLocationAsync(int id, UpdateLocationDTO dto)
+        public async Task<bool> UpdateLocationAsync(int id, UpdateLocationDTO updateDto)
         {
             var location = await _context.OfficeLocations.FindAsync(id);
             if (location == null)
@@ -46,10 +54,17 @@ namespace VMS.Repository
                 return false; // Location not found
             }
 
-            _mapper.Map(dto, location);
-
+            _mapper.Map(updateDto, location);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == updateDto.Username);
+            if (user != null)
+            {
+                location.UpdatedBy = user.Id;
+            }
+            else
+            {
+                location.UpdatedBy = 1; 
+            }
             location.UpdatedDate = DateTime.Now;
-            location.UpdatedBy = 1; // Replace with actual user ID
 
             _context.OfficeLocations.Update(location);
             var result = await _context.SaveChangesAsync();
