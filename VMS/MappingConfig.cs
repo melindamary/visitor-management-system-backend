@@ -18,7 +18,7 @@ namespace VMS
             CreateMap<VisitorLogDTO, Visitor>()
                 .ForMember(dest => dest.Purpose, opt => opt.Ignore());
 
-            CreateMap<OfficeLocation, LocationDetailsDTO>().ReverseMap();
+            CreateMap<OfficeLocation, LocationDetailsDTO>();
 
             CreateMap<AddOfficeLocationDTO, OfficeLocation>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())

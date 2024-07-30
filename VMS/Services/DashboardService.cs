@@ -7,11 +7,11 @@ using VMS.Models.DTO;
 
 namespace VMS.Services
 {
-    public class VisitorService
+    public class DashboardService
     {
         private readonly VisitorManagementDbContext _context;
 
-        public VisitorService(VisitorManagementDbContext context)
+        public DashboardService(VisitorManagementDbContext context)
         {
             _context = context;
         }
