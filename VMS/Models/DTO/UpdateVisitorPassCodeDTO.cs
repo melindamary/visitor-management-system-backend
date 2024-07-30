@@ -6,6 +6,8 @@ namespace VMS.Models.DTO
     {
         [Required]
         public string? VisitorPassCode { get; set; }
+        public string Username { get; set; }
+
 
     }
 }

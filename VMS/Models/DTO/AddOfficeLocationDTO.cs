@@ -12,5 +12,7 @@ namespace VMS.Models.DTO
 
         [Required]
         public string Phone { get; set; }
+
+        public string Username { get; set; }
     }
 }
