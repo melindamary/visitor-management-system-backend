@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
 using VMS.Models;
 using VMS.Models.DTO;
-using Microsoft.AspNetCore.Identity;
-using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services.IServices;
-using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace VMS.Services
 {
