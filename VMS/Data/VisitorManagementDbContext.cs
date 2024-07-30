@@ -25,6 +25,7 @@ public partial class VisitorManagementDbContext : DbContext
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

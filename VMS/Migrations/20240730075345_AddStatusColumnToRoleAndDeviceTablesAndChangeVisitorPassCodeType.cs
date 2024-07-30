@@ -7,7 +7,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace VMS.Migrations
 {
     /// <inheritdoc />
-    public partial class CreateVisitorManagementDB : Migration
+    public partial class AddStatusColumnToRoleAndDeviceTablesAndChangeVisitorPassCodeType : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -18,9 +18,9 @@ namespace VMS.Migrations
                 {
                     user_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    username = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    valid_from = table.Column<DateOnly>(type: "date", nullable: true),
+                    username = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    password = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    valid_from = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
                     is_active = table.Column<int>(type: "integer", nullable: true),
                     is_logged_in = table.Column<int>(type: "integer", nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
@@ -50,6 +50,7 @@ namespace VMS.Migrations
                     device_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     device_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    status = table.Column<int>(type: "integer", nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
@@ -76,10 +77,11 @@ namespace VMS.Migrations
                 {
                     office_location_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    location_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    created_by = table.Column<int>(type: "integer", nullable: true),
+                    location_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    Status = table.Column<int>(type: "integer", nullable: false),
+                    created_by = table.Column<int>(type: "integer", nullable: false),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
                     updated_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
@@ -91,7 +93,8 @@ namespace VMS.Migrations
                         name: "fk_office_location_created_by",
                         column: x => x.created_by,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_office_location_updated_by",
                         column: x => x.updated_by,
@@ -133,7 +136,8 @@ namespace VMS.Migrations
                 {
                     purpose_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    purpose_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    purpose_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    status = table.Column<int>(type: "integer", nullable: false),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
@@ -160,10 +164,11 @@ namespace VMS.Migrations
                 {
                     role_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    role_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    role_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
+                    status = table.Column<int>(type: "integer", nullable: true),
                     updated_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
                 },
                 constraints: table =>
@@ -187,12 +192,12 @@ namespace VMS.Migrations
                 {
                     user_details_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<int>(type: "integer", nullable: true),
-                    office_location_id = table.Column<int>(type: "integer", nullable: true),
-                    first_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    last_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    office_location_id = table.Column<int>(type: "integer", nullable: false),
+                    first_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    last_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     email = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -211,7 +216,8 @@ namespace VMS.Migrations
                         name: "fk_user_details_office_location_id",
                         column: x => x.office_location_id,
                         principalTable: "office_location",
-                        principalColumn: "office_location_id");
+                        principalColumn: "office_location_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_details_updated_by",
                         column: x => x.updated_by,
@@ -221,7 +227,8 @@ namespace VMS.Migrations
                         name: "fk_user_details_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -230,8 +237,8 @@ namespace VMS.Migrations
                 {
                     user_location_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<int>(type: "integer", nullable: true),
-                    office_location_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    office_location_id = table.Column<int>(type: "integer", nullable: false),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
@@ -249,7 +256,8 @@ namespace VMS.Migrations
                         name: "fk_user_location_office_location_id",
                         column: x => x.office_location_id,
                         principalTable: "office_location",
-                        principalColumn: "office_location_id");
+                        principalColumn: "office_location_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_location_updated_by",
                         column: x => x.updated_by,
@@ -259,7 +267,8 @@ namespace VMS.Migrations
                         name: "fk_user_location_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -268,17 +277,17 @@ namespace VMS.Migrations
                 {
                     visitor_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    visitor_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    purpose_id = table.Column<int>(type: "integer", nullable: true),
-                    host_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
-                    photo = table.Column<byte[]>(type: "bytea", nullable: true),
-                    visit_date = table.Column<DateTime>(type: "timestamp", nullable: true),
-                    visitor_pass_code = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    visitor_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    purpose_id = table.Column<int>(type: "integer", nullable: false),
+                    host_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
+                    photo = table.Column<byte[]>(type: "bytea", nullable: false),
+                    visit_date = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    visitor_pass_code = table.Column<int>(type: "integer", nullable: true),
                     check_in_time = table.Column<DateTime>(type: "timestamp", nullable: true),
                     check_out_time = table.Column<DateTime>(type: "timestamp", nullable: true),
-                    user_id = table.Column<int>(type: "integer", nullable: true),
-                    office_location_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    office_location_id = table.Column<int>(type: "integer", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -297,12 +306,14 @@ namespace VMS.Migrations
                         name: "fk_visitor_location_id",
                         column: x => x.office_location_id,
                         principalTable: "office_location",
-                        principalColumn: "office_location_id");
+                        principalColumn: "office_location_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_visitor_purpose_id",
                         column: x => x.purpose_id,
                         principalTable: "purpose_of_visit",
-                        principalColumn: "purpose_id");
+                        principalColumn: "purpose_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_visitor_updated_by",
                         column: x => x.updated_by,
@@ -312,7 +323,8 @@ namespace VMS.Migrations
                         name: "fk_visitor_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -359,8 +371,8 @@ namespace VMS.Migrations
                 {
                     user_role_id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    user_id = table.Column<int>(type: "integer", nullable: true),
-                    role_id = table.Column<int>(type: "integer", nullable: true),
+                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    role_id = table.Column<int>(type: "integer", nullable: false),
                     created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
@@ -378,7 +390,8 @@ namespace VMS.Migrations
                         name: "fk_user_role_role_id",
                         column: x => x.role_id,
                         principalTable: "role",
-                        principalColumn: "role_id");
+                        principalColumn: "role_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_user_role_updated_by",
                         column: x => x.updated_by,
@@ -388,7 +401,8 @@ namespace VMS.Migrations
                         name: "fk_user_role_user_id",
                         column: x => x.user_id,
                         principalTable: "user",
-                        principalColumn: "user_id");
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(

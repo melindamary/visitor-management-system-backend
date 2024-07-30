@@ -5,7 +5,7 @@ namespace VMS.Models.DTO
     public class UpdateVisitorPassCodeDTO
     {
         [Required]
-        public string? VisitorPassCode { get; set; }
+        public int? VisitorPassCode { get; set; }
         public string Username { get; set; }
 
 

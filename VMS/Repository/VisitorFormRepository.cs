@@ -10,7 +10,7 @@ namespace VMS.Repository
     {
         private readonly VisitorManagementDbContext _context;
         public const int _systemUserId = 1;
-        public const string _deafaultPassCode = "0";
+        public const int _deafaultPassCode = 0;
 
         public VisitorFormRepository(VisitorManagementDbContext context)
         {

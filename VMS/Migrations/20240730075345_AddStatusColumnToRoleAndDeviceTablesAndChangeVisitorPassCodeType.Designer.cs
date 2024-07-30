@@ -12,8 +12,8 @@ using VMS.Data;
 namespace VMS.Migrations
 {
     [DbContext(typeof(VisitorManagementDbContext))]
-    [Migration("20240725053303_AddStatusColumnToPurposeOfVisitTable")]
-    partial class AddStatusColumnToPurposeOfVisitTable
+    [Migration("20240730075345_AddStatusColumnToRoleAndDeviceTablesAndChangeVisitorPassCodeType")]
+    partial class AddStatusColumnToRoleAndDeviceTablesAndChangeVisitorPassCodeType
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -48,6 +48,10 @@ namespace VMS.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("device_name");
+
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -105,6 +109,9 @@ namespace VMS.Migrations
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("phone");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("integer");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -299,6 +306,10 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("role_name");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("updated_by");
@@ -368,8 +379,8 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("username");
 
-                    b.Property<DateOnly?>("ValidFrom")
-                        .HasColumnType("date")
+                    b.Property<DateTime?>("ValidFrom")
+                        .HasColumnType("timestamp with time zone")
                         .HasColumnName("valid_from");
 
                     b.HasKey("Id")
@@ -480,7 +491,7 @@ namespace VMS.Migrations
                         .HasColumnName("created_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("OfficeLocationId")
+                    b.Property<int>("OfficeLocationId")
                         .HasColumnType("integer")
                         .HasColumnName("office_location_id");
 
@@ -494,7 +505,7 @@ namespace VMS.Migrations
                         .HasColumnName("updated_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
@@ -566,8 +577,11 @@ namespace VMS.Migrations
             modelBuilder.Entity("VMS.Models.Visitor", b =>
                 {
                     b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
                         .HasColumnType("integer")
                         .HasColumnName("visitor_id");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<DateTime?>("CheckInTime")
                         .HasColumnType("timestamp")
@@ -640,10 +654,8 @@ namespace VMS.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("visit_date");
 
-                    b.Property<string>("VisitorPassCode")
-                        .IsRequired()
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                    b.Property<int?>("VisitorPassCode")
+                        .HasColumnType("integer")
                         .HasColumnName("visitor_pass_code");
 
                     b.HasKey("Id")
@@ -657,7 +669,7 @@ namespace VMS.Migrations
 
                     b.HasIndex(new[] { "UpdatedBy" }, "fk_visitor_updated_by");
 
-                    b.HasIndex(new[] { "Id" }, "fk_visitor_user_id");
+                    b.HasIndex(new[] { "StaffId" }, "fk_visitor_user_id");
 
                     b.ToTable("visitor", (string)null);
                 });
@@ -902,6 +914,8 @@ namespace VMS.Migrations
                     b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
                         .WithMany("UserLocations")
                         .HasForeignKey("OfficeLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_user_location_office_location_id");
 
                     b.HasOne("VMS.Models.User", "UpdatedByNavigation")
@@ -912,6 +926,8 @@ namespace VMS.Migrations
                     b.HasOne("VMS.Models.User", "User")
                         .WithMany("UserLocationUsers")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_user_location_user_id");
 
                     b.Navigation("CreatedByNavigation");
@@ -965,13 +981,6 @@ namespace VMS.Migrations
                         .HasForeignKey("CreatedBy")
                         .HasConstraintName("fk_visitor_created_by");
 
-                    b.HasOne("VMS.Models.User", "User")
-                        .WithMany("VisitorUsers")
-                        .HasForeignKey("Id")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_visitor_user_id");
-
                     b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
                         .WithMany("Visitors")
                         .HasForeignKey("OfficeLocationId")
@@ -985,6 +994,13 @@ namespace VMS.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired()
                         .HasConstraintName("fk_visitor_purpose_id");
+
+                    b.HasOne("VMS.Models.User", "User")
+                        .WithMany("VisitorUsers")
+                        .HasForeignKey("StaffId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_visitor_user_id");
 
                     b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("VisitorUpdatedByNavigations")

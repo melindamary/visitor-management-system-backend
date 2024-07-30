@@ -8,7 +8,7 @@
         public string? PurposeName { get; set; }
         public DateTime? CheckInTime { get; set; }
         public DateTime? CheckOutTime { get; set; }
-        public string? VisitorPassCode { get; set; }
+        public int? VisitorPassCode { get; set; }
         public DateTime? VisitDate { get; set; }
         public string? DeviceName { get; set; }
         public string? HostName { get; set; }

@@ -5,6 +5,7 @@ public partial class Device
 
     public string? Name { get; set; }
 
+    public int? Status { get; set; }
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }

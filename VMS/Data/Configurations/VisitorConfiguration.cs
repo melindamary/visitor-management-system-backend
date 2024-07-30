@@ -59,6 +59,7 @@
                 .HasMaxLength(255)
                 .HasColumnName("visitor_name");
             entity.Property(e => e.VisitorPassCode)
+                .HasColumnType("integer")
                 .HasColumnName("visitor_pass_code");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VisitorCreatedByNavigations)

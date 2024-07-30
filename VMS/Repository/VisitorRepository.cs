@@ -120,7 +120,7 @@ namespace VMS.Repository
 
             existingVisitor.CheckOutTime = DateTime.Now;
             existingVisitor.UpdatedDate = DateTime.Now;
-            existingVisitor.VisitorPassCode = "0";
+            existingVisitor.VisitorPassCode = 0;
 
             await _context.SaveChangesAsync();
 

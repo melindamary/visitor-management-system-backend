@@ -46,6 +46,10 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("device_name");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("updated_by");
@@ -104,8 +108,7 @@ namespace VMS.Migrations
                         .HasColumnName("phone");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer")
-                        .HasColumnName("status");
+                        .HasColumnType("integer");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -300,6 +303,10 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("role_name");
 
+                    b.Property<int?>("Status")
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
+
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("updated_by");
@@ -481,7 +488,7 @@ namespace VMS.Migrations
                         .HasColumnName("created_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("OfficeLocationId")
+                    b.Property<int>("OfficeLocationId")
                         .HasColumnType("integer")
                         .HasColumnName("office_location_id");
 
@@ -495,7 +502,7 @@ namespace VMS.Migrations
                         .HasColumnName("updated_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
-                    b.Property<int?>("UserId")
+                    b.Property<int>("UserId")
                         .HasColumnType("integer")
                         .HasColumnName("user_id");
 
@@ -644,9 +651,8 @@ namespace VMS.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("visit_date");
 
-                    b.Property<string>("VisitorPassCode")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)")
+                    b.Property<int?>("VisitorPassCode")
+                        .HasColumnType("integer")
                         .HasColumnName("visitor_pass_code");
 
                     b.HasKey("Id")
@@ -905,6 +911,8 @@ namespace VMS.Migrations
                     b.HasOne("VMS.Models.OfficeLocation", "OfficeLocation")
                         .WithMany("UserLocations")
                         .HasForeignKey("OfficeLocationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_user_location_office_location_id");
 
                     b.HasOne("VMS.Models.User", "UpdatedByNavigation")
@@ -915,6 +923,8 @@ namespace VMS.Migrations
                     b.HasOne("VMS.Models.User", "User")
                         .WithMany("UserLocationUsers")
                         .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
                         .HasConstraintName("fk_user_location_user_id");
 
                     b.Navigation("CreatedByNavigation");
