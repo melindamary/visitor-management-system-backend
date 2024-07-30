@@ -12,10 +12,6 @@ using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
-using VMS.AVHubs;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,8 +21,6 @@ builder.Services.AddSignalR();
 /*builder.Services.AddHostedService<PostgresListenerService>();
 */
 
-builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
-// Add this line  
 
 builder.Host.UseSerilog();
 
@@ -97,7 +91,8 @@ builder.Services.AddScoped<IlocationRepository, LocationRepository>();
 builder.Services.AddScoped<IUserDetailsRepository, UserDetailsRepository>();
 builder.Services.AddScoped<IUserLocationRepository, UserLocationRepository>();
 builder.Services.AddScoped<IReportRepository, ReportRepository>();
-
+builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
+builder.Services.AddScoped<IAuthService, AuthService>();
 
 //authentication for backend API
 var key = Encoding.ASCII.GetBytes(builder.Configuration["ApiSettings:Key"]);
