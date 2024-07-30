@@ -82,6 +82,8 @@ builder.Services.AddScoped<IUserRoleRepository, UserRoleRepository>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
 builder.Services.AddScoped<DashboardService>();
+// builder.Services.AddScoped<VisitorService>();
+builder.Services.AddScoped<IVisitorFormService, VisitorFormService>();
 /*builder.Services.AddScoped<VisitorMonitorService>();
 */
 builder.Services.AddScoped<IVisitorFormRepository, VisitorFormRepository>();
