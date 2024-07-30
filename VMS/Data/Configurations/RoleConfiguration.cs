@@ -17,6 +17,7 @@
             entity.HasIndex(e => e.UpdatedBy, "fk_role_updated_by");
 
             entity.Property(e => e.Id).HasColumnName("role_id");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

@@ -11,6 +11,7 @@ public partial class Role
 
     public int? UpdatedBy { get; set; }
 
+    public int? Status  { get; set; }
     public DateTime? UpdatedDate { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }

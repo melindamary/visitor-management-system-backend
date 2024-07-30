@@ -34,6 +34,7 @@ namespace VMS.Controllers
                 var checkedOutVisitors = await _repository.GetCheckedOutVisitorsToday();
                 var visitorsToday = await _repository.GetVisitorDetailsToday();
                 /*var activeVisitorsCount = await _visitorRepository.GetActiveVisitorsCountToday();
+               /* var activeVisitorsCount = await _visitorRepository.GetActiveVisitorsCountToday();
                 var totalVisitorsCount = await _visitorRepository.GetTotalVisitorsCountToday();
                 var checkedOutVisitorsCount = await _visitorRepository.GetCheckedOutVisitorsCountToday();
                 var upcomingVisitors = await _visitorRepository.GetUpcomingVisitorsToday();

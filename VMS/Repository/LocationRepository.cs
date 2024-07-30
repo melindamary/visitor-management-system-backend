@@ -55,7 +55,7 @@ namespace VMS.Repository
             var result = await _context.SaveChangesAsync();
             return result > 0;
         }
-    
+   
         public async Task<List<OfficeLocation>> GetAllLocationAsync()
         {
             return await _context.OfficeLocations.ToListAsync();

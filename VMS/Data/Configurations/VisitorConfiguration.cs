@@ -59,7 +59,6 @@
                 .HasMaxLength(255)
                 .HasColumnName("visitor_name");
             entity.Property(e => e.VisitorPassCode)
-                .HasMaxLength(255)
                 .HasColumnName("visitor_pass_code");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VisitorCreatedByNavigations)
