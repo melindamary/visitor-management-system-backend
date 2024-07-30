@@ -17,10 +17,10 @@ namespace VMS.Services
         private readonly IHubContext<VisitorHub> _hubContext;
         private readonly string _connectionString = "Server=vmsserver.postgres.database.azure.com;Database=visitor_management_system_db;Username=vmsadmin;password=admin@123";
         private readonly ILogger<PostgresListenerService> _logger;  // Add this line
-        private readonly VisitorService _visitorService;
+        private readonly DashboardService _visitorService;
 
 
-        public PostgresListenerService(IHubContext<VisitorHub> hubContext, ILogger<PostgresListenerService> logger, VisitorService visitorService)
+        public PostgresListenerService(IHubContext<VisitorHub> hubContext, ILogger<PostgresListenerService> logger, DashboardService visitorService)
         {
             _hubContext = hubContext;
             _logger = logger;  // Initialize logger

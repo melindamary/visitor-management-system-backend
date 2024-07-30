@@ -13,7 +13,7 @@ namespace VMS.Controllers
     {
         private readonly IVisitorRepository _repository;
 
-        public VisitorLogController(IVisitorRepository repository, VisitorService visitorService)
+        public VisitorLogController(IVisitorRepository repository, DashboardService visitorService)
         {
             _repository = repository;
         }

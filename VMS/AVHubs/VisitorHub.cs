@@ -13,12 +13,12 @@ namespace VMS.AVHubs
     {
         private readonly ILogger<VisitorHub> _logger;
 
-        private readonly VisitorService _visitorService;
+        private readonly DashboardService _dashboardService;
 
 
-        public VisitorHub(VisitorManagementDbContext dbContext, ILogger<VisitorHub> logger, VisitorService visitorTiles)
+        public VisitorHub(VisitorManagementDbContext dbContext, ILogger<VisitorHub> logger, DashboardService visitorTiles)
         {
-            _visitorService = visitorTiles;
+            _dashboardService = visitorTiles;
 
             _logger = logger;
 
@@ -27,18 +27,18 @@ namespace VMS.AVHubs
         {
             _logger.LogInformation("Client connected t0 intital count: {ConnectionId}", Context.ConnectionId);
 
-            int count = await _visitorService.GetVisitorCountAsync();
+            int count = await _dashboardService.GetVisitorCountAsync();
             await Clients.Caller.SendAsync("ReceiveVisitorCount", count);
         }
         public async Task SendInitialScheduledVisitorsCount()
         {
-            int count = await _visitorService.GetScheduledVisitorsCountAsync();
+            int count = await _dashboardService.GetScheduledVisitorsCountAsync();
             await Clients.Caller.SendAsync("ReceiveScheduledVisitorsCount", count);
         }
 
         public async Task SendInitialTotalVisitorsCount()
         {
-            int count = await _visitorService.GetTotalVisitorsCountAsync();
+            int count = await _dashboardService.GetTotalVisitorsCountAsync();
             await Clients.Caller.SendAsync("ReceiveTotalVisitorsCount", count);
         }
         public override async Task OnConnectedAsync()

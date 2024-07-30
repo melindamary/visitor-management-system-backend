@@ -23,6 +23,7 @@ namespace VMS.Repository
                 .ToListAsync();
 
             var locationDtos = _mapper.Map<List<LocationDetailsDTO>>(locations);
+            Console.WriteLine(locations);
             return locationDtos;
         }
 
