@@ -67,7 +67,7 @@ namespace VMS.Repository
 
         public Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday()
         {
-            return GetVisitorLogs(v => v);
+            return GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
         }
 
         public Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday()
