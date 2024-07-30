@@ -41,12 +41,13 @@ namespace VMS.Repository
         public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposesAsync()
         {
             return await _context.PurposeOfVisits
-                .Select(p => new PurposeOfVisitNameadnIdDTO
-                {
-                    PurposeId = p.Id,
-                    PurposeName = p.Name
-                })
-                .ToListAsync();
+       .Where(p => p.Status == 1) // Filter by status
+       .Select(p => new PurposeOfVisitNameadnIdDTO
+       {
+           PurposeId = p.Id,
+           PurposeName = p.Name
+       })
+       .ToListAsync();
         }
 
         public async Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync()
