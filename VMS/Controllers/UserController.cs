@@ -38,8 +38,8 @@ namespace VMS.Controllers
         [HttpPost]
         public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
         {
-            try
-            {
+            /*try
+            {*/
                 await _userService.AddUserAsync(addNewUserDto);
 
                 var successResponse = new APIResponse
@@ -49,7 +49,7 @@ namespace VMS.Controllers
                 };
 
                 return Ok(successResponse);
-            }
+           /* }
             catch (Exception ex)
             {
                 var errorResponse = new APIResponse
@@ -59,8 +59,39 @@ namespace VMS.Controllers
                 };
 
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
-            }
+            }*/
         }
+        [HttpGet]
+        public async Task<IActionResult> CheckUsernameExists([FromQuery] string username)
+        {
+            if (string.IsNullOrWhiteSpace(username))
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.BadRequest,
+                    ErrorMessages = new List<string> { "Username is required" }
+                };
+                return BadRequest(errorResponse);
+            }
+
+            var exists = await _userService.CheckUsernameExistsAsync(username);
+
+            var response = new APIResponse
+            {
+                Result = exists,
+                StatusCode = HttpStatusCode.OK,
+            };
+
+            if (!exists)
+            {
+                response.StatusCode = HttpStatusCode.NotFound;
+                response.ErrorMessages = new List<string> { "No Username found" };
+                return NotFound(response);
+            }
+
+            return Ok(response);
+        }
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<APIResponse>> GetUserById(int id)

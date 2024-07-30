@@ -86,5 +86,11 @@ namespace VMS.Repository
             return userLocation;
         
         }
+
+        public async Task<bool> UsernameExistsAsync(string username)
+        {
+            return await _context.Users
+            .AnyAsync(u => u.Username == username);
+        }
     }
 }

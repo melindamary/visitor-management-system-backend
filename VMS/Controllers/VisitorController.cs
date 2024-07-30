@@ -2,6 +2,7 @@
 using VMS.Repository.IRepository;
 using VMS.Models;
 using VMS.Models.DTO;
+using VMS.Services;
 
 namespace VMS.Controllers
 {
@@ -10,60 +11,50 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class VisitorController : ControllerBase
     {
-        private readonly IVisitorFormRepository _visitorRepository;
+        private readonly IVisitorFormService _visitorService;
 
-        public VisitorController(IVisitorFormRepository visitorRepository)
+        public VisitorController(IVisitorFormService visitorService)
         {
-            _visitorRepository = visitorRepository;
+            _visitorService = visitorService;
+        }
+
+        [HttpGet("details")]
+        public async Task<ActionResult<IEnumerable<Visitor>>> GetVisitorDetails()
+        {
+            var visitors = await _visitorService.GetVisitorDetailsAsync();
+            return Ok(visitors);
         }
 
         [HttpGet]
-        public async Task<IEnumerable<Visitor>> GetVisitorDetails()
+        public async Task<ActionResult<IEnumerable<string>>> GetPersonInContact()
         {
-            return await _visitorRepository.GetVisitorDetailsAsync();
+            var contacts = await _visitorService.GetPersonInContactAsync();
+            return Ok(contacts);
         }
 
-        [HttpGet]
-        public async Task<IEnumerable<string>> GetPersonInContact()
-        {
-            return await _visitorRepository.GetPersonInContactAsync();
-        }
-
-        [HttpPost("create-and-add-item")]
-        public async Task<IActionResult> CreateVisitorAndAddItem([FromBody] VisitorCreationDTO visitorDto)
-        {
-            if (visitorDto == null)
-            {
-                return BadRequest("Visitor data is null.");
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var visitor = await _visitorRepository.CreateVisitorAsync(visitorDto);
-
-            return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
-        }
-
-        
-
-        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{id}")]
-        public async Task<IActionResult> GetVisitorById(int id)
+        public async Task<ActionResult<Visitor>> GetVisitorById(int id)
         {
-            var visitor = await _visitorRepository.GetVisitorByIdAsync(id);
-
+            var visitor = await _visitorService.GetVisitorByIdAsync(id);
             if (visitor == null)
             {
                 return NotFound();
             }
-
             return Ok(visitor);
         }
 
+        [HttpPost]
+        public async Task<ActionResult<Visitor>> CreateVisitor(VisitorCreationDTO visitorDto)
+        {
+            var visitor = await _visitorService.CreateVisitorAsync(visitorDto);
+            return CreatedAtAction(nameof(GetVisitorById), new { id = visitor.Id }, visitor);
+        }
 
+        [HttpPost("add-device")]
+        public async Task<ActionResult<VisitorDevice>> AddVisitorDevice(AddVisitorDeviceDTO addDeviceDto)
+        {
+            var device = await _visitorService.AddVisitorDeviceAsync(addDeviceDto);
+            return CreatedAtAction(nameof(GetVisitorById), new { id = device.VisitorId }, device);
+        }
     }
 }
-
