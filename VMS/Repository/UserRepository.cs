@@ -156,8 +156,8 @@ namespace VMS.Repository
                     _logger.LogWarning("User with username {Username} not found.", username);
                     return false;
                 }
-                var result = CheckPasswordAsync(user.Password, password);
-                bool isValid = password == user.Password; // Replace with hash verification logic
+/*                var result = CheckPasswordAsync(user.Password, password);
+*/                bool isValid = password == user.Password; // Replace with hash verification logic
                 _logger.LogInformation("User with username {Username} validation result: {IsValid}.", username, isValid);
                 return isValid;
             }
