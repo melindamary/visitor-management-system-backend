@@ -127,7 +127,8 @@ namespace VMS.Repository
                 Name = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,
                 UpdatedBy = roleDTO.UpdatedBy,
-                Status=roleDTO.status,
+                Status = roleDTO.status,
+
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -178,7 +179,9 @@ namespace VMS.Repository
 
             var existingPageControls = _context.PageControls.Where(pc => pc.RoleId == updateRolePagesDTO.RoleId);
             _context.PageControls.RemoveRange(existingPageControls);
-
+            role.Status = updateRolePagesDTO.Status; // Assuming Status is included in UpdateRolePagesDTO
+            role.UpdatedBy = updateRolePagesDTO.UpdatedBy; // Assuming UpdatedBy is included in UpdateRolePagesDTO
+            role.UpdatedDate = DateTime.Now;
             foreach (var pageId in updateRolePagesDTO.PageIds)
             {
                 var pageControl = new PageControl

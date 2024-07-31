@@ -11,7 +11,7 @@ namespace VMS.Models.DTO
         public int CreatedBy { get; set; }
         [Required]
         public int UpdatedBy { get; set; }
-
         public int status { get; set; }
+
     }
 }
