@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Cryptography;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
@@ -78,7 +79,8 @@ namespace VMS.Services
             };
 
             // Hash the password and set it
-            user.Password = passwordHasher.HashPassword(user, addNewUserDto.Password);
+            /*user.Password = passwordHasher.HashPassword(user, addNewUserDto.Password);*/
+            user.Password = HashPassword(addNewUserDto.Password);
 
 
             await _userRepository.AddUserAsync(user);
@@ -114,6 +116,25 @@ namespace VMS.Services
             await _userLocationRepository.AddUserLocationAsync(userLocation);
         }
 
+        public static string HashPassword(string password)
+        {
+            // Generate a random salt
+            byte[] salt;
+            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
+
+            // Create the Rfc2898DeriveBytes and get the hash value
+            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            // Combine the salt and password bytes for later use
+            byte[] hashBytes = new byte[36];
+            Array.Copy(salt, 0, hashBytes, 0, 16);
+            Array.Copy(hash, 0, hashBytes, 16, 20);
+
+            // Turn the combined salt+hash into a string for storage
+            string savedPasswordHash = Convert.ToBase64String(hashBytes);
+            return savedPasswordHash;
+        }
         public async Task<UserDetailDTO> GetUserByIdAsync(int userId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);

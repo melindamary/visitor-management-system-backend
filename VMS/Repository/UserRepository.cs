@@ -4,6 +4,8 @@ using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 using Microsoft.Extensions.Logging;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Identity;
 
 
 namespace VMS.Repository
@@ -154,7 +156,7 @@ namespace VMS.Repository
                     _logger.LogWarning("User with username {Username} not found.", username);
                     return false;
                 }
-
+                var result = CheckPasswordAsync(user.Password, password);
                 bool isValid = password == user.Password; // Replace with hash verification logic
                 _logger.LogInformation("User with username {Username} validation result: {IsValid}.", username, isValid);
                 return isValid;
