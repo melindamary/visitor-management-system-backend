@@ -15,7 +15,7 @@ namespace VMS.Services
     public class PostgresListenerService : BackgroundService
     {
         private readonly IHubContext<VisitorHub> _hubContext;
-        private readonly string _connectionString = "Server=vmsserver.postgres.database.azure.com;Database=visitor_management_system_db;Username=vmsadmin;password=admin@123";
+        private readonly string _connectionString = Environment.GetEnvironmentVariable("DefaultConnection");
         private readonly ILogger<PostgresListenerService> _logger;  // Add this line
         private readonly VisitorService _visitorService;
 
