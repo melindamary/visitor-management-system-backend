@@ -9,6 +9,7 @@ namespace VMS.Models.DTO
         [Required]
         public string Name { get; set; }
         public int ?CreatedBy { get; set; }
+        public int? Status { get; set; }
         public DateTime ?CreatedDate { get; set; }
     }
 }
