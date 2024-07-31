@@ -21,6 +21,10 @@ namespace VMS.Controllers
         }
         
         [HttpGet("get-role-id-name")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndName()
         {
             return await _roleRepository.GetRoleIdAndNameAsync();

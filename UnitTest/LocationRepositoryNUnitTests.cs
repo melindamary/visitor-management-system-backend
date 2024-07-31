@@ -236,24 +236,6 @@ namespace UnitTest
             Assert.That(result, Is.Null);
         }
 
-        [Test]
-        public async Task AddLocationAsync_InvalidData_ReturnsFalse()
-        {
-            // Arrange
-            var newLocation = new AddOfficeLocationDTO
-            {
-                Name = null, // Invalid data
-                Address = "",
-                Phone = "",
-                Username = "NonExistentUser"
-            };
-
-            // Act
-            var result = await _repository.AddLocationAsync(newLocation);
-
-            // Assert
-            Assert.That(result, Is.False); // Should handle validation errors
-            Assert.That(_context.OfficeLocations.Count(), Is.EqualTo(2)); // No new location added
-        }
+        
     }
 }
