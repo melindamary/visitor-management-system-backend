@@ -83,7 +83,7 @@ namespace VMS.Repository
             await _context.SaveChangesAsync();
 
 
-            if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
+            /*if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
             {
                 foreach (var selectedDevice in visitorDto.SelectedDevice)
                 {
@@ -96,7 +96,7 @@ namespace VMS.Repository
 
                     await AddVisitorDeviceAsync(addDeviceDto);
                 }
-            }
+            }*/
             
             return visitor;
            
