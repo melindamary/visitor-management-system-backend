@@ -3,94 +3,223 @@ using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
+using Microsoft.Extensions.Logging;
+
 
 namespace VMS.Repository
 {
     public class UserRepository : IUserRepository
     {
         private readonly VisitorManagementDbContext _context;
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(VisitorManagementDbContext context) { 
+        public UserRepository(VisitorManagementDbContext context, ILogger<UserRepository> logger) { 
             _context = context;
+            _logger = logger;
         }
 
         public async Task AddUserAsync(User user)
         {
-            _context.Users.Add(user);
-            await _context.SaveChangesAsync();
+            try
+            {
+                _context.Users.Add(user);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("User {Username} added successfully", user.Username);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error adding user {Username}", user.Username);
+                throw;
+            }
         }
 
         public async Task<List<User>> GetAllUsersAsync()
         {
-            return await _context.Users.ToListAsync();
+            _logger.LogInformation("Getting all users.");
+            try
+            {
+                var users = await _context.Users.ToListAsync();
+                _logger.LogInformation("Retrieved {Count} users.", users.Count);
+                return users;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting all users.");
+                throw;
+            }
         }
 
         public async Task<User> GetUserByIdAsync(int userId)
         {
-            return await _context.Users.FindAsync(userId);
+            _logger.LogInformation("Getting user by ID: {UserId}.", userId);
+            try
+            {
+                var user = await _context.Users.FindAsync(userId);
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID {UserId} not found.", userId);
+                }
+                else
+                {
+                    _logger.LogInformation("User with ID {UserId} retrieved.", userId);
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting user by ID: {UserId}.", userId);
+                throw;
+            }
         }
 
         public async Task<User> GetUserByUsernameAsync(string username)
         {
-            return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+            _logger.LogInformation("Getting user by username: {Username}.", username);
+            try
+            {
+                var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+                if (user == null)
+                {
+                    _logger.LogWarning("User with username {Username} not found.", username);
+                }
+                else
+                {
+                    _logger.LogInformation("User with username {Username} retrieved.", username);
+                }
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting user by username: {Username}.", username);
+                throw;
+            }
         }
 
         public async Task UpdateLoggedInStatusAsync(string username) {
 
-            var user = await GetUserByUsernameAsync(username);
-            if (user.IsLoggedIn == 0)
-            {
-                user.IsLoggedIn = 1;
-            }
-            else if (user.IsLoggedIn == 1) 
-            { 
-                user.IsLoggedIn = 0;
-            }
             await _context.SaveChangesAsync();
+            _logger.LogInformation("Updating logged-in status for user: {Username}.", username);
+            try
+            {
+                var user = await GetUserByUsernameAsync(username);
+                if (user == null)
+                {
+                    _logger.LogWarning("User with username {Username} not found.", username);
+                    return;
+                }
+
+                if (user.IsLoggedIn == 0)
+                {
+                    user.IsLoggedIn = 1;
+                    _logger.LogInformation("User {Username} status set to logged in.", username);
+                }
+                else if (user.IsLoggedIn == 1)
+                {
+                    user.IsLoggedIn = 0;
+                    _logger.LogInformation("User {Username} status set to logged out.", username);
+                }
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating logged-in status for user: {Username}.", username);
+                throw;
+            }
 
         }
         public async Task UpdateUserAsync(User user)
         {
-            _context.Users.Update(user);
-            await _context.SaveChangesAsync();
+            _logger.LogInformation("Updating user with ID: {UserId}.", user.Id);
+            try
+            {
+                _context.Users.Update(user);
+                await _context.SaveChangesAsync();
+                _logger.LogInformation("User with ID {UserId} updated successfully.", user.Id);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while updating user with ID: {UserId}.", user.Id);
+                throw;
+            }
         }
 
         public async Task<bool> ValidateUserAsync(string username, string password)
         {
-            var user = await GetUserByUsernameAsync(username);
-            if (user == null) return false;
-            
-            else if(password == user.Password) return true;
-            else return false;
-            // Assume a method to verify password hash
-            /*return VerifyPasswordHash(password, user.PasswordHash);*/
+            _logger.LogInformation("Validating user with username: {Username}.", username);
+            try
+            {
+                var user = await GetUserByUsernameAsync(username);
+                if (user == null)
+                {
+                    _logger.LogWarning("User with username {Username} not found.", username);
+                    return false;
+                }
+
+                bool isValid = password == user.Password; // Replace with hash verification logic
+                _logger.LogInformation("User with username {Username} validation result: {IsValid}.", username, isValid);
+                return isValid;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while validating user with username: {Username}.", username);
+                throw;
+            }
 
 
         }
         private bool VerifyPasswordHash(string password, string storedHash)
         {
             // Implement hash verification logic here
+            Console.WriteLine(BCrypt.Net.BCrypt.Verify(password, storedHash));
+            _logger.LogInformation("Verifying password hash.");
             return true;
         }
 
         public async Task<LocationIdAndNameDTO> GetUserLocationAsync(int id)
         {
-           var userLocation = await (from user in _context.UserDetails
-                                     join location in _context.OfficeLocations on user.OfficeLocationId equals location.Id
-                                     where user.Id == id
-                                     select new LocationIdAndNameDTO
-                                     {
-                                      Id = location.Id,
-                                      Name = location.Name
-                                     }).FirstOrDefaultAsync();
-            return userLocation;
-        
+            _logger.LogInformation("Getting location for user with ID: {UserId}.", id);
+            try
+            {
+                var userLocation = await (from user in _context.UserDetails
+                                          join location in _context.OfficeLocations on user.OfficeLocationId equals location.Id
+                                          where user.Id == id
+                                          select new LocationIdAndNameDTO
+                                          {
+                                              Id = location.Id,
+                                              Name = location.Name
+                                          }).FirstOrDefaultAsync();
+                if (userLocation == null)
+                {
+                    _logger.LogWarning("Location for user with ID {UserId} not found.", id);
+                }
+                else
+                {
+                    _logger.LogInformation("Location for user with ID {UserId} retrieved successfully.", id);
+                }
+                return userLocation;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while getting location for user with ID: {UserId}.", id);
+                throw;
+            }
+
         }
 
         public async Task<bool> UsernameExistsAsync(string username)
         {
-            return await _context.Users
-            .AnyAsync(u => u.Username == username);
+            _logger.LogInformation("Checking if username exists: {Username}.", username);
+            try
+            {
+                bool exists = await _context.Users.AnyAsync(u => u.Username == username);
+                _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
+                return exists;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while checking if username exists: {Username}.", username);
+                throw;
+            }
         }
     }
 }

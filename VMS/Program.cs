@@ -16,25 +16,26 @@ using VMS.Services.IServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddSignalR();
-/*builder.Services.AddHostedService<PostgresListenerService>();
-*/
-
-
-builder.Host.UseSerilog();
-
-// Add services to the container.
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddScoped<PostgresListenerService>();
-
-/*builder.Services.AddHostedService<PostgresListenerService>();
-*/builder.Logging.ClearProviders();
-builder.Logging.AddConsole();
+// Configure Serilog
 Log.Logger = new LoggerConfiguration()
     .WriteTo.Console()
     .WriteTo.File("Logs/myapp-.log", rollingInterval: RollingInterval.Day)
     .CreateLogger();
+
+builder.Host.UseSerilog();
+
+// Add services to the container.
+builder.Services.AddSignalR();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddScoped<PostgresListenerService>();
+
+/*builder.Services.AddHostedService<PostgresListenerService>();*/
+
+builder.Logging.ClearProviders();
+builder.Logging.AddSerilog();
+builder.Logging.AddConsole();
+
+
 builder.Services.AddAutoMapper(typeof(MappingConfig));
 builder.Services.AddMvc();
 builder.Services.AddSwaggerGen(option => {
@@ -73,7 +74,7 @@ builder.Services.AddDbContext<VisitorManagementDbContext>(option =>
 {
     option.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"));
 });
-
+builder.Services.AddLogging();
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IRoleRepository, RoleRepository>();
