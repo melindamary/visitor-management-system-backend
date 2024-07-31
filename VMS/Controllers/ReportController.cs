@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
 using VMS.Repository.IRepository;
+using VMS.Services.IServices;
 
 namespace VMS.Controllers
 {
@@ -10,10 +11,10 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class ReportController : ControllerBase
     {
-        private IReportRepository _repository;
-        public ReportController(IReportRepository repository)
+        private IReportService _service;
+        public ReportController(IReportService service)
         {
-            _repository = repository;
+            _service = service;
         }
 
        /* [Authorize(Policy = "AdminOnly")]*/
@@ -24,18 +25,19 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
         {
-            var visitors = await _repository.GetAllVisitorsAsync();
+            var visitors = await _service.GetAllVisitorReportsAsync();
 
-            if (visitors == null)
+            if (visitors == null || !visitors.Any())
             {
-                var errorResponse = new APIResponse {
+                var errorResponse = new APIResponse
+                {
                     IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
                     ErrorMessages = new List<string> { "No visitors found." }
                 };
                 return NotFound(errorResponse);
             }
-            Console.WriteLine("Reports:", visitors);
+
             var response = new APIResponse
             {
                 Result = visitors,
@@ -52,15 +54,17 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id) {
+        public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id)
+        {
+            var visitor = await _service.GetVisitorDetailsAsync(id);
 
-            var visitor = await _repository.GetVisitorDetailsAsync(id);
-            if (visitor == null) {
+            if (visitor == null)
+            {
                 var errorResponse = new APIResponse
                 {
-                    Result = null,
-                    IsSuccess = true,
+                    IsSuccess = false,
                     StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "Visitor not found." }
                 };
                 return NotFound(errorResponse);
             }
