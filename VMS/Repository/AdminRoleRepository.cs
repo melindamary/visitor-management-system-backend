@@ -27,6 +27,7 @@ namespace VMS.Repository
                 Id = r.Id,
                 Name = r.Name,
                 CreatedBy = r.CreatedBy,
+                Status = r.Status,
                 CreatedDate = r.CreatedDate
             }).ToListAsync();
         }
@@ -126,6 +127,7 @@ namespace VMS.Repository
                 Name = roleDTO.Name,
                 CreatedBy = roleDTO.CreatedBy,
                 UpdatedBy = roleDTO.UpdatedBy,
+                Status=roleDTO.status,
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now
             };
@@ -170,6 +172,9 @@ namespace VMS.Repository
             {
                 throw new Exception($"Role with ID {updateRolePagesDTO.RoleId} not found.");
             }
+            role.Status = updateRolePagesDTO.Status; // Assuming Status is included in UpdateRolePagesDTO
+            role.UpdatedBy = updateRolePagesDTO.UpdatedBy; // Assuming UpdatedBy is included in UpdateRolePagesDTO
+            role.UpdatedDate = DateTime.Now;
 
             var existingPageControls = _context.PageControls.Where(pc => pc.RoleId == updateRolePagesDTO.RoleId);
             _context.PageControls.RemoveRange(existingPageControls);
