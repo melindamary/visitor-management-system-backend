@@ -14,25 +14,6 @@ namespace VMS.Repository
         }
         public async Task<IEnumerable<VisitorReportDetailsDTO>> GetAllVisitorsAsync()
         {
-            /*var visitors = await (from visitor in _context.Visitors
-                                  join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
-                                  join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
-                                  join user in _context.UserDetails on visitor.StaffId equals user.UserId
-                                  where visitor.CheckInTime != null && visitor.CheckOutTime != null
-                                  select new VisitorReportDetailsDTO
-                                  {
-                                      VisitorId = visitor.Id,
-                                      VisitorName = visitor.Name,
-                                      Phone = visitor.Phone,
-                                      VisitDate = visitor.VisitDate,
-                                      HostName = visitor.HostName,
-                                      PurposeName = purpose.Name,
-                                      LocationName = location.Name,
-                                      StaffName = user.FirstName + " " + user.LastName,
-                                      StaffPhoneNumber = user.Phone,
-                                      CheckInTime = visitor.CheckInTime,
-                                      CheckOutTime = visitor.CheckOutTime,
-                                  }).ToListAsync();*/
             var visitors = await (from visitor in _context.Visitors
                                   join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
                                   join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
