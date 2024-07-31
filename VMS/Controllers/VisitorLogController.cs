@@ -23,8 +23,10 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetVisitorLogToday()
         {
             var response = new APIResponse();
@@ -139,8 +141,10 @@ namespace VMS.Controllers
         }
 
         [HttpPut("{id}")]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<IActionResult> UpdateCheckOutTime(int id)
         {
             var response = new APIResponse();
