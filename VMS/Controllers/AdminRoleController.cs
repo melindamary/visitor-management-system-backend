@@ -107,7 +107,7 @@ namespace VMS.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult> CreatePageControls(int roleId, List<AddPageControlDTO> pageControls, int status)
+        public async Task<ActionResult> CreatePageControls(int roleId, List<AddPageControlDTO> pageControls)
         {
             try
             {
