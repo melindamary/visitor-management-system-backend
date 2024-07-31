@@ -17,7 +17,7 @@ namespace VMS.Services
         private readonly IRoleRepository _roleRepository;
         private readonly IUserDetailsRepository _userDetailRepository;
         private readonly IUserLocationRepository _userLocationRepository;
-        private readonly IlocationRepository _locationRepository;
+        private readonly ILocationRepository _locationRepository;
 
         public const int _activeStatus = 1;
         public const int _isLoggedIn = 0;
@@ -25,7 +25,7 @@ namespace VMS.Services
 
 
         public UserService(IUserRepository userRepository, IUserLocationRepository userLocationRepository,
-            IUserDetailsRepository userDetailRepository,IlocationRepository locationRepository,
+            IUserDetailsRepository userDetailRepository,ILocationRepository locationRepository,
             IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)
         {
             _userRepository = userRepository;

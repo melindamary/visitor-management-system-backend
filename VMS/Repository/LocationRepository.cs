@@ -7,7 +7,7 @@ using VMS.Repository.IRepository;
 
 namespace VMS.Repository
 {
-    public class LocationRepository : IlocationRepository
+    public class LocationRepository : ILocationRepository
     {
         private readonly VisitorManagementDbContext _context;
         private readonly IMapper _mapper;
@@ -23,7 +23,6 @@ namespace VMS.Repository
                 .ToListAsync();
 
             var locationDtos = _mapper.Map<List<LocationDetailsDTO>>(locations);
-            Console.WriteLine(locations);
             return locationDtos;
         }
 

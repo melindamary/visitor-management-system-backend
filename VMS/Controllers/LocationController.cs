@@ -3,6 +3,7 @@ using System.Net;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
+using VMS.Services.IServices;
 
 namespace VMS.Controllers
 {
@@ -10,10 +11,12 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class LocationController : ControllerBase
     {
-        private readonly IlocationRepository _repository;
-        public LocationController(IlocationRepository roleRepository)
+        private readonly ILocationService _locationService;
+        private readonly ILocationRepository _repository;
+        public LocationController(ILocationService  locationService, ILocationRepository locationRepository)
         {
-            this._repository = roleRepository;
+            _locationService = locationService;
+            _repository = locationRepository;
         }
 
         [HttpGet]
@@ -30,7 +33,7 @@ namespace VMS.Controllers
             var response = new APIResponse();
             try
             {
-                var locationDetails = await _repository.GetAllLocationDetailsAsync();
+                var locationDetails = await _locationService.GetAllLocationDetailsAsync();
 
                 response.IsSuccess = true;
                 response.Result = locationDetails;
@@ -67,7 +70,7 @@ namespace VMS.Controllers
 
             try
             {
-                var success = await _repository.AddLocationAsync(locationdDTO);
+                var success = await _locationService.AddLocationAsync(locationdDTO);
                 if (success)
                 {
                     response.IsSuccess = true;
@@ -114,7 +117,7 @@ namespace VMS.Controllers
 
             try
             {
-                var success = await _repository.UpdateLocationAsync(id, dto);
+                var success = await _locationService.UpdateLocationAsync(id, dto);
                 if (success)
                 {
                     response.IsSuccess = true;
