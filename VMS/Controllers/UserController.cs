@@ -18,6 +18,10 @@ namespace VMS.Controllers
 
         /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{username}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) 
         {
 
@@ -36,6 +40,10 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
         {
             /*try
@@ -61,8 +69,12 @@ namespace VMS.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }*/
         }
-        [HttpGet("{username}")]
-        public async Task<IActionResult> CheckUsernameExists(string username)
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
+        public async Task<IActionResult> CheckUsernameExists([FromQuery] string username)
         {
             {
                 if (string.IsNullOrWhiteSpace(username))
@@ -88,7 +100,11 @@ namespace VMS.Controllers
         }
 
 
-            [HttpGet("{id}")]
+        [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetUserById(int id)
         {
            
@@ -111,6 +127,10 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetAllUsersOverview()
         {
             var userOverviews = await _userService.GetAllUsersOverviewAsync();
@@ -132,8 +152,12 @@ namespace VMS.Controllers
             return Ok(userOverviews);
         }
        [HttpPut("{id}")]
-public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
-{
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
+        public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+    {
     if (id != updateUserDto.UserId)
     {
         var errorResponse = new APIResponse

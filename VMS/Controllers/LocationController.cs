@@ -20,14 +20,20 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndName()
         {
             return await _repository.GetLocationIdAndNameAsync();
         }
 
         [HttpGet]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
-        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<APIResponse>> GetAllLocationDetails()
         {
             var response = new APIResponse();

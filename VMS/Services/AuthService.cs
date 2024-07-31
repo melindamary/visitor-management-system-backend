@@ -31,15 +31,19 @@ namespace VMS.Services
 
             if (!await _repository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
             {
+                response.IsSuccess = false;
                 response.ErrorMessages = new List<string> { "Invalid login credentials" };
                 response.StatusCode = HttpStatusCode.Unauthorized;
                 return response;
             }
 
-            var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
+            var user = await _repository.GetUserByUsernameAsync(loginRequest.Username); //working
+            Console.WriteLine("User is :", user.Username);
             var location = await _repository.GetUserLocationAsync(user.Id);
+            Console.WriteLine("Location is:", location.Name);
             if (location == null)
             {
+                response.IsSuccess = false;
                 response.ErrorMessages = new List<string> { "Location not found for user" };
                 response.StatusCode = HttpStatusCode.BadRequest;
                 return response;
@@ -48,6 +52,7 @@ namespace VMS.Services
             var userRole = await _service.GetUserRoleByUsernameAsync(user.Username);
             if (userRole == null)
             {
+                response.IsSuccess = false;
                 response.ErrorMessages = new List<string> { "Role not found for user" };
                 response.StatusCode = HttpStatusCode.BadRequest;
                 return response;

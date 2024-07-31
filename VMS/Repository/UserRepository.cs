@@ -6,6 +6,7 @@ using VMS.Repository.IRepository;
 using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Identity;
+using System.Security.Cryptography;
 
 
 namespace VMS.Repository
@@ -79,7 +80,7 @@ namespace VMS.Repository
             _logger.LogInformation("Getting user by username: {Username}.", username);
             try
             {
-                var user = await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+                var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
                 if (user == null)
                 {
                     _logger.LogWarning("User with username {Username} not found.", username);
@@ -169,22 +170,33 @@ namespace VMS.Repository
 
 
         }
-        private bool VerifyPasswordHash(string password, string storedHash)
+        public static bool VerifyPassword(string enteredPassword, string storedHash)
         {
-            // Implement hash verification logic here
-            Console.WriteLine(BCrypt.Net.BCrypt.Verify(password, storedHash));
-            _logger.LogInformation("Verifying password hash.");
+            // Extract the bytes
+            byte[] hashBytes = Convert.FromBase64String(storedHash);
+            byte[] salt = new byte[16];
+            Array.Copy(hashBytes, 0, salt, 0, 16);
+
+            // Compute the hash on the entered password
+            var pbkdf2 = new Rfc2898DeriveBytes(enteredPassword, salt, 10000);
+            byte[] hash = pbkdf2.GetBytes(20);
+
+            // Compare the results
+            for (int i = 0; i < 20; i++)
+                if (hashBytes[i + 16] != hash[i])
+                    return false;
+
             return true;
         }
 
         public async Task<LocationIdAndNameDTO> GetUserLocationAsync(int id)
         {
             _logger.LogInformation("Getting location for user with ID: {UserId}.", id);
-            try
-            {
+           /* try
+            {*/
                 var userLocation = await (from user in _context.UserDetails
                                           join location in _context.OfficeLocations on user.OfficeLocationId equals location.Id
-                                          where user.Id == id
+                                          where user.UserId == id
                                           select new LocationIdAndNameDTO
                                           {
                                               Id = location.Id,
@@ -199,12 +211,12 @@ namespace VMS.Repository
                     _logger.LogInformation("Location for user with ID {UserId} retrieved successfully.", id);
                 }
                 return userLocation;
-            }
+           /* }
             catch (Exception ex)
             {
                 _logger.LogError(ex, "An error occurred while getting location for user with ID: {UserId}.", id);
                 throw;
-            }
+            }*/
 
         }
 

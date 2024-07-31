@@ -19,6 +19,10 @@ namespace VMS.Controllers
         }
 
         [HttpGet("details")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<IEnumerable<Visitor>>> GetVisitorDetails()
         {
             var visitors = await _visitorService.GetVisitorDetailsAsync();
@@ -26,6 +30,10 @@ namespace VMS.Controllers
         }
 
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<IEnumerable<string>>> GetPersonInContact()
         {
             var contacts = await _visitorService.GetPersonInContactAsync();
@@ -33,6 +41,10 @@ namespace VMS.Controllers
         }
 
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<Visitor>> GetVisitorById(int id)
         {
             var visitor = await _visitorService.GetVisitorByIdAsync(id);
@@ -44,6 +56,10 @@ namespace VMS.Controllers
         }
 
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<Visitor>> CreateVisitor(VisitorCreationDTO visitorDto)
         {
             var visitor = await _visitorService.CreateVisitorAsync(visitorDto);
@@ -51,6 +67,10 @@ namespace VMS.Controllers
         }
 
         [HttpPost("add-device")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<ActionResult<VisitorDevice>> AddVisitorDevice(AddVisitorDeviceDTO addDeviceDto)
         {
             var device = await _visitorService.AddVisitorDeviceAsync(addDeviceDto);

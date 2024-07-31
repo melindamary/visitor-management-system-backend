@@ -1,36 +1,352 @@
-// File: Controllers\AuthController.cs
-using Microsoft.AspNetCore.Mvc;
-using System.Collections.Generic;
+// File: Controllers\ActiveVisitorsignalRController.cs
+/*using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Linq;
+using System.Threading.Tasks;
+using VMS.AVHubs;
+using VMS.Data;
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class ActiveVisitorsignalRController:ControllerBase
+    {
+        private readonly IHubContext<VisitorHub> _hubContext;
+        private readonly VisitorManagementDbContext _context;
+
+        public ActiveVisitorsignalRController(IHubContext<VisitorHub> hubContext, VisitorManagementDbContext context)
+        {
+            _hubContext = hubContext;
+            _context = context;
+        }
+
+        [HttpGet("activeVisitors")]
+        public async Task<IActionResult> GetActiveVisitors()
+        {
+            var activeVisitors = _context.Visitors
+                .Where(v => v.CheckInTime<= DateTime.Today && v.CheckOutTime == null)
+                .Count();
+
+            await _hubContext.Clients.All.SendAsync("ReceiveActiveVisitors", activeVisitors);
+            return Ok(activeVisitors);
+        }
+    }
+}
+*//*
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
+using System.Threading.Tasks;
+using VMS.AVHubs;
+using VMS.Data;
 using VMS.Models;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]")]
+    public class ActiveVisitorsignalRController : ControllerBase
+    {
+
+        private readonly VisitorManagementDbContext _context;
+        private readonly IHubContext<VisitorHub> _hubContext;
+
+
+        public ActiveVisitorsignalRController(VisitorManagementDbContext context)
+        {
+            _context = context;
+            _hubContext = hubContext;
+
+        }
+        [HttpGet("test-connection")]
+        public async Task<IActionResult> TestConnection()
+        {
+            try
+            {
+                // Try to fetch the count of visitors
+                var visitorCount = await _context.Visitors.CountAsync();
+                return Ok($"Connection successful. Visitor count: {visitorCount}");
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Connection failed: {ex.Message}");
+            }
+        }
+
+        *//*        [HttpGet]
+                public async Task<IActionResult> UpdateVisitorCount()
+                {
+                    // Add a new visitor
+                    _context.Visitors.Add(new Visitor());
+                    await _context.SaveChangesAsync();
+
+                    // Get the updated visitor count
+                    int count = await _context.Visitors.CountAsync();
+
+                    // Send the updated visitor count to all clients
+                    await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", count);
+
+                    return Ok(count);
+                }*//*
+    }
+}
+*/
+
+// File: Controllers\AdminRoleController.cs
+using Microsoft.AspNetCore.Mvc;
 using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+using VMS.Models;
+using System.Data;
 
 namespace VMS.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    
-    public class AuthController : ControllerBase
+    public class AdminRoleController : ControllerBase
     {
-        private static readonly List<User> UserList = new List<User>
+        private readonly IAdminRoleRepository _adminRoleRepository;
+
+        public AdminRoleController(IAdminRoleRepository adminRoleRepository)
         {
-            new User { Username = "admin", Password = "admin123"},
-            new User { Username = "user", Password = "user123"},
-            new User { Username = "auditor", Password = "auditor123"}
-        };
+            _adminRoleRepository = adminRoleRepository;
+        }
+
+        // Role-related actions
+        [HttpGet("get-role-id-name")]
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndName()
+        {
+            return await _adminRoleRepository.GetRoleIdAndNameAsync();
+        }
+
+        [HttpGet("get-role-by-id/{id}")]
+        public async Task<ActionResult<Role>> Getroles(int id)
+        {
+            var role = await _adminRoleRepository.GetRolesAsync(id);
+            if (role == null)
+            {
+                return NotFound();
+            }
+            return role;
+        }
+
+        [HttpDelete("{roleId}")]
+        public async Task<IActionResult> DeleteRole(int roleId)
+        {
+            try
+            {
+                await _adminRoleRepository.DeleteRoleAsync(roleId);
+                return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return NotFound(new { message = ex.Message });
+            }
+        }
+
+        // Page-related actions
+        [HttpGet("get-pages")]
+        public async Task<IEnumerable<Page>> GetPages()
+        {
+            return await _adminRoleRepository.GetPagesAsync();
+        }
+
+        [HttpGet("get-page/{id}")]
+        public async Task<ActionResult<Page>> GetPage(int id)
+        {
+            var page = await _adminRoleRepository.GetPageByIdAsync(id);
+            if (page == null)
+            {
+                return NotFound();
+            }
+            return page;
+        }
+        [HttpGet("{roleId}")]
+        public async Task<ActionResult<IEnumerable<Page>>> GetPagesByRoleId(int roleId)
+        {
+            var pages = await _adminRoleRepository.GetPagesByRoleIdAsync(roleId);
+            if (pages == null || !pages.Any())
+            {
+                return NotFound();
+            }
+            return Ok(pages);
+        }
+
+        [HttpPost("create-page")]
+        public async Task<ActionResult<Page>> CreatePage(PageDTO pageDto)
+        {
+            var page = await _adminRoleRepository.CreatePageAsync(pageDto);
+            return CreatedAtAction(nameof(GetPage), new { id = page.Id }, page);
+        }
+
 
         [HttpPost]
-        public IActionResult Login([FromBody] LoginRequest request)
+        public async Task<ActionResult<Role>> PostRole(AddNewRoleDTO roleDTO)
         {
-            var user = UserList.FirstOrDefault(u => u.Username == request.Username && u.Password == request.Password);
-            if (user == null)
+            try
             {
-                return Unauthorized("Invalid credentials");
+                var role = await _adminRoleRepository.CreateRoleAsync(roleDTO);
+                return CreatedAtAction(nameof(PostRole), new { id = role.Id }, role);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, $"An error occurred: {ex.Message}");
             }
 
-            // Generate and return a JWT token here
-            return Ok(new User {Username = user.Username});
+
+
         }
+        [HttpPost]
+        public async Task<ActionResult> CreatePageControls(int roleId, List<AddPageControlDTO> pageControls)
+        {
+            try
+            {
+                await _adminRoleRepository.AddPageControlsAsync(roleId, pageControls);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                // Log the exception
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+        [HttpPatch]
+        public async Task<IActionResult> UpdateRolePages(UpdateRolePagesDTO updateRolePagesDTO)
+        {
+            try
+            {
+                await _adminRoleRepository.UpdateRolePagesAsync(updateRolePagesDTO);
+                return Ok(new { message = "Role pages updated successfully." });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"An error occurred: {ex.Message}");
+            }
+        }
+
+
+
+
+    }
+}
+
+// File: Controllers\AuthController.cs
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Net;
+using System.Security.Claims;
+using System.Text;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+using VMS.Services.IServices;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+
+    public class AuthController : ControllerBase
+    {
+        private readonly IUserRepository _repository;
+        private readonly IConfiguration _configuration;
+        private readonly IUserService _service;
+
+        public AuthController(IUserRepository repository, IUserService service, IConfiguration configuration)
+        {
+            _repository = repository;
+            _service = service;
+            _configuration = configuration;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Login([FromBody] LoginRequestDTO loginRequest)
+        {
+            if (!await _repository.ValidateUserAsync(loginRequest.Username, loginRequest.Password))
+            {
+                var errorResponse = new APIResponse
+                {
+                    Result = null,
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.Unauthorized,
+                    ErrorMessages = new List<string> { "Invalid login credentials" }
+                };
+                return Unauthorized(errorResponse);
+            }
+
+            APIResponse response = new APIResponse();
+
+            var user = await _repository.GetUserByUsernameAsync(loginRequest.Username);
+            var location = await _repository.GetUserLocationAsync(user.Id);
+            if (location == null) {
+                response.ErrorMessages.Add("Location not found for user");
+            }
+
+            var userRole = await _service.GetUserRoleByUsernameAsync(user.Username);
+            Console.WriteLine(userRole.Value.RoleName);
+
+            if (userRole == null) {
+                response.ErrorMessages.Add("Role not found for user");
+            }
+
+            await _repository.UpdateLoggedInStatusAsync(user.Username);
+
+            var token = GenerateJwtToken(user, userRole.Value.RoleName);
+
+            var loginResponse = new LoginResponseDTO
+            {
+                Username = user.Username,
+                Token = token,
+                Location = location.Name,
+                Role = userRole.Value.RoleName
+            };
+
+            
+            response.Result = loginResponse;
+            response.IsSuccess = true;
+            response.StatusCode = HttpStatusCode.OK;
+            response.ErrorMessages = null;
+            return Ok(response);
+
+        }
+
+        private string GenerateJwtToken(User user, string userRole)
+        {
+            var tokenHandler = new JwtSecurityTokenHandler();
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
+                new Claim(ClaimTypes.Name, user.Username),
+                new Claim(ClaimTypes.Role, userRole)
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(_configuration["ApiSettings:Key"]));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
+
+            var tokenDescriptor = new SecurityTokenDescriptor
+            {
+                Subject = new ClaimsIdentity(claims),
+                Expires = DateTime.Now.AddDays(1),
+                SigningCredentials = creds
+            };
+
+            
+            var token = tokenHandler.CreateToken(tokenDescriptor);
+
+            return tokenHandler.WriteToken(token);
+        }
+
+        
     }
 }
 
@@ -80,10 +396,10 @@ namespace VMS.Controllers
 
 // File: Controllers\DeviceController.cs
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
-
-using VMS.Models;
 using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
 
 namespace VMS.Controllers
 {
@@ -91,24 +407,185 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class DeviceController : ControllerBase
     {
-        private VisitorManagementDbContext _context;
-        public DeviceController(VisitorManagementDbContext _context)
-        {
-            this._context = _context;
+        private readonly IDeviceRepository _deviceRepository;
 
+        public DeviceController(IDeviceRepository deviceRepository)
+        {
+            _deviceRepository = deviceRepository;
         }
 
-        [HttpGet]
-        public IEnumerable<Device> GetItems()
+        /*[Authorize(Policy = "AdminOnly")]*/
+        [HttpGet("get-device-id-name")]
+        public async Task<IEnumerable<GetDeviceIdAndNameDTO>> GetItems()
         {
-            return _context.Devices.ToList<Device>();
+            return await _deviceRepository.GetDevicesAsync();
+        }
 
+        /*[Authorize(Policy = "AdminOnly")]*/
+        [HttpPost]
+        public async Task<ActionResult<Device>> PostDevice(AddNewDeviceDTO deviceDto)
+        {
+            try
+            {
+                var device = await _deviceRepository.AddDeviceAsync(deviceDto);
+                return CreatedAtAction(nameof(PostDevice), new { id = device.Id }, device);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
         }
     }
 }
 
-// File: Controllers\PageController.cs
+
+// File: Controllers\LocationController.cs
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class LocationController : ControllerBase
+    {
+        private readonly IlocationRepository _repository;
+        public LocationController(IlocationRepository roleRepository)
+        {
+            this._repository = roleRepository;
+        }
+
+        [HttpGet]
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndName()
+        {
+            return await _repository.GetLocationIdAndNameAsync();
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<APIResponse>> GetAllLocationDetails()
+        {
+            var response = new APIResponse();
+            try
+            {
+                var locationDetails = await _repository.GetAllLocationDetailsAsync();
+
+                response.IsSuccess = true;
+                response.Result = locationDetails;
+                response.StatusCode = HttpStatusCode.OK;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessages = new List<string> { ex.Message };
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+
+        [HttpPost]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.Created)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<APIResponse>> AddLocation([FromBody] AddOfficeLocationDTO locationdDTO)
+        {
+            var response = new APIResponse();
+            if (!ModelState.IsValid)
+            {
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.ErrorMessages.Add("Invalid input data.");
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    response.ErrorMessages.Add(error.ErrorMessage);
+                }
+                return BadRequest(response);
+            }
+
+            try
+            {
+                var success = await _repository.AddLocationAsync(locationdDTO);
+                if (success)
+                {
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.Created;
+                    response.Result = "Location added successfully.";
+                    return CreatedAtAction(nameof(AddLocation), new { /* pass location id if available */ }, response);
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    response.ErrorMessages.Add("Failed to add location.");
+                    return BadRequest(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessages = new List<string> { ex.Message };
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<APIResponse>> UpdateLocation(int id, [FromBody] UpdateLocationDTO dto)
+        {
+            var response = new APIResponse();
+            if (!ModelState.IsValid)
+            {
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.ErrorMessages.Add("Invalid input data.");
+                foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                {
+                    response.ErrorMessages.Add(error.ErrorMessage);
+                }
+                return BadRequest(response);
+            }
+
+            try
+            {
+                var success = await _repository.UpdateLocationAsync(id, dto);
+                if (success)
+                {
+                    response.IsSuccess = true;
+                    response.StatusCode = HttpStatusCode.OK;
+                    response.Result = "Location updated successfully.";
+                    return Ok(response);
+                }
+                else
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages.Add("Location not found.");
+                    return NotFound(response);
+                }
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessages = new List<string> { ex.Message };
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+    }
+}
+
+
+// File: Controllers\PageController.cs
+/*using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 using VMS.Models;
 using VMS.Data;
@@ -153,8 +630,8 @@ namespace VMS.Controllers
         {
             var page = new Page
             {
-                PageName = pageDto.PageName,
-                PageUrl = pageDto.PageUrl,
+                Name = pageDto.PageName,
+                Url = pageDto.PageUrl,
                 CreatedBy = pageDto.CreatedBy,
                 UpdatedBy = pageDto.UpdatedBy,
                 CreatedDate = DateTime.Now,
@@ -164,7 +641,7 @@ namespace VMS.Controllers
             _context.Pages.Add(page);
             _context.SaveChanges();
 
-            return CreatedAtAction(nameof(GetPage), new { id = page.PageId }, page);
+            return CreatedAtAction(nameof(GetPage), new { id = page.Id }, page);
         }
 
         [HttpPut("{id}")]
@@ -177,8 +654,8 @@ namespace VMS.Controllers
                 return NotFound();
             }
 
-            page.PageName = pageDto.PageName;
-            page.PageUrl = pageDto.PageUrl;
+            page.Name = pageDto.PageName;
+            page.Url = pageDto.PageUrl;
             page.UpdatedBy = pageDto.UpdatedBy;
             page.UpdatedDate = DateTime.Now;
 
@@ -203,10 +680,10 @@ namespace VMS.Controllers
             return NoContent();
         }
     }
-}
+}*/
 
 // File: Controllers\PageRoleController.cs
-using Microsoft.AspNetCore.Mvc;
+/*using Microsoft.AspNetCore.Mvc;
 using System.Linq;
 
 using VMS.Models;
@@ -269,55 +746,185 @@ namespace VMS.Controllers
     }
 
 }
+*/
 
-// File: Controllers\PurposeController.cs
+// File: Controllers\PurposeOfVisitController.cs
 using Microsoft.AspNetCore.Mvc;
+using System.Net;
 using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
+using VMS.Repository.IRepository;
 
 namespace VMS.Controllers
 {
     [ApiController]
     [Route("[controller]/[action]")]
-    public class PurposeController : ControllerBase
+    public class PurposeOfVisitController : ControllerBase
     {
-        private VisitorManagementDbContext _context;
-        public PurposeController(VisitorManagementDbContext _context)
-        {
-            this._context = _context;
+        private readonly IPurposeOfVisitRepository _repository;
 
+        public PurposeOfVisitController(IPurposeOfVisitRepository repository)
+        {
+            _repository = repository;
         }
 
-        [HttpGet]
-        public IEnumerable<PurposeOfVisit> GetPurposes()
+        [HttpGet("get-purposes-id-Name")]
+        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposes()
         {
-            return _context.PurposeOfVisits.ToList<PurposeOfVisit>();
-
+            return await _repository.GetPurposesAsync();
         }
 
         [HttpPost]
         public async Task<ActionResult<PurposeOfVisit>> PostPurpose(AddNewPurposeDTO purposeDto)
         {
-            if (_context.PurposeOfVisits.Any(p => p.PurposeName == purposeDto.Name))
+            try
             {
-                return Conflict(new { message = "Purpose already exists" });
+                var purpose = await _repository.AddPurposeAsync(purposeDto);
+                return CreatedAtAction(nameof(PostPurpose), new { id = purpose.Id }, purpose);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = ex.Message });
+            }
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<APIResponse>> GetPurposeList() {
+
+            var purposes = await _repository.GetPurposeListAsync();
+
+            if (purposes == null) {
+                var errorResponse = new APIResponse {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No purposes of visit found" }
+                };
+
+                return NotFound(errorResponse);
             }
 
-            var purpose = new PurposeOfVisit
+            var response = new APIResponse
             {
-                PurposeName = purposeDto.Name,
-                CreatedBy = purposeDto.CreatedBy,
-                UpdatedBy = purposeDto.UpdatedBy,
-
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
+                Result = purposes,
+                StatusCode = HttpStatusCode.OK,
             };
 
-            _context.PurposeOfVisits.Add(purpose);
-            await _context.SaveChangesAsync();
+            return Ok(purposes);
 
-            return CreatedAtAction(nameof(PostPurpose), new { id = purpose.PurposeId }, purpose);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<APIResponse>> UpdatePurpose([FromBody] PurposeUpdateRequestDTO updatePurposeRequestDTO)
+        {
+            var result = await _repository.UpdatePurposeAsync(updatePurposeRequestDTO);
+            if (!result) {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "Purpose does not exist" }
+                };
+                return NotFound(errorResponse);
+            }
+            return new APIResponse
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                ErrorMessages = null
+            };
+
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult<APIResponse>> DeletePurpose(int id)
+        {
+            var result = await _repository.DeletePurposeAsync(id);
+            if (!result)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "Purpose does not exist" }
+                };
+                return NotFound(errorResponse);
+            }
+            return new APIResponse
+            {
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+                ErrorMessages = null
+            };
+
+        }
+    }
+}
+
+// File: Controllers\ReportController.cs
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using VMS.Models;
+using VMS.Repository.IRepository;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class ReportController : ControllerBase
+    {
+        private IReportRepository _repository;
+        public ReportController(IReportRepository repository)
+        {
+            _repository = repository;
+        }
+
+       /* [Authorize(Policy = "AdminOnly")]*/
+        [HttpGet]
+        public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
+        {
+            var visitors = await _repository.GetAllVisitorsAsync();
+
+            if (visitors == null)
+            {
+                var errorResponse = new APIResponse {
+                    IsSuccess = false,
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No visitors found." }
+                };
+                return NotFound(errorResponse);
+            }
+            Console.WriteLine("Reports:", visitors);
+            var response = new APIResponse
+            {
+                Result = visitors,
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK
+            };
+
+            return Ok(response);
+        }
+
+        [Authorize(Policy = "AdminOnly")]
+        [HttpGet("{id}")]
+        public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id) {
+
+            var visitor = await _repository.GetVisitorDetailsAsync(id);
+            if (visitor == null) {
+                var errorResponse = new APIResponse
+                {
+                    Result = null,
+                    IsSuccess = true,
+                    StatusCode = HttpStatusCode.NotFound,
+                };
+                return NotFound(errorResponse);
+            }
+
+            var response = new APIResponse
+            {
+                Result = visitor,
+                IsSuccess = true,
+                StatusCode = HttpStatusCode.OK,
+            };
+            return Ok(response);
         }
     }
 }
@@ -331,6 +938,7 @@ using VMS.Data;
 using VMS.Models.DTO;
 using Microsoft.EntityFrameworkCore;
 using System.Data;
+using VMS.Repository.IRepository;
 namespace VMS.Controllers
 {
     [ApiController]
@@ -338,63 +946,19 @@ namespace VMS.Controllers
     public class RoleController : ControllerBase
     {
 
-        private VisitorManagementDbContext _context;
-        public RoleController(VisitorManagementDbContext _context)
+        private readonly IRoleRepository _roleRepository;
+        public RoleController(IRoleRepository roleRepository)
         {
-            this._context = _context;
+            this._roleRepository = roleRepository;
         }
-        [HttpGet]
-        public IEnumerable<Roles> GetRoles() { 
-            return _context.Roles.ToList<Roles>();
-        }
-
-
-
-        [HttpPost]
-        public async Task<ActionResult<Roles>> PostRole(AddNewRoleDTO roleDTO)
+        
+        [HttpGet("get-role-id-name")]
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndName()
         {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
-            {
-                return Conflict(new { message = "role already exists" });
+            return await _roleRepository.GetRoleIdAndNameAsync();
+        }    
 
-            }
-            var role = new Roles
-            {
-                RoleName = roleDTO.Name,
-                CreatedBy = roleDTO.CreatedBy,
-                UpdatedBy = roleDTO.UpdatedBy,
-
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role});
-        }
-
-
-        [HttpPost]
-
-        public async Task<ActionResult<Roles>> PostPage_Control(AddNewRoleDTO roleDTO)
-        {
-            if (_context.Roles.Any(p => p.RoleName == roleDTO.Name))
-            {
-                return Conflict(new { message = "role already exists" });
-
-            }
-            var role = new Roles
-            {
-                RoleName = roleDTO.Name,
-                CreatedBy = roleDTO.CreatedBy,
-                UpdatedBy = roleDTO.UpdatedBy,
-
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now
-            };
-            _context.Roles.Add(role);
-            await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(PostRole), new { id = role.RoleId, role });
-        }
+        
 
     }
    
@@ -470,12 +1034,154 @@ namespace VMS.Controllers
     }
 }
 
-// File: Controllers\VisitorController.cs
+// File: Controllers\UserController.cs
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
+using System.Net;
 using VMS.Models;
 using VMS.Models.DTO;
-using VMS.Data;
+using VMS.Services.IServices;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class UserController : ControllerBase
+    {
+        private readonly IUserService _userService;
+        public UserController(IUserService userService)
+        {
+            _userService = userService;   
+        }
+
+        /*[Authorize(Policy = "AdminOnly")]*/
+        [HttpGet("{username}")]
+        public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) 
+        {
+
+            var userRole = await _userService.GetUserRoleByUsernameAsync(username);
+
+            if (userRole == null)
+            {
+                return NotFound();
+            }
+
+            APIResponse response = new APIResponse();
+            response.Result = userRole;
+            response.IsSuccess = true;
+            response.StatusCode = HttpStatusCode.OK;
+            return Ok(response);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> CreateNewUser([FromBody] AddNewUserDTO addNewUserDto)
+        {
+            try
+            {
+                await _userService.AddUserAsync(addNewUserDto);
+
+                var successResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.OK,
+                    Result = "User created successfully"
+                };
+
+                return Ok(successResponse);
+            }
+            catch (Exception ex)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.InternalServerError,
+                    ErrorMessages = new List<string> { ex.Message }
+                };
+
+                return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<APIResponse>> GetUserById(int id)
+        {
+           
+            var userDetail = await _userService.GetUserByIdAsync(id);
+            if (userDetail == null)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No User found" }
+                };
+                return NotFound(errorResponse);
+            }
+            var response = new APIResponse
+            {
+                Result = userDetail,
+                StatusCode = HttpStatusCode.OK,
+            };
+            return Ok(userDetail);
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<APIResponse>> GetAllUsersOverview()
+        {
+            var userOverviews = await _userService.GetAllUsersOverviewAsync();
+            if (userOverviews == null)
+            {
+                var errorResponse = new APIResponse
+                {
+                    StatusCode = HttpStatusCode.NotFound,
+                    ErrorMessages = new List<string> { "No User found" }
+                };
+                return NotFound(errorResponse);
+            }
+            var response = new APIResponse
+            {
+                Result = userOverviews,
+                StatusCode = HttpStatusCode.OK,
+            };
+
+            return Ok(userOverviews);
+        }
+       [HttpPut("{id}")]
+public async Task<IActionResult> UpdateUser(int id, [FromBody] UpdateUserDTO updateUserDto)
+{
+    if (id != updateUserDto.UserId)
+    {
+        var errorResponse = new APIResponse
+        {
+            StatusCode = HttpStatusCode.BadRequest,
+            ErrorMessages = new List<string> { "User ID mismatch" }
+        };
+        return BadRequest(errorResponse);
+    }
+
+    var result = await _userService.UpdateUserAsync(updateUserDto);
+    if (!result)
+    {
+        var errorResponse = new APIResponse
+        {
+            StatusCode = HttpStatusCode.NotFound,
+            ErrorMessages = new List<string> { "User not found" }
+        };
+        return NotFound(errorResponse);
+    }
+
+    var successResponse = new APIResponse
+    {
+        StatusCode = HttpStatusCode.OK,
+        Result = "User updated successfully"
+    };
+
+    return Ok(successResponse);
+}
+ }
+}
+
+// File: Controllers\VisitorController.cs
+using Microsoft.AspNetCore.Mvc;
+using VMS.Repository.IRepository;
+using VMS.Models;
+using VMS.Models.DTO;
 
 namespace VMS.Controllers
 {
@@ -484,98 +1190,50 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class VisitorController : ControllerBase
     {
-        private VisitorManagementDbContext _context;
-        public VisitorController(VisitorManagementDbContext _context)
-        {
-            this._context = _context;
+        private readonly IVisitorFormRepository _visitorRepository;
 
-        }
-        [HttpGet]
-        public IEnumerable<Visitor> GetVisitorDetails()
+        public VisitorController(IVisitorFormRepository visitorRepository)
         {
-            return _context.Visitors.ToList<Visitor>();
+            _visitorRepository = visitorRepository;
+        }
 
-        }
         [HttpGet]
-        public IEnumerable<string> GetPersonInContact()
+        public async Task<IEnumerable<Visitor>> GetVisitorDetails()
         {
-            return _context.Visitors.Select(v => v.HostName).Distinct().ToList();
+            return await _visitorRepository.GetVisitorDetailsAsync();
         }
+
+        [HttpGet]
+        public async Task<IEnumerable<string>> GetPersonInContact()
+        {
+            return await _visitorRepository.GetPersonInContactAsync();
+        }
+
         [HttpPost("create-and-add-item")]
-        public IActionResult CreateVisitorAndAddItem([FromBody] VisitorCreationDTO visitorDto)
+        public async Task<IActionResult> CreateVisitorAndAddItem([FromBody] VisitorCreationDTO visitorDto)
         {
             if (visitorDto == null)
             {
                 return BadRequest("Visitor data is null.");
             }
 
-            // Log the received DTO
-            Console.WriteLine("Received DTO: " + visitorDto);
-
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var visitor = new Visitor
-            {
-                VisitorName = visitorDto.Name,
-                Phone = visitorDto.PhoneNumber,
-                PurposeId = visitorDto.PurposeOfVisitId,
-                HostName = visitorDto.PersonInContact,
-                OfficeLocationId = visitorDto.OfficeLocationId,
-                CreatedBy = 1,                
-                VisitDate = DateTime.Now.Date,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now,
-                VisitorDevices = new List<VisitorDevice>()
-            };
+            var visitor = await _visitorRepository.CreateVisitorAsync(visitorDto);
 
-            _context.Visitors.Add(visitor);
-            _context.SaveChanges();
-
-            if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
-            {
-                var firstSelectedItem = visitorDto.SelectedDevice.First();
-                var addDeviceDto = new AddVisitorDeviceDto
-                {
-                    VisitorId = visitor.VisitorId,
-                    DeviceId = firstSelectedItem.DeviceId,
-                    SerialNumber = firstSelectedItem.SerialNumber
-                };
-
-                var addedDevice = AddVisitorDevice(addDeviceDto);
-                return Ok(new { CreatedVisitor = visitor, AddedItem = addedDevice });
-            }
-
-            return Ok(new { CreatedVisitor = visitor });
+            return Ok(new { CreatedVisitor = visitor, AddedItems = visitorDto.SelectedDevice });
         }
 
-        // Method to call the AddVisitorItem API
-        private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
-        {
-            // Create VisitorItem entity from AddVisitorItemDto
-            var visitorDevice = new VisitorDevice
-            {
-                VisitorId = addDeviceDto.VisitorId,
-                DeviceId = addDeviceDto.DeviceId,
-                SerialNumber = addDeviceDto.SerialNumber
-            };
+        
 
-            // Add VisitorItem to context
-            _context.VisitorDevices.Add(visitorDevice);
-
-            // Save changes to the VisitorItems
-            _context.SaveChanges();
-
-            return visitorDevice;
-        }
-
-
+        /*[Authorize(Policy = "AdminOnly")]*/
         [HttpGet("{id}")]
-        public IActionResult GetVisitorById(int id)
+        public async Task<IActionResult> GetVisitorById(int id)
         {
-            var visitor = _context.Visitors.FirstOrDefault(v => v.VisitorId == id);
+            var visitor = await _visitorRepository.GetVisitorByIdAsync(id);
 
             if (visitor == null)
             {
@@ -584,9 +1242,174 @@ namespace VMS.Controllers
 
             return Ok(visitor);
         }
+
+
     }
 }
 
+
+// File: Controllers\VisitorLogController.cs
+using Microsoft.AspNetCore.Mvc;
+using System.Net;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+using VMS.Services;
+
+namespace VMS.Controllers
+{
+    [ApiController]
+    [Route("[controller]/[action]")]
+    public class VisitorLogController : ControllerBase
+    {
+        private readonly IVisitorRepository _repository;
+
+        public VisitorLogController(IVisitorRepository repository, VisitorService visitorService)
+        {
+            _repository = repository;
+        }
+
+        [HttpGet]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
+        public async Task<ActionResult<APIResponse>> GetVisitorLogToday()
+        {
+            var response = new APIResponse();
+            try
+            {
+                var activeVisitorsCount = await _repository.GetActiveVisitorsCountToday();
+                var totalVisitorsCount = await _repository.GetTotalVisitorsCountToday();
+                var checkedOutVisitorsCount = await _repository.GetCheckedOutVisitorsCountToday();
+                var upcomingVisitors = await _repository.GetUpcomingVisitorsToday();
+                var activeVisitors = await _repository.GetActiveVisitorsToday();
+                var checkedOutVisitors = await _repository.GetCheckedOutVisitorsToday();
+                var visitorsToday = await _repository.GetVisitorDetailsToday();
+                /*var activeVisitorsCount = await _visitorRepository.GetActiveVisitorsCountToday();
+               /* var activeVisitorsCount = await _visitorRepository.GetActiveVisitorsCountToday();
+                var totalVisitorsCount = await _visitorRepository.GetTotalVisitorsCountToday();
+                var checkedOutVisitorsCount = await _visitorRepository.GetCheckedOutVisitorsCountToday();
+                var upcomingVisitors = await _visitorRepository.GetUpcomingVisitorsToday();
+                var activeVisitors = await _visitorRepository.GetActiveVisitorsToday();*/
+
+                var result = new
+                {
+                    ActiveVisitorsCount = activeVisitorsCount,
+                    TotalVisitorsCount = totalVisitorsCount,
+                    CheckedOutVisitorsCount = checkedOutVisitorsCount,
+                    UpcomingVisitors = upcomingVisitors,
+                    ActiveVisitors = activeVisitors,
+                    VisitorsToday = visitorsToday,
+                    CheckedOutVisitors = checkedOutVisitors
+                };
+
+                response.IsSuccess = true;
+                response.Result = result;
+                response.StatusCode = HttpStatusCode.OK;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.ErrorMessages = new List<string> { ex.Message };
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
+        public async Task<IActionResult> UpdateCheckInTimeAndCardNumber(int id, [FromBody] UpdateVisitorPassCodeDTO updateVisitorPassCode)
+        {
+            var response = new APIResponse();
+            try
+            {
+                // Check if the model state is valid
+                if (!ModelState.IsValid)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.BadRequest;
+                    response.ErrorMessages.Add("Invalid input data.");
+
+                    // Collect all validation errors
+                    foreach (var error in ModelState.Values.SelectMany(v => v.Errors))
+                    {
+                        response.ErrorMessages.Add(error.ErrorMessage);
+                    }
+                    return BadRequest(response);
+                }
+
+                // Call the repository method to update the visitor details
+                var checkedInVisitor = await _repository.UpdateCheckInTimeAndCardNumber(id, updateVisitorPassCode);
+
+                // If the visitor is not found, return a NotFound response
+                if (checkedInVisitor == null)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages.Add("Visitor not found.");
+                    return NotFound(response);
+                }
+
+                // If successful, return the updated visitor details
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = checkedInVisitor;
+                return Ok(response);
+            }
+            catch (ArgumentException ex)
+            {
+                // Handle business logic errors
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.BadRequest;
+                response.ErrorMessages.Add(ex.Message);
+                return BadRequest(response);
+            }
+            catch (Exception ex)
+            {
+                // Handle unexpected errors
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                response.ErrorMessages.Add("An unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+
+
+        [HttpPut("{id}")]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
+        [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
+        public async Task<IActionResult> UpdateCheckOutTime(int id)
+        {
+            var response = new APIResponse();
+            try
+            {
+                var checkedOutVisitor = await _repository.UpdateCheckOutTime(id);
+
+                if (checkedOutVisitor == null)
+                {
+                    response.IsSuccess = false;
+                    response.StatusCode = HttpStatusCode.NotFound;
+                    response.ErrorMessages.Add("Visitor not found.");
+                    return NotFound(response);
+                }
+
+                response.IsSuccess = true;
+                response.StatusCode = HttpStatusCode.OK;
+                response.Result = checkedOutVisitor;
+                return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                response.IsSuccess = false;
+                response.StatusCode = HttpStatusCode.InternalServerError;
+                response.ErrorMessages.Add("An unexpected error occurred.");
+                return StatusCode((int)HttpStatusCode.InternalServerError, response);
+            }
+        }
+    }
+}
 
 // File: Models\APIResponse.cs
 using System.Net;
@@ -602,33 +1425,19 @@ namespace VMS.Models
         public bool IsSuccess { get; set; }
         public Object Result { get; set; }
         public HttpStatusCode StatusCode { get; set; }
-        public List<string> ErrorMessages { get; set; }
-    }
-}
-
-// File: Models\DashboardData.cs
-namespace VMS.Models
-{
-    public class DashboardData
-    {
-        public int ActiveVisitors { get; set; }
-        public int ScheduledVisitors { get; set; }
-        public int TotalVisitors { get; set; }
+        public List<string> ErrorMessages { get; set; } = new List<string>();
     }
 }
 
 // File: Models\Device.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class Device
 {
-    public int DeviceId { get; set; }
+    public int Id { get; set; }
 
-    public string? DeviceName { get; set; }
+    public string? Name { get; set; }
 
+    public int? Status { get; set; }
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
@@ -645,22 +1454,19 @@ public partial class Device
 }
 
 // File: Models\OfficeLocation.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class OfficeLocation
 {
-    public int OfficeLocationId { get; set; }
+    public int Id { get; set; }
 
-    public string? LocationName { get; set; }
+    public string Name { get; set; }
 
-    public string? Address { get; set; }
+    public string Address { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
-    public int? CreatedBy { get; set; }
+    public int Status { get; set; }
+    public int CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
 
@@ -680,18 +1486,14 @@ public partial class OfficeLocation
 }
 
 // File: Models\Page.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class Page
 {
-    public int PageId { get; set; }
+    public int Id { get; set; }
 
-    public string? PageName { get; set; }
+    public string? Name { get; set; }
 
-    public string? PageUrl { get; set; }
+    public string? Url { get; set; }
 
     public int? CreatedBy { get; set; }
 
@@ -709,14 +1511,10 @@ public partial class Page
 }
 
 // File: Models\PageControl.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class PageControl
 {
-    public int PageControlId { get; set; }
+    public int Id { get; set; }
 
     public int RoleId { get; set; }
 
@@ -734,23 +1532,20 @@ public partial class PageControl
 
     public virtual Page Page { get; set; } = null!;
 
-    public virtual Roles Role { get; set; } = null!;
+    public virtual Role Role { get; set; } = null!;
 
     public virtual User UpdatedByNavigation { get; set; } = null!;
 }
 
 // File: Models\PurposeOfVisit.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class PurposeOfVisit
 {
-    public int PurposeId { get; set; }
+    public int Id { get; set; }
 
-    public string? PurposeName { get; set; }
+    public string Name { get; set; }
 
+    public int Status { get; set; }
     public int? CreatedBy { get; set; }
 
     public DateTime? CreatedDate { get; set; }
@@ -767,16 +1562,12 @@ public partial class PurposeOfVisit
 }
 
 // File: Models\Role.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
-public partial class Roles
+public partial class Role
 {
-    public int RoleId { get; set; }
+    public int Id { get; set; }
 
-    public string? RoleName { get; set; } = null!;
+    public string? Name { get; set; } = null!;
 
     public int? CreatedBy { get; set; }
 
@@ -784,6 +1575,7 @@ public partial class Roles
 
     public int? UpdatedBy { get; set; }
 
+    public int? Status  { get; set; }
     public DateTime? UpdatedDate { get; set; }
 
     public virtual User? CreatedByNavigation { get; set; }
@@ -796,20 +1588,16 @@ public partial class Roles
 }
 
 // File: Models\User.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class User
 {
-    public int UserId { get; set; }
+    public int Id { get; set; }
 
-    public string? Username { get; set; }
+    public string Username { get; set; }
 
-    public string? Password { get; set; }
+    public string Password { get; set; }
 
-    public DateOnly? ValidFrom { get; set; }
+    public DateTime? ValidFrom { get; set; }
 
     public int? IsActive { get; set; }
 
@@ -849,9 +1637,9 @@ public partial class User
 
     public virtual ICollection<PurposeOfVisit> PurposeOfVisitUpdatedByNavigations { get; set; } = new List<PurposeOfVisit>();
 
-    public virtual ICollection<Roles> RoleCreatedByNavigations { get; set; } = new List<Roles>();
+    public virtual ICollection<Role> RoleCreatedByNavigations { get; set; } = new List<Role>();
 
-    public virtual ICollection<Roles> RoleUpdatedByNavigations { get; set; } = new List<Roles>();
+    public virtual ICollection<Role> RoleUpdatedByNavigations { get; set; } = new List<Role>();
 
     public virtual User? UpdatedByNavigation { get; set; }
 
@@ -885,26 +1673,22 @@ public partial class User
 }
 
 // File: Models\UserDetail.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class UserDetail
 {
-    public int UserDetailsId { get; set; }
+    public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? OfficeLocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
-    public string? FirstName { get; set; }
+    public string FirstName { get; set; }
 
-    public string? LastName { get; set; }
+    public string LastName { get; set; }
 
     public string? Email { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
     public string? Address { get; set; }
 
@@ -926,18 +1710,14 @@ public partial class UserDetail
 }
 
 // File: Models\UserLocation.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class UserLocation
 {
-    public int UserLocationId { get; set; }
+    public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? OfficeLocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
     public int? CreatedBy { get; set; }
 
@@ -957,18 +1737,14 @@ public partial class UserLocation
 }
 
 // File: Models\UserRole.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class UserRole
 {
-    public int UserRoleId { get; set; }
+    public int Id { get; set; }
 
-    public int? UserId { get; set; }
+    public int UserId { get; set; }
 
-    public int? RoleId { get; set; }
+    public int RoleId { get; set; }
 
     public int? CreatedBy { get; set; }
 
@@ -980,7 +1756,7 @@ public partial class UserRole
 
     public virtual User? CreatedByNavigation { get; set; }
 
-    public virtual Roles? Role { get; set; }
+    public virtual Role? Role { get; set; }
 
     public virtual User? UpdatedByNavigation { get; set; }
 
@@ -988,36 +1764,32 @@ public partial class UserRole
 }
 
 // File: Models\Visitor.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class Visitor
 {
-    public int VisitorId { get; set; }
+    public int Id { get; set; }
 
-    public string? VisitorName { get; set; }
+    public string Name { get; set; }
 
-    public string? Phone { get; set; }
+    public string Phone { get; set; }
 
-    public int? PurposeId { get; set; }
+    public int PurposeId { get; set; }
 
-    public string? HostName { get; set; }
+    public string HostName { get; set; }
 
-    public string? Photo { get; set; }
+    public byte[] Photo { get; set; }
 
-    public DateTime? VisitDate { get; set; }
+    public DateTime VisitDate { get; set; }
 
-    public string? VisitorPassCode { get; set; }
+    public int? VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
 
     public DateTime? CheckOutTime { get; set; }
 
-    public int? UserId { get; set; }
+    public int StaffId { get; set; }
 
-    public int? OfficeLocationId { get; set; }
+    public int OfficeLocationId { get; set; }
 
     public int? Status { get; set; }
 
@@ -1043,14 +1815,10 @@ public partial class Visitor
 }
 
 // File: Models\VisitorDevice.cs
-using System;
-using System.Collections.Generic;
-
 namespace VMS.Models;
-
 public partial class VisitorDevice
 {
-    public int VisitorDeviceId { get; set; }
+    public int Id { get; set; }
 
     public int VisitorId { get; set; }
 
@@ -1075,6 +1843,24 @@ public partial class VisitorDevice
     public virtual Visitor Visitor { get; set; } = null!;
 }
 
+// File: Models\DTO\AddNewDeviceDto.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddNewDeviceDTO
+    {
+        [Required]
+        public string? deviceName { get; set; }
+
+        [Required]
+        public int CreatedBy { get; set; }
+
+        [Required]
+        public int UpdatedBy { get; set; }
+    }
+}
+
 // File: Models\DTO\AddNewPurposeDTO.cs
 using System.ComponentModel.DataAnnotations;
 
@@ -1083,7 +1869,7 @@ namespace VMS.Models.DTO
     public class AddNewPurposeDTO
     {
         [Required]
-        public string? Name { get; set; }
+        public string? purposeName { get; set; }
         [Required]
         public int CreatedBy { get; set; }
         [Required]
@@ -1108,6 +1894,53 @@ namespace VMS.Models.DTO
     }
 }
 
+// File: Models\DTO\AddNewUserDTO.cs
+namespace VMS.Models.DTO
+{
+    public class AddNewUserDTO
+    {
+        // User properties
+        public string UserName { get; set; }
+        public string Password { get; set; }
+        public DateTime? ValidFrom { get; set; }
+
+        // UserDetail properties
+        public int OfficeLocationId { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+
+        // UserRole property
+        public int RoleId { get; set; }
+
+       
+
+
+
+    }
+}
+
+// File: Models\DTO\AddOfficeLocationDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class AddOfficeLocationDTO
+    {
+        [Required]
+        public string Name { get; set; }
+
+        [Required]
+        public string Address { get; set; }
+
+        [Required]
+        public string Phone { get; set; }
+
+        public string Username { get; set; }
+    }
+}
+
 // File: Models\DTO\AddPageControlDTO.cs
 using System.ComponentModel.DataAnnotations;
 
@@ -1128,21 +1961,32 @@ using System.ComponentModel.DataAnnotations;
 
 namespace VMS.Models.DTO
 {
-    public class AddVisitorDeviceDto
+    public class AddVisitorDeviceDTO
     {
 
-        [Required]
+     
         public int VisitorId { get; set; }
         // Visitor ID (foreign key)
-        [Required]
+       
         public int DeviceId { get; set; }           // Item ID (foreign key)
-        [Required]
+       
         public string? SerialNumber { get; set; }  // Serial number of the item
         }
     }
 
 
 
+
+// File: Models\DTO\DashboardData.cs
+namespace VMS.Models.DTO
+{
+    public class DashboardData
+    {
+        public int ActiveVisitors { get; set; }
+        public int ScheduledVisitors { get; set; }
+        public int TotalVisitors { get; set; }
+    }
+}
 
 // File: Models\DTO\DashboardStatisticsDTO.cs
 namespace VMS.Models.DTO
@@ -1153,6 +1997,77 @@ namespace VMS.Models.DTO
         public int PassesGenerated { get; set; }
         public int ActiveVisitors { get; set; }
         public int TotalVisitors { get; set; }
+    }
+}
+
+// File: Models\DTO\DeviceDetailsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class DeviceDetailsDTO
+    {
+        public string Name { get; set; }
+        public string SerialNumber { get; set; }
+    }
+}
+
+// File: Models\DTO\GetDeviceIdAndNameDto.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class GetDeviceIdAndNameDTO
+    {
+        [Required]
+        public int DeviceId { get; set; }
+        [Required]
+        public string DeviceName { get; set; }
+    }
+}
+
+// File: Models\DTO\GetRoleIdAndNameDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class GetRoleIdAndNameDTO
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
+        public int ?CreatedBy { get; set; }
+        public DateTime ?CreatedDate { get; set; }
+    }
+}
+
+// File: Models\DTO\LocationDetailsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class LocationDetailsDTO
+    {
+        public int Id { get; set; }
+
+        public string? Name { get; set; }
+
+        public string? Address { get; set; }
+
+        public string? Phone { get; set; }
+        public DateTime? CreatedDate { get; set; }
+
+    }
+}
+
+// File: Models\DTO\LocationIdAndNameDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class LocationIdAndNameDTO
+    {
+        [Required]
+        public int Id { get; set; }
+        [Required]
+        public string Name { get; set; }
     }
 }
 
@@ -1169,13 +2084,26 @@ namespace VMS.Models.DTO
     }
 }
 
-// File: Models\DTO\LoginRequest.cs
+// File: Models\DTO\LoginRequestDTO.cs
 namespace VMS.Models.DTO
 {
-    public class LoginRequest
+    public class LoginRequestDTO
     {
         public string? Username { get; set; }
         public string? Password { get; set; }
+    }
+}
+
+// File: Models\DTO\LoginResponseDTO.cs
+namespace VMS.Models.DTO
+{
+    public class LoginResponseDTO
+    {
+        public string? Username { get; set; }
+        public string? Location { get; set; }
+
+        public string? Role { get; set; }
+        public string? Token { get; set; }
     }
 }
 
@@ -1191,6 +2119,40 @@ namespace VMS.Models.DTO
     }
 }
 
+// File: Models\DTO\PurposeOfVisitDTO.cs
+namespace VMS.Models.DTO
+{
+    public class PurposeOfVisitDTO
+    {
+        public int Id { get; set; }
+
+        public string Name { get; set; }
+
+        public int Status { get; set; }
+        public int? CreatedBy { get; set; }
+
+        public DateTime? CreatedDate { get; set; }
+
+        public string? UpdatedBy { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+    }
+}
+
+// File: Models\DTO\PurposeOfVisitNameadnIdDto.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class PurposeOfVisitNameadnIdDTO
+    {
+        [Required]
+        public int PurposeId { get; set; }
+        [Required]
+        public string PurposeName { get; set; }
+    }
+}
+
 // File: Models\DTO\PurposeStatisticsDTO.cs
 namespace VMS.Models.DTO
 {
@@ -1198,6 +2160,17 @@ namespace VMS.Models.DTO
     {
         public string Name { get; set; }
         public int Value { get; set; }
+    }
+}
+
+// File: Models\DTO\PurposeUpdateRequestDTO.cs
+namespace VMS.Models.DTO
+{
+    public class PurposeUpdateRequestDTO
+    {
+        public int Id { get; set; }
+        public string Purpose { get; set; }
+        public string Username { get; set; }
     }
 }
 
@@ -1215,6 +2188,114 @@ namespace VMS.Models.DTO
     }
 }
 
+// File: Models\DTO\UpdateLocationDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UpdateLocationDTO
+    {
+        public string? Name { get; set; }
+
+        public string? Address { get; set; }
+
+        public string? Phone { get; set; }
+        public string Username { get; set; }
+
+    }
+}
+
+// File: Models\DTO\UpdateRolePagesDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UpdateRolePagesDTO
+    {
+        
+        public int RoleId { get; set; }
+        public List<int> PageIds { get; set; }
+    }
+}
+
+// File: Models\DTO\UpdateUserDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UpdateUserDTO
+    {
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string? Password { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public int OfficeLocationId { get; set; }
+        public int IsActive { get; set; }
+        public int RoleId { get; set; }
+        public DateTime? ValidFrom { get; set; }
+    }
+}
+
+// File: Models\DTO\UpdateVisitorPassCodeDTO.cs
+using System.ComponentModel.DataAnnotations;
+
+namespace VMS.Models.DTO
+{
+    public class UpdateVisitorPassCodeDTO
+    {
+        [Required]
+        public int? VisitorPassCode { get; set; }
+        public string Username { get; set; }
+
+
+    }
+}
+
+// File: Models\DTO\UserDetailDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UserDetailDTO
+    {
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string Phone { get; set; }
+        public string Address { get; set; }
+        public string RoleName { get; set; }
+        public int RoleId { get; set; }
+        public string OfficeLocation { get; set; }
+        public int OfficeLocationId { get; set; }
+       
+        public int? IsActive { get; set; }
+        public DateTime? ValidFrom { get; set; }
+    }
+}
+
+// File: Models\DTO\UserOverviewDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UserOverviewDTO
+    {
+        public int userId { get; set; }
+        public string Username { get; set; }
+        public string RoleName { get; set; }
+        public string Location { get; set; }
+        public string FullName { get; set; }
+        public bool IsActive { get; set; }
+    }
+}
+
+// File: Models\DTO\UserRoleDTO.cs
+namespace VMS.Models.DTO
+{
+    public class UserRoleDTO
+    {
+        public int UserId { get; set; }
+        public string Username { get; set; }
+        public string RoleName { get; set; }
+
+        public int RoleId { get; set; }
+    }
+}
+
 // File: Models\DTO\VisitorCreationDTO.cs
 using System.ComponentModel.DataAnnotations;
 
@@ -1223,9 +2304,9 @@ namespace VMS.Models.DTO
     public class VisitorCreationDTO
     {
         [Required]
-        public string? Name { get; set; }
+        public string Name { get; set; }
         [Required]
-        public string? PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; }
        /* [Required]
         public DateTime VisitDate { get; set; }*/
         [Required]
@@ -1234,98 +2315,577 @@ namespace VMS.Models.DTO
         public string PersonInContact { get; set; }
         
         [Required]
-        public int? OfficeLocationId { get; set; }
+        public int OfficeLocationId { get; set; }
 
-        public List<VisitorDeviceDto>? SelectedDevice { get; set; }
+        public List<VisitorDeviceDTO>? SelectedDevice { get; set; }
+        public string ImageData { get; set; }
+    }
+}
+
+// File: Models\DTO\VisitorDetailsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class VisitorDetailsDTO
+    {
+        public string Name { get; set; }
+        public string Phone { get; set; }
+        public DateTime VisitDate { get; set; }
+        public string OfficeLocation { get; set; }
+        public DateTime? CheckInTime { get; set; }
+        public DateTime? CheckOutTime { get; set; }
+        public string VisitPurpose { get; set; }
+        public string HostName { get; set; }
+
+        public string Photo { get; set; }
+        public int DeviceCount { get; set; }
+        public List<DeviceDetailsDTO> DevicesCarried { get; set; }
+
+
     }
 }
 
 // File: Models\DTO\VisitorDeviceDto.cs
 namespace VMS.Models.DTO
 {
-    public class VisitorDeviceDto
+    public class VisitorDeviceDTO
     {
         
         public int DeviceId { get; set; }
         public string? SerialNumber { get; set; }
+       
     }
 }
 
-// File: Data\DashboardData.cs
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using VMS.Models;
-
-
-namespace VMS.Data
+// File: Models\DTO\VisitorLogDTO.cs
+namespace VMS.Models.DTO
 {
-    public class DashboardData
+    public class VisitorLogDTO
     {
-        public int ActiveVisitors { get; set; }
-        public int ScheduledVisitors { get; set; }
-        public int TotalVisitors { get; set; }
-        public IEnumerable<Visitor> Visitors { get; set; }
+        public int Id { get; set; }
+        public string? Name { get; set; }
+        public string? Phone { get; set; }
+        public string? PurposeName { get; set; }
+        public DateTime? CheckInTime { get; set; }
+        public DateTime? CheckOutTime { get; set; }
+        public int? VisitorPassCode { get; set; }
+        public DateTime? VisitDate { get; set; }
+        public string? DeviceName { get; set; }
+        public string? HostName { get; set; }
+        public string? PhotoBase64 { get; set; }
+        public byte[]? Photo { get; set; }
+
+
+    }
+}
+
+// File: Models\DTO\VisitorReportDetailsDTO.cs
+namespace VMS.Models.DTO
+{
+    public class VisitorReportDetailsDTO
+    {
+        public int VisitorId { get; set; }
+
+        public string VisitorName { get; set; }
+
+        public string Phone { get; set; }
+
+        public DateTime VisitDate { get; set; }
+
+        public string LocationName { get; set; }
+
+        public string PurposeName { get; set; }
+        public string HostName { get; set; }
+
+        public string StaffName { get; set; }
+        public string StaffPhoneNumber { get; set; }
+        public DateTime? CheckInTime { get; set; }
+
+        public DateTime? CheckOutTime { get; set; }
+
+        public string Photo { get; set; }
+        public int DeviceCount { get; set; }
+        public List<DeviceDetailsDTO> Devices { get; set; }
+
+
+    }
+}
+
+// File: Services\PostgresListenerService.cs
+
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting;
+using Npgsql;
+using System.Threading;
+using System.Threading.Tasks;
+using VMS.AVHubs;
+using VMS.Data;
+using VMS.Services;
+
+
+namespace VMS.Services
+{
+    public class PostgresListenerService : BackgroundService
+    {
+        private readonly IHubContext<VisitorHub> _hubContext;
+        private readonly string _connectionString = "Server=vmsserver.postgres.database.azure.com;Database=visitor_management_system_db;Username=vmsadmin;password=admin@123";
+        private readonly ILogger<PostgresListenerService> _logger;  // Add this line
+        private readonly VisitorService _visitorService;
+
+
+        public PostgresListenerService(IHubContext<VisitorHub> hubContext, ILogger<PostgresListenerService> logger, VisitorService visitorService)
+        {
+            _hubContext = hubContext;
+            _logger = logger;  // Initialize logger
+            _visitorService = visitorService;
+
+
+        }
+
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            try
+            {
+
+
+
+                await using var conn = new NpgsqlConnection(_connectionString);
+                await conn.OpenAsync(stoppingToken);
+                using (var cmd = new NpgsqlCommand("LISTEN visitor_channel;", conn))
+                {
+                    await cmd.ExecuteNonQueryAsync(stoppingToken);
+                    _logger.LogInformation("Listening for notifications...");
+                }
+
+                conn.Notification += async (o, e) =>
+                {
+                    _logger.LogInformation($"Received notification with payload: {e.Payload}");  // Log the payload
+                    try
+                    {
+                        if (int.TryParse(e.Payload, out var visitorId))
+                        {
+                            _logger.LogInformation($"notification with payload");
+                            // Get the updated visitor count
+                            int count = await _visitorService.GetVisitorCountAsync();
+
+                            // Send the updated visitor count to all clients
+                            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", count);
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        _logger.LogError(ex, "Error processing notification payload.");
+                    }
+                };
+
+                while (!stoppingToken.IsCancellationRequested)
+                {
+                    // Wait for notifications
+                    await Task.Delay(1000, stoppingToken); // Avoid busy waiting
+                }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error in PostgresListenerService.");
+
+            }
+        }
+
+    }
+}
+
+// File: Services\UserService.cs
+using Microsoft.AspNetCore.Mvc;
+using VMS.Models;
+using VMS.Models.DTO;
+using Microsoft.AspNetCore.Identity;
+using VMS.Repository;
+using VMS.Repository.IRepository;
+using VMS.Services.IServices;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
+
+namespace VMS.Services
+{
+
+    public class UserService : IUserService
+    {
+        private readonly IUserRepository _userRepository;
+        private readonly IUserRoleRepository _userRoleRepository;
+        private readonly IRoleRepository _roleRepository;
+        private readonly IUserDetailsRepository _userDetailRepository;
+        private readonly IUserLocationRepository _userLocationRepository;
+        private readonly IlocationRepository _locationRepository;
+
+        public const int _activeStatus = 1;
+        public const int _isLoggedIn = 0;
+
+
+
+        public UserService(IUserRepository userRepository, IUserLocationRepository userLocationRepository,
+            IUserDetailsRepository userDetailRepository,IlocationRepository locationRepository,
+            IUserRoleRepository userRoleRepository, IRoleRepository roleRepository)
+        {
+            _userRepository = userRepository;
+            _userRoleRepository = userRoleRepository;
+            _roleRepository = roleRepository;
+            _userDetailRepository = userDetailRepository;  
+            _userLocationRepository = userLocationRepository;
+            _locationRepository = locationRepository;
+        }
+
+      
+
+        public async Task<ActionResult<UserRoleDTO>> GetUserRoleByUsernameAsync(string username)
+        {
+            var user = await _userRepository.GetUserByUsernameAsync(username); //this is working
+
+            if (user == null)
+            {
+                return null; // User not found
+            }
+
+            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.Id); //returns UserRole
+
+            if (userRole == null)
+            {
+                return null; // Role not found for the user
+            }
+
+            var role = await _roleRepository.GetRoleByIdAsync(userRole.RoleId);
+
+            return new UserRoleDTO
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                RoleId = userRole.RoleId,
+                RoleName = role?.Name ?? "Role does not exist for user" // Handle cases where role might not be found
+            };
+        }
+
+        public async Task AddUserAsync(AddNewUserDTO addNewUserDto)
+        {
+            var passwordHasher = new PasswordHasher<User>();
+
+            // Create the user object
+            var user = new User
+            {
+                Username = addNewUserDto.UserName,
+                CreatedDate = DateTime.Now,
+                IsActive = _activeStatus,
+                IsLoggedIn = _isLoggedIn,
+                ValidFrom = addNewUserDto.ValidFrom
+            };
+
+            // Hash the password and set it
+            user.Password = passwordHasher.HashPassword(user, addNewUserDto.Password);
+
+
+            await _userRepository.AddUserAsync(user);
+           
+
+            var userDetail = new UserDetail
+            {
+                UserId = user.Id,
+                FirstName = addNewUserDto.FirstName,
+                LastName = addNewUserDto.LastName,
+                Phone = addNewUserDto.Phone,
+                Address = addNewUserDto.Address,
+                OfficeLocationId = addNewUserDto.OfficeLocationId,
+                CreatedDate = DateTime.Now
+            };
+            Console.WriteLine(userDetail.UserId);
+            var userRole = new UserRole
+            {
+                UserId = user.Id,
+                RoleId = addNewUserDto.RoleId,
+                CreatedDate = DateTime.Now
+            };
+
+            var userLocation = new UserLocation
+            {
+                UserId = user.Id,
+                OfficeLocationId = addNewUserDto.OfficeLocationId,
+                CreatedDate = DateTime.Now
+            };
+
+            await _userDetailRepository.AddUserDetailAsync(userDetail);
+            await _userRoleRepository.AddUserRoleAsync(userRole);
+            await _userLocationRepository.AddUserLocationAsync(userLocation);
+        }
+
+        public async Task<UserDetailDTO> GetUserByIdAsync(int userId)
+        {
+            var user = await _userRepository.GetUserByIdAsync(userId);
+
+            if (user == null)
+            {
+                return null; // User not found
+            }
+
+            var userDetail = await _userDetailRepository.GetUserDetailByUserIdAsync(userId);
+            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(userId);
+            var role = await _roleRepository.GetRoleByIdAsync(userRole.RoleId);           
+            var userLocation = await _userLocationRepository.GetUserLocationByUserIdAsync(userId);
+            var locations = await _locationRepository.GetLocationByIdAsync(userLocation.OfficeLocationId);
+
+            return new UserDetailDTO
+            {
+                UserId = user.Id,
+                Username = user.Username,
+                FirstName = userDetail.FirstName,
+                LastName = userDetail.LastName,
+                Phone = userDetail.Phone,
+                Address = userDetail.Address,
+                RoleName = role?.Name ?? "Unknown",
+                RoleId = role.Id,
+                OfficeLocation = locations.Name,     
+                OfficeLocationId = locations.Id,
+                IsActive = user.IsActive,
+                ValidFrom = user.ValidFrom
+            };
+        }
+
+        public async Task<List<UserOverviewDTO>> GetAllUsersOverviewAsync()
+        {
+            var users = await _userRepository.GetAllUsersAsync();
+            var userDetails = await _userDetailRepository.GetAllUserDetailsAsync();
+            var userRoles = await _userRoleRepository.GetAllUserRolesAsync();
+            var roles = await _roleRepository.GetAllRolesAsync();
+            var locations = await _locationRepository.GetAllLocationAsync();
+            var userLocations = await _userLocationRepository.GetAllUserLocationsAsync();
+
+
+            if (users == null || userDetails == null || userRoles == null || roles == null || locations == null || userLocations == null)
+            {
+                throw new InvalidOperationException("One or more data sources returned null.");
+            }
+
+            var userOverviews = from user in users
+                                join detail in userDetails on user.Id equals detail.UserId
+                                join userRole in userRoles on user.Id equals userRole.UserId
+                                join role in roles on userRole.RoleId equals role.Id
+                                join userLocation in userLocations on user.Id equals userLocation.UserId
+                                join location in locations on userLocation.OfficeLocationId equals location.Id
+                                where userLocation.OfficeLocationId != null
+                                select new UserOverviewDTO
+                                {
+                                    userId = user.Id,
+                                    Username = user.Username,
+                                    RoleName = role.Name,
+                                    Location = location.Name ?? "Unknown", // Assuming 'Name' is the property that contains the location name
+                                    FullName = $"{detail.FirstName} {detail.LastName}",
+                                    IsActive = user.IsActive == 1
+                                };
+
+
+            return userOverviews.ToList();
+        }
+        public async Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDto)
+        {
+            var user = await _userRepository.GetUserByIdAsync(updateUserDto.UserId);
+            if (user == null) return false;
+
+            user.Username = updateUserDto.Username;
+            // Only update the password if a new password is provided
+            if (!string.IsNullOrEmpty(updateUserDto.Password))
+            {
+                var passwordHasher = new PasswordHasher<User>();
+                user.Password = passwordHasher.HashPassword(user, updateUserDto.Password);
+            }
+            user.ValidFrom = updateUserDto.ValidFrom;
+            user.IsActive = updateUserDto.IsActive;
+
+            await _userRepository.UpdateUserAsync(user);
+
+            var userDetail = await _userDetailRepository.GetUserDetailByUserIdAsync(user.Id);
+            if (userDetail != null)
+            {
+                userDetail.FirstName = updateUserDto.FirstName;
+                userDetail.LastName = updateUserDto.LastName;
+                userDetail.Phone = updateUserDto.Phone;
+                userDetail.Address = updateUserDto.Address;
+                userDetail.OfficeLocationId = updateUserDto.OfficeLocationId;
+
+                await _userDetailRepository.UpdateUserDetailAsync(userDetail);
+            }
+
+            var userRole = await _userRoleRepository.GetUserRoleByUserIdAsync(user.Id);
+            if (userRole != null)
+            {
+                userRole.RoleId = updateUserDto.RoleId;
+                await _userRoleRepository.UpdateUserRoleAsync(userRole);
+            }
+
+            var userLocation = await _userLocationRepository.GetUserLocationByUserIdAsync(user.Id);
+            if (userLocation != null)
+            {
+                userLocation.OfficeLocationId = updateUserDto.OfficeLocationId;
+                await _userLocationRepository.UpdateUserLocationAsync(userLocation);
+            }
+
+            return true;
+        }
+    }
+}
+
+// File: Services\VisitorMonitorService.cs
+/*using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using VMS.AVHubs;
+using VMS.Data;
+
+namespace VMS.Services
+{
+    public class VisitorMonitorService : BackgroundService
+    {
+        private readonly VisitorManagementDbContext _dbContext;
+        private readonly IHubContext<VisitorHub> _hubContext;
+
+        public VisitorMonitorService(VisitorManagementDbContext dbContext, IHubContext<VisitorHub> hubContext)
+        {
+            _dbContext = dbContext;
+            _hubContext = hubContext;
+        }
+
+        protected override async Task ExecuteAsync(CancellationToken stoppingToken)
+        {
+            while (!stoppingToken.IsCancellationRequested)
+            {
+                var count = await CountActiveVisitors();
+                await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", count, stoppingToken);
+
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+            }
+        }
+
+        private async Task<int> CountActiveVisitors()
+        {
+            return await _dbContext.Visitors
+                .Where(v => v.CheckInTime != null && v.CheckOutTime == null).CountAsync();
+        }
+    }
+}
+*/
+
+// File: Services\VisitorService.cs
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using SixLabors.ImageSharp;
+using SixLabors.ImageSharp.Formats.Jpeg;
+using VMS.Data;
+using VMS.Models.DTO;
+
+namespace VMS.Services
+{
+    public class VisitorService
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public VisitorService(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+
+        public async Task<int> GetVisitorCountAsync()
+        {
+            {
+                var today = DateTime.Today;
+
+                // Use LINQ to get the count of visitors where check-in time is not null, check-out time is null, and check-in time is today
+                return await _context.Visitors
+                    .CountAsync(v => v.CheckInTime != null
+                                     && v.CheckOutTime == null
+                                     && v.CheckInTime.Value.Date == today);
+            }
+        }
+
+        public async Task<int> GetTotalVisitorsCountAsync()
+        {
+            var today = DateTime.Today;
+            return await _context.Visitors.CountAsync(
+                v => v.CheckInTime != null
+                && v.CheckInTime.Value.Date == today
+                );
+        }
+
+        public async Task<int> GetScheduledVisitorsCountAsync()
+        {
+            var today = DateTime.Today;
+            return await _context.Visitors
+                .CountAsync(v => v.CheckInTime != null
+                                 && v.CheckOutTime != null
+                                 && v.CheckInTime.Value.Date == today);
+        }
+    }
+}
+
+
+
+// File: Services\IServices\IUserService.cs
+using Microsoft.AspNetCore.Mvc;
+using VMS.Models.DTO;
+
+namespace VMS.Services.IServices
+{
+    public interface IUserService
+    {
+     Task<ActionResult<UserRoleDTO>> GetUserRoleByUsernameAsync(string username);
+     Task AddUserAsync(AddNewUserDTO addNewUserDto);
+     Task<UserDetailDTO> GetUserByIdAsync(int userId);
+     Task<List<UserOverviewDTO>> GetAllUsersOverviewAsync();
+     Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDto);
 
     }
 }
 
 // File: Data\VisitorManagementDbContext.cs
-using System;
-using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
-using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
+using System.Reflection;
 using VMS.Models;
 
 namespace VMS.Data;
 
 public partial class VisitorManagementDbContext : DbContext
 {
-    public VisitorManagementDbContext()
-    {
-    }
+    public VisitorManagementDbContext() {}
 
     public VisitorManagementDbContext(DbContextOptions<VisitorManagementDbContext> options)
-        : base(options)
-    {
-    }
-
+        : base(options){}
     public virtual DbSet<Device> Devices { get; set; }
-
     public virtual DbSet<OfficeLocation> OfficeLocations { get; set; }
-
     public virtual DbSet<Page> Pages { get; set; }
-
     public virtual DbSet<PageControl> PageControls { get; set; }
-
     public virtual DbSet<PurposeOfVisit> PurposeOfVisits { get; set; }
-
-    public virtual DbSet<Roles> Roles { get; set; }
-
+    public virtual DbSet<Role> Roles { get; set; }
     public virtual DbSet<User> Users { get; set; }
-
     public virtual DbSet<UserDetail> UserDetails { get; set; }
-
     public virtual DbSet<UserLocation> UserLocations { get; set; }
-
     public virtual DbSet<UserRole> UserRoles { get; set; }
-
     public virtual DbSet<Visitor> Visitors { get; set; }
-
     public virtual DbSet<VisitorDevice> VisitorDevices { get; set; }
-
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        /*modelBuilder
-            .UseCollation("utf8mb4_0900_ai_ci")
-            .HasCharSet("utf8mb4");*/
+        modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
-        modelBuilder.Entity<Device>(entity =>
+    }
+
+    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
+
+// File: Data\Configurations\DeviceConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class DeviceConfiguration : IEntityTypeConfiguration<Device>
+    {
+        public void Configure(EntityTypeBuilder<Device> entity)
         {
-            entity.HasKey(e => e.DeviceId).HasName("pk_device");
+            entity.HasKey(e => e.Id).HasName("pk_device");
 
             entity.ToTable("device");
 
@@ -1333,13 +2893,14 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_device_updated_by");
 
-            entity.Property(e => e.DeviceId).HasColumnName("device_id");
+            entity.Property(e => e.Id).HasColumnName("device_id");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.DeviceName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("device_name");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -1355,11 +2916,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.DeviceUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_device_updated_by");
-        });
 
-        modelBuilder.Entity<OfficeLocation>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\OfficeLocationConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class OfficeLocationConfiguration : IEntityTypeConfiguration<OfficeLocation>
+    {
+        public void Configure(EntityTypeBuilder<OfficeLocation> entity)
         {
-            entity.HasKey(e => e.OfficeLocationId).HasName("pk_office_location");
+            entity.HasKey(e => e.Id).HasName("pk_office_location");
 
             entity.ToTable("office_location");
 
@@ -1367,7 +2941,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_office_location_updated_by");
 
-            entity.Property(e => e.OfficeLocationId).HasColumnName("office_location_id");
+            entity.Property(e => e.Id).HasColumnName("office_location_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
@@ -1376,7 +2950,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.LocationName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("location_name");
             entity.Property(e => e.Phone)
@@ -1387,7 +2961,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("updated_date");
-
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.OfficeLocationCreatedByNavigations)
                 .HasForeignKey(d => d.CreatedBy)
                 .HasConstraintName("fk_office_location_created_by");
@@ -1395,11 +2969,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.OfficeLocationUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_office_location_updated_by");
-        });
 
-        modelBuilder.Entity<Page>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\PageConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class PageConfiguration : IEntityTypeConfiguration<Page>
+    {
+        public void Configure(EntityTypeBuilder<Page> entity)
         {
-            entity.HasKey(e => e.PageId).HasName("pk_page");
+            entity.HasKey(e => e.Id).HasName("pk_page");
 
             entity.ToTable("page");
 
@@ -1407,16 +2994,16 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_page_updated_by");
 
-            entity.Property(e => e.PageId).HasColumnName("page_id");
+            entity.Property(e => e.Id).HasColumnName("page_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.PageName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("page_name");
-            entity.Property(e => e.PageUrl)
+            entity.Property(e => e.Url)
                 .HasMaxLength(255)
                 .HasColumnName("page_url");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -1432,11 +3019,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PageUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_page_updated_by");
-        });
 
-        modelBuilder.Entity<PageControl>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\PageControlConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class PageControlConfiguration : IEntityTypeConfiguration<PageControl>
+    {
+        public void Configure(EntityTypeBuilder<PageControl> entity)
         {
-            entity.HasKey(e => e.PageControlId).HasName("pk_page_control");
+            entity.HasKey(e => e.Id).HasName("pk_page_control");
 
             entity.ToTable("page_control");
 
@@ -1448,7 +3048,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_page_control_updated_by");
 
-            entity.Property(e => e.PageControlId).HasColumnName("page_control_id");
+            entity.Property(e => e.Id).HasColumnName("page_control_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1481,11 +3081,24 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasForeignKey(d => d.UpdatedBy)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_page_control_updated_by");
-        });
 
-        modelBuilder.Entity<PurposeOfVisit>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\PurposeOfVisitConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class PurposeOfVisitConfiguration : IEntityTypeConfiguration<PurposeOfVisit>
+    {
+        public void Configure(EntityTypeBuilder<PurposeOfVisit> entity)
         {
-            entity.HasKey(e => e.PurposeId).HasName("pk_purpose_of_visit");
+            entity.HasKey(e => e.Id).HasName("pk_purpose_of_visit");
 
             entity.ToTable("purpose_of_visit");
 
@@ -1493,15 +3106,16 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_purpose_of_visit_updated_by");
 
-            entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
+            entity.Property(e => e.Id).HasColumnName("purpose_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.PurposeName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("purpose_name");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
             entity.Property(e => e.UpdatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1515,11 +3129,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.PurposeOfVisitUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_purpose_of_visit_updated_by");
-        });
 
-        modelBuilder.Entity<Roles>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\RoleConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class RoleConfiguration : IEntityTypeConfiguration<Role>
+    {
+        public void Configure(EntityTypeBuilder<Role> entity)
         {
-            entity.HasKey(e => e.RoleId).HasName("pk_role");
+            entity.HasKey(e => e.Id).HasName("pk_role");
 
             entity.ToTable("role");
 
@@ -1527,13 +3154,14 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_role_updated_by");
 
-            entity.Property(e => e.RoleId).HasColumnName("role_id");
+            entity.Property(e => e.Id).HasColumnName("role_id");
+            entity.Property(e => e.Status).HasColumnName("status");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("created_date");
-            entity.Property(e => e.RoleName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("role_name");
             entity.Property(e => e.UpdatedBy).HasColumnName("updated_by");
@@ -1549,11 +3177,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.RoleUpdatedByNavigations)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_role_updated_by");
-        });
 
-        modelBuilder.Entity<User>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\UserConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class UserConfiguration : IEntityTypeConfiguration<User>
+    {
+        public void Configure(EntityTypeBuilder<User> entity)
         {
-            entity.HasKey(e => e.UserId).HasName("pk_user");
+            entity.HasKey(e => e.Id).HasName("pk_user");
 
             entity.ToTable("user");
 
@@ -1561,7 +3202,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_user_updated_by");
 
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.Id).HasColumnName("user_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1589,11 +3230,25 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.UpdatedByNavigation).WithMany(p => p.InverseUpdatedByNavigation)
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_user_updated_by");
-        });
 
-        modelBuilder.Entity<UserDetail>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\UserDetailConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class UserDetailConfiguration : IEntityTypeConfiguration<UserDetail>
+    {
+        public void Configure(EntityTypeBuilder<UserDetail> entity)
         {
-            entity.HasKey(e => e.UserDetailsId).HasName("pk_user_details");
+
+            entity.HasKey(e => e.Id).HasName("pk_user_details");
 
             entity.ToTable("user_details");
 
@@ -1605,7 +3260,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_details_user_id");
 
-            entity.Property(e => e.UserDetailsId).HasColumnName("user_details_id");
+            entity.Property(e => e.Id).HasColumnName("user_details_id");
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");
@@ -1649,11 +3304,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserDetailUsers)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("fk_user_details_user_id");
-        });
 
-        modelBuilder.Entity<UserLocation>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\UserLocation.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class UserLocationConfiguration : IEntityTypeConfiguration<UserLocation>
+    {
+        public void Configure(EntityTypeBuilder<UserLocation> entity)
         {
-            entity.HasKey(e => e.UserLocationId).HasName("pk_user_location");
+            entity.HasKey(e => e.Id).HasName("pk_user_location");
 
             entity.ToTable("user_location");
 
@@ -1665,7 +3333,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_location_user_id");
 
-            entity.Property(e => e.UserLocationId).HasColumnName("user_location_id");
+            entity.Property(e => e.Id).HasColumnName("user_location_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1694,11 +3362,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserLocationUsers)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("fk_user_location_user_id");
-        });
 
-        modelBuilder.Entity<UserRole>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\UserRoleConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class UserRoleConfiguration : IEntityTypeConfiguration<UserRole>
+    {
+        public void Configure(EntityTypeBuilder<UserRole> entity)
         {
-            entity.HasKey(e => e.UserRoleId).HasName("pk_user_role");
+            entity.HasKey(e => e.Id).HasName("pk_user_role");
 
             entity.ToTable("user_role");
 
@@ -1710,7 +3391,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UserId, "fk_user_role_user_id");
 
-            entity.Property(e => e.UserRoleId).HasColumnName("user_role_id");
+            entity.Property(e => e.Id).HasColumnName("user_role_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1739,11 +3420,24 @@ public partial class VisitorManagementDbContext : DbContext
             entity.HasOne(d => d.User).WithMany(p => p.UserRoleUsers)
                 .HasForeignKey(d => d.UserId)
                 .HasConstraintName("fk_user_role_user_id");
-        });
 
-        modelBuilder.Entity<Visitor>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\VisitorConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class VisitorConfiguration : IEntityTypeConfiguration<Visitor>
+    {
+        public void Configure(EntityTypeBuilder<Visitor> entity)
         {
-            entity.HasKey(e => e.VisitorId).HasName("pk_visitor");
+            entity.HasKey(e => e.Id).HasName("pk_visitor");
 
             entity.ToTable("visitor");
 
@@ -1755,9 +3449,9 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.UpdatedBy, "fk_visitor_updated_by");
 
-            entity.HasIndex(e => e.UserId, "fk_visitor_user_id");
+            entity.HasIndex(e => e.StaffId, "fk_visitor_user_id");
 
-            entity.Property(e => e.VisitorId).HasColumnName("visitor_id");
+            entity.Property(e => e.Id).HasColumnName("visitor_id");
             entity.Property(e => e.CheckInTime)
                 .HasColumnType("timestamp")
                 .HasColumnName("check_in_time");
@@ -1777,7 +3471,7 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasMaxLength(255)
                 .HasColumnName("phone");
             entity.Property(e => e.Photo)
-                .HasMaxLength(255)
+                .HasColumnType("bytea")
                 .HasColumnName("photo");
             entity.Property(e => e.PurposeId).HasColumnName("purpose_id");
             entity.Property(e => e.Status).HasColumnName("status");
@@ -1786,15 +3480,15 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("updated_date");
-            entity.Property(e => e.UserId).HasColumnName("user_id");
+            entity.Property(e => e.StaffId).HasColumnName("user_id");
             entity.Property(e => e.VisitDate)
                 .HasColumnType("timestamp")
                 .HasColumnName("visit_date");
-            entity.Property(e => e.VisitorName)
+            entity.Property(e => e.Name)
                 .HasMaxLength(255)
                 .HasColumnName("visitor_name");
             entity.Property(e => e.VisitorPassCode)
-                .HasMaxLength(255)
+                .HasColumnType("integer")
                 .HasColumnName("visitor_pass_code");
 
             entity.HasOne(d => d.CreatedByNavigation).WithMany(p => p.VisitorCreatedByNavigations)
@@ -1814,13 +3508,27 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasConstraintName("fk_visitor_updated_by");
 
             entity.HasOne(d => d.User).WithMany(p => p.VisitorUsers)
-                .HasForeignKey(d => d.UserId)
+                .HasForeignKey(d => d.StaffId)
                 .HasConstraintName("fk_visitor_user_id");
-        });
 
-        modelBuilder.Entity<VisitorDevice>(entity =>
+        }
+    }
+
+}
+
+// File: Data\Configurations\VisitorDeviceConfiguration.cs
+namespace VMS.Data.Configurations
+{
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.EntityFrameworkCore.Metadata.Builders;
+    using VMS.Models;
+
+    public class VisitorDeviceConfiguration : IEntityTypeConfiguration<VisitorDevice>
+    {
+        public void Configure(EntityTypeBuilder<VisitorDevice> entity)
         {
-            entity.HasKey(e => e.VisitorDeviceId).HasName("pk_visitor_device");
+
+            entity.HasKey(e => e.Id).HasName("pk_visitor_device");
 
             entity.ToTable("visitor_device");
 
@@ -1832,7 +3540,7 @@ public partial class VisitorManagementDbContext : DbContext
 
             entity.HasIndex(e => e.VisitorId, "fk_visitor_id");
 
-            entity.Property(e => e.VisitorDeviceId).HasColumnName("visitor_device_id");
+            entity.Property(e => e.Id).HasColumnName("visitor_device_id");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -1866,18 +3574,211 @@ public partial class VisitorManagementDbContext : DbContext
                 .HasForeignKey(d => d.VisitorId)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("fk_visitor_id");
-        });
 
-        OnModelCreatingPartial(modelBuilder);
+        }
     }
 
-    partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+}
+
+// File: Repository\AdminRoleRepository.cs
+using VMS.Controllers;
+using VMS.Data;
+using VMS.Models.DTO;
+using VMS.Models;
+using Microsoft.EntityFrameworkCore;
+using VMS.Repository.IRepository;
+using System.Data;
+
+namespace VMS.Repository
+{
+    public class AdminRoleRepository:IAdminRoleRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public AdminRoleRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        // Role-related methods
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync()
+        {
+/*            return await _context.Roles.Select(r => new GetRoleIdAndNameDTO { Id = r.Id, Name = r.Name }).ToListAsync();
+*/
+            return await _context.Roles.Select(r => new GetRoleIdAndNameDTO
+            {
+                Id = r.Id,
+                Name = r.Name,
+                CreatedBy = r.CreatedBy,
+                CreatedDate = r.CreatedDate
+            }).ToListAsync();
+        }
+        public async Task<Role> GetRolesAsync(int id)
+        {
+            return await _context.Roles.FindAsync(id);
+        }
+        public async Task DeleteRoleAsync(int roleId)
+        {
+            var role = await _context.Roles.Include(r => r.PageControls).FirstOrDefaultAsync(r => r.Id == roleId);
+
+            if (role == null)
+            {
+                throw new Exception($"Role with ID {roleId} not found.");
+            }
+
+            _context.PageControls.RemoveRange(role.PageControls);
+            _context.Roles.Remove(role);
+
+            await _context.SaveChangesAsync();
+        }
+
+
+        public async Task<IEnumerable<Page>> GetPagesByRoleIdAsync(int roleId)
+        {
+            return await _context.PageControls
+                .Where(pc => pc.RoleId == roleId)
+                .Include(pc => pc.Page)
+                .Select(pc => pc.Page)
+                .ToListAsync();
+        }
+
+        // Page-related methods
+        public async Task<IEnumerable<Page>> GetPagesAsync()
+        {
+            return await _context.Pages.ToListAsync();
+        }
+
+        public async Task<Page> GetPageByIdAsync(int id)
+        {
+            return await _context.Pages.FindAsync(id);
+        }
+
+        public async Task<Page> CreatePageAsync(PageDTO pageDto)
+        {
+            var page = new Page
+            {
+                Name = pageDto.PageName,
+                Url = pageDto.PageUrl,
+                CreatedBy = pageDto.CreatedBy,
+                UpdatedBy = pageDto.UpdatedBy,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.Pages.Add(page);
+            await _context.SaveChangesAsync();
+
+            return page;
+        }
+
+        public async Task UpdatePageAsync(int id, PageDTO pageDto)
+        {
+            var page = await _context.Pages.FindAsync(id);
+            if (page != null)
+            {
+                page.Name = pageDto.PageName;
+                page.Url = pageDto.PageUrl;
+                page.UpdatedBy = pageDto.UpdatedBy;
+                page.UpdatedDate = DateTime.Now;
+
+                await _context.SaveChangesAsync();
+            }
+        }
+
+        public async Task DeletePageAsync(int id)
+        {
+            var page = await _context.Pages.FindAsync(id);
+            if (page != null)
+            {
+                _context.Pages.Remove(page);
+                await _context.SaveChangesAsync();
+            }
+        }
+
+
+        // PageControl-related methods
+        public async Task<Role> CreateRoleAsync(AddNewRoleDTO roleDTO)
+        {
+            if (await _context.Roles.AnyAsync(p => p.Name == roleDTO.Name))
+            {
+                throw new InvalidOperationException("Role already exists");
+            }
+
+            var role = new Role
+            {
+                Name = roleDTO.Name,
+                CreatedBy = roleDTO.CreatedBy,
+                UpdatedBy = roleDTO.UpdatedBy,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.Roles.Add(role);
+            await _context.SaveChangesAsync();
+            return role;
+        }
+        // PageControl-related methods
+        public async Task<Role> GetRoleByIdAsync(int roleId)
+        {
+            return await _context.Roles.FindAsync(roleId);
+        }
+
+        public async Task AddPageControlsAsync(int roleId, List<AddPageControlDTO> pageControls)
+        {
+            var role = await GetRoleByIdAsync(roleId);
+            if (role == null)
+            {
+                throw new Exception($"Role with ID {roleId} not found.");
+            }
+
+            foreach (var control in pageControls)
+            {
+                var pageControl = new PageControl
+                {
+                    RoleId = roleId,
+                    PageId = control.PageId.Value,
+                    CreatedBy = 1, // Replace with actual user ID
+                    UpdatedBy = 1, // Replace with actual user ID
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                };
+                _context.PageControls.Add(pageControl);
+            }
+            await _context.SaveChangesAsync();
+        }
+        public async Task UpdateRolePagesAsync(UpdateRolePagesDTO updateRolePagesDTO)
+        {
+            var role = await _context.Roles.FindAsync(updateRolePagesDTO.RoleId);
+            if (role == null)
+            {
+                throw new Exception($"Role with ID {updateRolePagesDTO.RoleId} not found.");
+            }
+
+            var existingPageControls = _context.PageControls.Where(pc => pc.RoleId == updateRolePagesDTO.RoleId);
+            _context.PageControls.RemoveRange(existingPageControls);
+
+            foreach (var pageId in updateRolePagesDTO.PageIds)
+            {
+                var pageControl = new PageControl
+                {
+                    RoleId = updateRolePagesDTO.RoleId,
+                    PageId = pageId,
+                    CreatedBy = 1, // Replace with actual user ID
+                    UpdatedBy = 1, // Replace with actual user ID
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                };
+                _context.PageControls.Add(pageControl);
+            }
+
+            await _context.SaveChangesAsync();
+        }
+
+    }
 }
 
 // File: Repository\DashboardRepository.cs
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Channels;
-using VMS.Data;
+using VMS.Models.DTO;
 using VMS.Repository.IRepository;
 
 namespace VMS.Repository
@@ -1914,8 +3815,438 @@ namespace VMS.Repository
     }
 }
 
+// File: Repository\DeviceRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class DeviceRepository : IDeviceRepository
+    {
+        
+        private readonly VisitorManagementDbContext _context;
+
+        public DeviceRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<Device> AddDeviceAsync(AddNewDeviceDTO deviceDto)
+        {
+            if (_context.Devices.Any(d => d.Name == deviceDto.deviceName))
+            {
+                throw new InvalidOperationException("Device already exists");
+            }
+
+            var device = new Device
+            {
+                Name = deviceDto.deviceName,
+                CreatedBy = 1,
+                UpdatedBy = 1,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.Devices.Add(device);
+            await _context.SaveChangesAsync();
+
+            return device;
+        }
+
+        public async Task<IEnumerable<GetDeviceIdAndNameDTO>> GetDevicesAsync()
+        {
+            return await _context.Devices
+                .Select(d => new GetDeviceIdAndNameDTO
+                {
+                    DeviceId = d.Id,
+                    DeviceName = d.Name
+                })
+                .ToListAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+
+// File: Repository\LocationRepository.cs
+using AutoMapper;
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class LocationRepository : IlocationRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        private readonly IMapper _mapper;
+        public LocationRepository(VisitorManagementDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        public async Task<IEnumerable<LocationDetailsDTO>> GetAllLocationDetailsAsync()
+        {
+            var locations = await _context.OfficeLocations
+                .ToListAsync();
+
+            var locationDtos = _mapper.Map<List<LocationDetailsDTO>>(locations);
+            return locationDtos;
+        }
+
+        public async Task<bool> AddLocationAsync(AddOfficeLocationDTO locationdDTO)
+        {
+            var newLocation = _mapper.Map<OfficeLocation>(locationdDTO);
+
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == locationdDTO.Username);
+            if (user != null)
+            {
+                newLocation.CreatedBy = user.Id;
+            }
+            else
+            {
+                newLocation.CreatedBy = 1;
+            }
+            newLocation.CreatedDate = DateTime.Now;
+
+            _context.OfficeLocations.Add(newLocation);
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+        }
+
+        public async Task<bool> UpdateLocationAsync(int id, UpdateLocationDTO updateDto)
+        {
+            var location = await _context.OfficeLocations.FindAsync(id);
+            if (location == null)
+            {
+                return false; // Location not found
+            }
+
+            _mapper.Map(updateDto, location);
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == updateDto.Username);
+            if (user != null)
+            {
+                location.UpdatedBy = user.Id;
+            }
+            else
+            {
+                location.UpdatedBy = 1; 
+            }
+            location.UpdatedDate = DateTime.Now;
+
+            _context.OfficeLocations.Update(location);
+            var result = await _context.SaveChangesAsync();
+            return result > 0;
+        }
+   
+        public async Task<List<OfficeLocation>> GetAllLocationAsync()
+        {
+            return await _context.OfficeLocations.ToListAsync();
+        }
+
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
+        {
+            return await _context.OfficeLocations
+                .Select(d => new LocationIdAndNameDTO
+                {
+                    Id = d.Id,
+                    Name = d.Name
+                })
+                .ToListAsync();
+        }
+        
+
+        public async Task<OfficeLocation> GetLocationByIdAsync(int officeLocationId)
+        {
+            return await _context.OfficeLocations.FirstOrDefaultAsync(u => u.Id == officeLocationId);
+        }
+    }
+}
+
+// File: Repository\PurposeOfVisitRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class PurposeOfVisitRepository : IPurposeOfVisitRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public PurposeOfVisitRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+
+        public async Task<PurposeOfVisit> AddPurposeAsync(AddNewPurposeDTO purposeDto)
+        {
+            if (_context.PurposeOfVisits.Any(p => p.Name == purposeDto.purposeName))
+            {
+                throw new InvalidOperationException("Purpose already exists");
+            }
+
+            var purpose = new PurposeOfVisit
+            {
+                Name = purposeDto.purposeName,
+                CreatedBy = 1,
+                UpdatedBy = 1,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now
+            };
+
+            _context.PurposeOfVisits.Add(purpose);
+            await _context.SaveChangesAsync();
+
+            return purpose;
+        }
+
+        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposesAsync()
+        {
+            return await _context.PurposeOfVisits
+       .Where(p => p.Status == 1) // Filter by status
+       .Select(p => new PurposeOfVisitNameadnIdDTO
+       {
+           PurposeId = p.Id,
+           PurposeName = p.Name
+       })
+       .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync()
+        {
+
+            var purposeList = await (from purpose in _context.PurposeOfVisits
+                                     join user in _context.UserDetails
+                                     on purpose.UpdatedBy equals user.UserId into userGroup
+                                     from user in userGroup.DefaultIfEmpty()
+                                     select new PurposeOfVisitDTO
+                                     {
+                                         Id = purpose.Id,
+                                         Name = purpose.Name,
+                                         Status = purpose.Status,
+                                         CreatedBy = purpose.CreatedBy,
+                                         UpdatedBy = user != null ? user.FirstName + " " + user.LastName : null,
+                                         CreatedDate = purpose.CreatedDate,
+                                         UpdatedDate = purpose.UpdatedDate
+
+                                     }).ToListAsync();
+
+            return purposeList;
+        }
+
+        public async Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO)
+        {
+            var purpose = await _context.PurposeOfVisits.FindAsync(updatePurposeRequestDTO.Id);
+            if (purpose == null)
+            {
+                return false;
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == updatePurposeRequestDTO.Username);
+            Console.WriteLine(updatePurposeRequestDTO.Username);
+            purpose.Name = updatePurposeRequestDTO.Purpose;
+            purpose.UpdatedBy = user.Id;
+            purpose.UpdatedDate = DateTime.Now;
+            purpose.Status = 1;
+
+            _context.PurposeOfVisits.Update(purpose);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> DeletePurposeAsync(int id)
+        {
+            var purpose = await _context.PurposeOfVisits.FirstOrDefaultAsync(u => u.Id == id);
+            if (purpose == null)
+            {
+                return false;
+            }
+
+            _context.PurposeOfVisits.Remove(purpose);
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+
+// File: Repository\ReportRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class ReportRepository : IReportRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        public ReportRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<IEnumerable<VisitorReportDetailsDTO>> GetAllVisitorsAsync()
+        {
+            /*var visitors = await (from visitor in _context.Visitors
+                                  join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
+                                  join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
+                                  join user in _context.UserDetails on visitor.StaffId equals user.UserId
+                                  where visitor.CheckInTime != null && visitor.CheckOutTime != null
+                                  select new VisitorReportDetailsDTO
+                                  {
+                                      VisitorId = visitor.Id,
+                                      VisitorName = visitor.Name,
+                                      Phone = visitor.Phone,
+                                      VisitDate = visitor.VisitDate,
+                                      HostName = visitor.HostName,
+                                      PurposeName = purpose.Name,
+                                      LocationName = location.Name,
+                                      StaffName = user.FirstName + " " + user.LastName,
+                                      StaffPhoneNumber = user.Phone,
+                                      CheckInTime = visitor.CheckInTime,
+                                      CheckOutTime = visitor.CheckOutTime,
+                                  }).ToListAsync();*/
+            var visitors = await (from visitor in _context.Visitors
+                                  join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
+                                  join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
+                                  join user in _context.UserDetails on visitor.StaffId equals user.UserId
+                                  where visitor.CheckInTime != null && visitor.CheckOutTime != null
+                                    let devices = (from visitorDevice in _context.VisitorDevices
+                                                  join device in _context.Devices on visitorDevice.DeviceId equals device.Id
+                                                  where visitorDevice.VisitorId == visitor.Id
+                                                  select new DeviceDetailsDTO
+                                                    {
+                                                     SerialNumber = visitorDevice.SerialNumber,
+                                                     Name = device.Name
+                                                    }).ToList()
+                                              select new VisitorReportDetailsDTO
+                                              {
+                                                  VisitorId = visitor.Id,
+                                                  VisitorName = visitor.Name,
+                                                  Phone = visitor.Phone,
+                                                  VisitDate = visitor.VisitDate,
+                                                  HostName = visitor.HostName,
+                                                  PurposeName = purpose.Name,
+                                                  LocationName = location.Name,
+                                                  StaffName = user.FirstName + " " + user.LastName,
+                                                  StaffPhoneNumber = user.Phone,
+                                                  CheckInTime = visitor.CheckInTime,
+                                                  CheckOutTime = visitor.CheckOutTime,
+                                                  Photo = Convert.ToBase64String(visitor.Photo),
+                                                  DeviceCount = devices.Count,
+                                                  Devices = devices
+                                              }).ToListAsync();
+
+            return visitors;
+        }
+
+        public async Task<VisitorDetailsDTO> GetVisitorDetailsAsync(int id)
+        {
+
+            var visitorDetails = await (from visitor in _context.Visitors
+                                        join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
+                                        join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
+                                        where visitor.Id == id && visitor.CheckInTime != null && visitor.CheckOutTime != null
+                                        select new
+                                        {
+                                            Visitor = new VisitorDetailsDTO
+                                            {
+                                                Name = visitor.Name,
+                                                Phone = visitor.Phone,
+                                                VisitDate = visitor.VisitDate,
+                                                HostName = visitor.HostName,
+                                                OfficeLocation = location.Name,
+                                                CheckInTime = visitor.CheckInTime,
+                                                CheckOutTime = visitor.CheckOutTime,
+                                                VisitPurpose = purpose.Name,
+                                                Photo = Convert.ToBase64String(visitor.Photo),
+                                                DeviceCount = _context.VisitorDevices.Count(u => u.VisitorId == id)
+                                            },
+                                            Devices =(from visitorDevice in _context.VisitorDevices
+                                                       join device in _context.Devices on visitorDevice.DeviceId equals device.Id
+                                                       where visitorDevice.VisitorId == id
+                                                       select new DeviceDetailsDTO
+                                                       {
+                                                           SerialNumber = visitorDevice.SerialNumber,
+                                                           Name = device.Name
+                                                       }).ToList()
+                                        }).FirstOrDefaultAsync();
+
+
+            if (visitorDetails == null)
+        return null;
+
+    // Assign devices to visitor details
+    visitorDetails.Visitor.DevicesCarried = visitorDetails.Devices;
+
+    return visitorDetails.Visitor;
+        }
+    }
+}
+
+ 
+
+// File: Repository\RoleRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class RoleRepository : IRoleRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public RoleRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+
+        public async Task<List<Role>> GetAllRolesAsync()
+        {
+            return await _context.Roles.ToListAsync();
+        }
+
+        public async Task<Role> GetRoleByIdAsync(int roleId)
+        {
+            return await _context.Roles.FirstOrDefaultAsync(u => u.Id == roleId);
+        }
+
+        public async Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync()
+        {
+
+            return await _context.Roles
+                .Select(d => new GetRoleIdAndNameDTO
+                {
+                   Id = d.Id,
+                   Name = d.Name
+                })
+                .ToListAsync();
+        }
+
+       
+    }
+}
+
 // File: Repository\StatisticsRepository.cs
-// File: Repository/StatisticsRepository.cs
 using Microsoft.EntityFrameworkCore;
 using VMS.Data;
 using VMS.Models.DTO;
@@ -1939,19 +4270,19 @@ namespace VMS.Repository
 
             var query = from ol in _context.OfficeLocations
                         let securityCount = _context.UserRoles
-                            .Count(ur => ur.Role.RoleName == "Security" &&
+                            .Count(ur => ur.Role.Name == "Security" &&
                                          _context.UserDetails.Any(ud => ud.UserId == ur.UserId &&
-                                                                        ud.OfficeLocationId == ol.OfficeLocationId))
+                                                                        ud.OfficeLocationId == ol.Id))
                         let passesGenerated = _context.Visitors
-                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                            .Count(v => v.OfficeLocationId == ol.Id &&
                                         v.VisitDate >= startDate)
                         let totalVisitors = _context.Visitors
-                            .Count(v => v.OfficeLocationId == ol.OfficeLocationId &&
+                            .Count(v => v.OfficeLocationId == ol.Id &&
                                         v.CheckInTime != null &&
                                         v.VisitDate >= startDate)
                         select new LocationStatisticsDTO
                         {
-                            Location = ol.LocationName,
+                            Location = ol.Name,
                             NumberOfSecurity = securityCount,
                             PassesGenerated = passesGenerated,
                             TotalVisitors = totalVisitors
@@ -2016,21 +4347,21 @@ namespace VMS.Repository
         {
             var startDate = DateTime.Now.AddDays(-days);
             var securityDetails = await (from ol in _context.OfficeLocations
-                                         join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
-                                         join u in _context.Users on ud.UserId equals u.UserId
-                                         join ur in _context.UserRoles on u.UserId equals ur.UserId
-                                         join r in _context.Roles on ur.RoleId equals r.RoleId
-                                         where r.RoleName == "Security"
+                                         join ud in _context.UserDetails on ol.Id equals ud.OfficeLocationId
+                                         join u in _context.Users on ud.UserId equals u.Id
+                                         join ur in _context.UserRoles on u.Id equals ur.UserId
+                                         join r in _context.Roles on ur.RoleId equals r.Id
+                                         where r.Name == "Security"
                                          let visitors = _context.Visitors
-                                             .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
-                                                         v.UpdatedBy == u.UserId &&
+                                             .Where(v => v.OfficeLocationId == ol.Id &&
+                                                         v.UpdatedBy == u.Id &&
                                                          v.VisitDate >= startDate)
-                                             .Select(v => v.VisitorId)
+                                             .Select(v => v.Id)
                                              .Distinct()
                                              .ToList()
                                          select new SecurityStatisticsDTO
                                          {
-                                             Location = ol.LocationName,
+                                             Location = ol.Name,
                                              SecurityFirstName = ud.FirstName,
                                              SecurityLastName = ud.LastName,
                                              PhoneNumber = ud.Phone,
@@ -2084,11 +4415,11 @@ namespace VMS.Repository
             var purposeStatistics = await _context.PurposeOfVisits
                 .GroupJoin(
                     _context.Visitors.Where(v => v.VisitDate >= thirtyDaysAgo),
-                    pov => pov.PurposeId,
+                    pov => pov.Id,
                     v => v.PurposeId,
                     (pov, visitors) => new PurposeStatisticsDTO
                     {
-                        Name = pov.PurposeName,
+                        Name = pov.Name,
                         Value = visitors.Count()
                     })
                 .OrderByDescending(x => x.Value)
@@ -2102,9 +4433,9 @@ namespace VMS.Repository
         public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
         {
             var result = await (from o in _context.OfficeLocations
-                                join v in _context.Visitors on o.OfficeLocationId equals v.OfficeLocationId into vGroup
+                                join v in _context.Visitors on o.Id equals v.OfficeLocationId into vGroup
                                 from v in vGroup.DefaultIfEmpty()
-                                group new { o, v } by o.LocationName into g
+                                group new { o, v } by o.Name into g
                                 select new DashboardStatisticsDTO
                                 {
                                     Location = g.Key,
@@ -2120,9 +4451,541 @@ namespace VMS.Repository
     }
 }
 
-// File: Repository\IRepository\IDashboardRepository.cs
-using System.Threading.Channels;
+// File: Repository\UserDetailsRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Models;
+using VMS.Repository.IRepository;
+
 using VMS.Data;
+
+namespace VMS.Repository
+{
+    public class UserDetailsRepository : IUserDetailsRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        public UserDetailsRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+        public async Task AddUserDetailAsync(UserDetail userDetail)
+        {
+            _context.UserDetails.Add(userDetail);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<UserDetail>> GetAllUserDetailsAsync()
+        {
+            return await _context.UserDetails.ToListAsync();
+        }
+
+        public async Task<UserDetail> GetUserDetailByUserIdAsync(int userId)
+        {
+            return await _context.UserDetails.FirstOrDefaultAsync(ud => ud.UserId == userId);
+
+        }
+
+        public async Task UpdateUserDetailAsync(UserDetail userDetail)
+        {
+            _context.UserDetails.Update(userDetail);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+
+// File: Repository\UserLocationRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Repository.IRepository;
+namespace VMS.Repository
+{
+    public class UserLocationRepository : IUserLocationRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        public UserLocationRepository(VisitorManagementDbContext context)
+        {
+            this._context = context;
+            
+        }
+        public async Task AddUserLocationAsync(UserLocation userLocation)
+        {
+            _context.UserLocations.Add(userLocation);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<UserLocation>> GetAllUserLocationsAsync()
+        {
+            return await _context.UserLocations.ToListAsync();
+        }
+
+        public async Task<UserLocation> GetUserLocationByUserIdAsync(int userId)
+        {
+            return await _context.UserLocations.FirstOrDefaultAsync(ul => ul.UserId == userId);
+
+        }
+
+        public async Task UpdateUserLocationAsync(UserLocation userLocation)
+        {
+            _context.UserLocations.Update(userLocation);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+
+// File: Repository\UserRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class UserRepository : IUserRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+
+        public UserRepository(VisitorManagementDbContext context) { 
+            _context = context;
+        }
+
+        public async Task AddUserAsync(User user)
+        {
+            _context.Users.Add(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<User>> GetAllUsersAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task<User> GetUserByIdAsync(int userId)
+        {
+            return await _context.Users.FindAsync(userId);
+        }
+
+        public async Task<User> GetUserByUsernameAsync(string username)
+        {
+            return await _context.Users.SingleOrDefaultAsync(u => u.Username == username);
+        }
+
+        public async Task UpdateLoggedInStatusAsync(string username) {
+
+            var user = await GetUserByUsernameAsync(username);
+            if (user.IsLoggedIn == 0)
+            {
+                user.IsLoggedIn = 1;
+            }
+            else if (user.IsLoggedIn == 1) 
+            { 
+                user.IsLoggedIn = 0;
+            }
+            await _context.SaveChangesAsync();
+
+        }
+        public async Task UpdateUserAsync(User user)
+        {
+            _context.Users.Update(user);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> ValidateUserAsync(string username, string password)
+        {
+            var user = await GetUserByUsernameAsync(username);
+            if (user == null) return false;
+            
+            else if(password == user.Password) return true;
+            else return false;
+            // Assume a method to verify password hash
+            /*return VerifyPasswordHash(password, user.PasswordHash);*/
+
+
+        }
+        private bool VerifyPasswordHash(string password, string storedHash)
+        {
+            // Implement hash verification logic here
+            return true;
+        }
+
+        public async Task<LocationIdAndNameDTO> GetUserLocationAsync(int id)
+        {
+           var userLocation = await (from user in _context.UserDetails
+                                     join location in _context.OfficeLocations on user.OfficeLocationId equals location.Id
+                                     where user.Id == id
+                                     select new LocationIdAndNameDTO
+                                     {
+                                      Id = location.Id,
+                                      Name = location.Name
+                                     }).FirstOrDefaultAsync();
+            return userLocation;
+        
+        }
+    }
+}
+
+// File: Repository\UserRoleRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class UserRoleRepository : IUserRoleRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        public UserRoleRepository(VisitorManagementDbContext context) {
+            _context = context;
+        }
+
+        public async Task AddUserRoleAsync(UserRole userRole)
+        {
+            _context.UserRoles.Add(userRole);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<UserRole>> GetAllUserRolesAsync()
+        {
+            return await _context.UserRoles.ToListAsync();
+        }
+
+        public async Task<UserRole> GetUserRoleByUserIdAsync(int userId)
+        {
+            var userRole = await _context.UserRoles.FirstOrDefaultAsync(u => u.UserId == userId);
+            if (userRole == null) {
+                Console.WriteLine("User does not have role");
+            }
+            return userRole;
+        }
+
+        public async Task UpdateUserRoleAsync(UserRole userRole)
+        {
+            _context.UserRoles.Update(userRole);
+            await _context.SaveChangesAsync();
+        }
+    }
+}
+
+// File: Repository\VisitorFormRepository.cs
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
+using VMS.Models;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+
+namespace VMS.Repository
+{
+    public class VisitorFormRepository : IVisitorFormRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        public const int _systemUserId = 1;
+        public const int _deafaultPassCode = 0;
+
+        public VisitorFormRepository(VisitorManagementDbContext context)
+        {
+            _context = context;
+        }
+        public async Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDTO addDeviceDto)
+        {
+            var visitorDevice = new VisitorDevice
+            {
+                VisitorId = addDeviceDto.VisitorId,
+                DeviceId = addDeviceDto.DeviceId,
+                SerialNumber = addDeviceDto.SerialNumber,
+                CreatedBy = _systemUserId,
+                UpdatedBy = _systemUserId
+            };
+
+            _context.VisitorDevices.Add(visitorDevice);
+            await _context.SaveChangesAsync();
+
+            return visitorDevice;
+        }
+
+
+        public async Task<Visitor> CreateVisitorAsync(VisitorCreationDTO visitorDto)
+        {
+            if (visitorDto == null)
+            {
+                throw new ArgumentNullException(nameof(visitorDto));
+            }
+
+            var visitor = new Visitor
+            {
+                Name = visitorDto.Name,
+                Phone = visitorDto.PhoneNumber,
+                PurposeId = visitorDto.PurposeOfVisitId,
+                HostName = visitorDto.PersonInContact,
+                OfficeLocationId = visitorDto.OfficeLocationId,
+                StaffId = _systemUserId,
+                CreatedBy = _systemUserId,
+                VisitorPassCode= _deafaultPassCode,
+                VisitDate = DateTime.Now.Date,
+                CreatedDate = DateTime.Now,
+                UpdatedDate = DateTime.Now,
+                VisitorDevices = new List<VisitorDevice>()
+            };
+
+            /* if (!string.IsNullOrEmpty(visitorDto.ImageData))
+             {
+                 var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
+                 visitor.Photo = imageDataBytes;
+             }*/
+                            if
+                 (!
+                 string
+                 .IsNullOrEmpty(visitorDto.ImageData))
+            {
+                var
+                imageDataParts = visitorDto.ImageData.Split(
+                ','
+                );
+                if
+                (imageDataParts.Length > 1)
+                {
+                    var
+                    imageDataBytes = Convert.FromBase64String(imageDataParts[1]); visitor.Photo = imageDataBytes;
+                }
+            }
+
+            _context.Visitors.Add(visitor);
+            await _context.SaveChangesAsync();
+
+
+            if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
+            {
+                foreach (var selectedDevice in visitorDto.SelectedDevice)
+                {
+                    var addDeviceDto = new AddVisitorDeviceDTO
+                    {
+                        VisitorId = visitor.Id,
+                        DeviceId = selectedDevice.DeviceId,
+                        SerialNumber = selectedDevice.SerialNumber,
+                    };
+
+                    await AddVisitorDeviceAsync(addDeviceDto);
+                }
+            }
+            
+            return visitor;
+           
+        }
+
+
+        public async Task<IEnumerable<string>> GetPersonInContactAsync()
+        {
+            return await _context.Visitors.Select(v => v.HostName).Distinct().ToListAsync();
+        }
+
+        public async Task<Visitor> GetVisitorByIdAsync(int id)
+        {
+            return await _context.Visitors.FirstOrDefaultAsync(v => v.Id == id);
+        }
+
+        public async Task<IEnumerable<Visitor>> GetVisitorDetailsAsync()
+        {
+            return await _context.Visitors.ToListAsync();
+        }
+
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
+        }
+
+        // Method to call the AddVisitorDevice API
+       /* private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
+        {
+            // Create VisitorDevice entity from AddVisitorDeviceDto
+            var visitorDevice = new VisitorDevice
+            {
+                VisitorId = addDeviceDto.VisitorId,
+                DeviceId = addDeviceDto.DeviceId,
+                SerialNumber = addDeviceDto.SerialNumber
+            };
+
+            // Add VisitorDevice to context
+            *//* _context.VisitorDevices.Add(visitorDevice);*//*
+
+            // Save changes to the VisitorDevices
+            *//* _context.SaveChanges();*//*
+
+            return visitorDevice;
+        }*/
+    }
+}
+
+// File: Repository\VisitorRepository.cs
+using AutoMapper;
+using VMS.Data;
+using VMS.Models.DTO;
+using VMS.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using VMS.Models;
+
+namespace VMS.Repository
+{
+    public class VisitorRepository : IVisitorRepository
+    {
+        private readonly VisitorManagementDbContext _context;
+        private readonly IMapper _mapper;
+
+        public VisitorRepository(VisitorManagementDbContext context, IMapper mapper)
+        {
+            _context = context;
+            _mapper = mapper;
+        }
+
+        private async Task<int> GetVisitorCount(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter)
+        {
+            DateTime today = DateTime.Today;
+            return await filter(_context.Visitors
+                .Where(v => v.VisitDate == today))
+                .CountAsync();
+        }
+
+        private async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter)
+        {
+            DateTime today = DateTime.Today;
+
+            var visitorDetail = await filter(_context.Visitors
+                .Include(v => v.Purpose)
+                .Include(v => v.VisitorDevices)
+                    .ThenInclude(vd => vd.Device)
+                .Where(v => v.VisitDate == today))
+                .ToListAsync();
+
+            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetail);
+
+            foreach (var dto in visitorLogDtos)
+            {
+                if (dto.Photo != null)
+                {
+                    dto.PhotoBase64 = Convert.ToBase64String(dto.Photo);
+                }
+            }
+
+            return visitorLogDtos;
+        }
+
+        public Task<int> GetActiveVisitorsCountToday()
+        {
+            return GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null));
+        }
+
+        public Task<int> GetTotalVisitorsCountToday()
+        {
+            return GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
+        }
+
+        public Task<int> GetCheckedOutVisitorsCountToday()
+        {
+            return GetVisitorCount(v => v.Where(visitor => visitor.CheckOutTime != null));
+        }
+
+        public Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday()
+        {
+            return GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
+        }
+
+        public Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday()
+        {
+            return GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null));
+        }
+
+        public Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday()
+        {
+            return GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null));
+        }
+
+        public Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday()
+        {
+            return GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime != null));
+        }
+
+        public async Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode)
+        {
+            var existingVisitor = await _context.Visitors.FindAsync(id);
+            if (existingVisitor == null)
+            {
+                return null;
+            }
+
+            // Check if the VisitorPassCode already exists
+            bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode && v.Id != id);
+            if (passCodeExists)
+            {
+                throw new ArgumentException("This visitor pass code has already been allocated.");
+            }
+
+            existingVisitor.CheckInTime = DateTime.Now;
+            existingVisitor.VisitorPassCode = updateVisitorPassCode.VisitorPassCode;
+            existingVisitor.UpdatedDate = DateTime.Now;
+
+            await _context.SaveChangesAsync();
+            var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
+            return visitorLogDTO;
+        }
+
+
+        public async Task<VisitorLogDTO> UpdateCheckOutTime(int id)
+        {
+            var existingVisitor = await _context.Visitors.FindAsync(id);
+            if (existingVisitor == null)
+            {
+                return null;
+            }
+
+            existingVisitor.CheckOutTime = DateTime.Now;
+            existingVisitor.UpdatedDate = DateTime.Now;
+            existingVisitor.VisitorPassCode = 0;
+
+            await _context.SaveChangesAsync();
+
+            // Map the updated entity to VisitorLogDTO
+            var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
+            return visitorLogDTO;
+        }
+    }
+}
+
+// File: Repository\IRepository\IAdminRoleRepository.cs
+using VMS.Controllers;
+using VMS.Models.DTO;
+using VMS.Models;
+using System.Data;
+
+
+namespace VMS.Repository.IRepository
+{
+    public interface IAdminRoleRepository
+    {
+
+            // Role-related methods
+            Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync();
+            Task<IEnumerable<Page>> GetPagesByRoleIdAsync(int roleId); // Add this method
+
+        // Page-related methods
+        Task<IEnumerable<Page>> GetPagesAsync();
+            Task<Role> GetRolesAsync(int id);
+            Task DeleteRoleAsync(int id);
+            Task<Page> GetPageByIdAsync(int id);
+            Task<Page> CreatePageAsync(PageDTO pageDto);
+            Task UpdatePageAsync(int id, PageDTO pageDto);
+            Task DeletePageAsync(int id);
+            Task<Role> CreateRoleAsync(AddNewRoleDTO roleDTO);
+
+
+        // PageControl-related methods
+        Task<Role> GetRoleByIdAsync(int roleId);
+        Task AddPageControlsAsync(int roleId, List<AddPageControlDTO> pageControls);
+        Task UpdateRolePagesAsync(UpdateRolePagesDTO updateRolePagesDTO);
+
+    }
+
+}
+
+// File: Repository\IRepository\IDashboardRepository.cs
 namespace VMS.Repository.IRepository
 {
     public interface IDashboardRepository
@@ -2131,10 +4994,84 @@ namespace VMS.Repository.IRepository
 */    }
 }
 
-// File: Repository\IRepository\irepo folder
+// File: Repository\IRepository\IDeviceRepository.cs
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IDeviceRepository
+    {
+        Task<IEnumerable<GetDeviceIdAndNameDTO>> GetDevicesAsync();
+        Task<Device> AddDeviceAsync(AddNewDeviceDTO deviceDto);
+        Task SaveAsync();
+    }
+}
+
+// File: Repository\IRepository\IlocationRepository.cs
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IlocationRepository
+    {
+        Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync();
+        Task<IEnumerable<LocationDetailsDTO>> GetAllLocationDetailsAsync();
+        Task<bool> AddLocationAsync(AddOfficeLocationDTO locationdDTO);
+        Task<bool> UpdateLocationAsync(int id, UpdateLocationDTO locationdDTO);
+        Task<List<OfficeLocation>> GetAllLocationAsync();
+        Task<OfficeLocation> GetLocationByIdAsync(int officeLocationId);
+    }
+}
+
+// File: Repository\IRepository\IPurposeOfVisitRepository.cs
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IPurposeOfVisitRepository
+    {
+        Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposesAsync();
+        Task<PurposeOfVisit> AddPurposeAsync(AddNewPurposeDTO purposeDto);
+
+        Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync();
+
+        Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO);
+
+        Task<bool> DeletePurposeAsync(int id);
+        Task SaveAsync();
+    }
+}
+
+// File: Repository\IRepository\IReportRepository.cs
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IReportRepository
+    {
+        Task<IEnumerable<VisitorReportDetailsDTO>> GetAllVisitorsAsync();
+
+        Task<VisitorDetailsDTO> GetVisitorDetailsAsync(int id);
+    }
+}
+
+// File: Repository\IRepository\IRoleRepository.cs
+using VMS.Models.DTO;
+using VMS.Models;
+namespace VMS.Repository.IRepository
+{
+    public interface IRoleRepository
+    {
+        Task<Role> GetRoleByIdAsync(int roleId);
+        Task<IEnumerable<GetRoleIdAndNameDTO>> GetRoleIdAndNameAsync();
+        Task<List<Role>> GetAllRolesAsync();
+    }
+}
 
 // File: Repository\IRepository\IStatisticsRepository.cs
-using VMS.Repository;
 using VMS.Models.DTO;
 
 namespace VMS.Repository.IRepository
@@ -2155,7 +5092,105 @@ namespace VMS.Repository.IRepository
     }
 }
 
-// File: Repository\IRepository\repo folder
+// File: Repository\IRepository\IUserDetailsRepository.cs
+using VMS.Models;
 
-// File: Endpoints\endpoints
+namespace VMS.Repository.IRepository
+{
+    public interface IUserDetailsRepository
+    {
+        Task AddUserDetailAsync(UserDetail userDetail);
+        Task<UserDetail> GetUserDetailByUserIdAsync(int userId);
+        Task<List<UserDetail>> GetAllUserDetailsAsync();
+        Task UpdateUserDetailAsync(UserDetail userDetail);
+    }
+}
+
+// File: Repository\IRepository\IUserLocationRepository.cs
+using VMS.Models;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IUserLocationRepository
+    {
+        Task AddUserLocationAsync(UserLocation userLocation);
+        Task<UserLocation> GetUserLocationByUserIdAsync(int userId);
+        Task<List<UserLocation>> GetAllUserLocationsAsync();
+        Task UpdateUserLocationAsync(UserLocation userLocation);
+    }
+}
+
+// File: Repository\IRepository\IUserRepository.cs
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IUserRepository
+    {
+        Task<User> GetUserByUsernameAsync(string username);
+        Task<bool> ValidateUserAsync(string username, string password);
+       /* Task<User> AddNewUserAsync(AddNewUserDTO addNewUserDTO);*/
+        Task UpdateLoggedInStatusAsync(string username);
+
+        Task<LocationIdAndNameDTO> GetUserLocationAsync(int userId);
+        Task AddUserAsync(User user);
+        Task<User> GetUserByIdAsync(int userId);
+        Task<List<User>> GetAllUsersAsync();
+        Task UpdateUserAsync(User user);
+
+
+    }
+}
+
+// File: Repository\IRepository\IUserRoleRepository.cs
+using VMS.Models;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IUserRoleRepository
+    {
+        Task<UserRole> GetUserRoleByUserIdAsync(int userId);
+        Task AddUserRoleAsync(UserRole userRole);
+        Task<List<UserRole>> GetAllUserRolesAsync();
+        Task UpdateUserRoleAsync(UserRole userRole);
+
+    }
+}
+
+// File: Repository\IRepository\IVisitorFormRepository.cs
+using VMS.Models;
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IVisitorFormRepository
+    {
+        Task<IEnumerable<Visitor>> GetVisitorDetailsAsync();
+        Task<IEnumerable<string>> GetPersonInContactAsync();
+        Task<Visitor> GetVisitorByIdAsync(int id);
+        Task<Visitor> CreateVisitorAsync(VisitorCreationDTO visitorDto);
+        Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDTO addDeviceDto);
+        Task SaveAsync();
+    }
+}
+
+// File: Repository\IRepository\IVisitorRepository.cs
+using VMS.Models.DTO;
+
+namespace VMS.Repository.IRepository
+{
+    public interface IVisitorRepository
+    {
+        Task<int> GetActiveVisitorsCountToday();
+        Task<int> GetTotalVisitorsCountToday();
+        Task<int> GetCheckedOutVisitorsCountToday();
+        Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday();
+        Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday();
+        Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday();
+        Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday();
+        Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode);
+        Task<VisitorLogDTO> UpdateCheckOutTime(int id);
+    }
+}
 
