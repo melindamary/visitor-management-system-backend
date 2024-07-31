@@ -61,39 +61,34 @@ namespace VMS.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }*/
         }
-        [HttpGet]
-        public async Task<IActionResult> CheckUsernameExists([FromQuery] string username)
+        [HttpGet("{username}")]
+        public async Task<IActionResult> CheckUsernameExists(string username)
         {
-            if (string.IsNullOrWhiteSpace(username))
             {
-                var errorResponse = new APIResponse
+                if (string.IsNullOrWhiteSpace(username))
                 {
-                    StatusCode = HttpStatusCode.BadRequest,
-                    ErrorMessages = new List<string> { "Username is required" }
+                    var errorResponse = new APIResponse
+                    {
+                        StatusCode = HttpStatusCode.BadRequest,
+                        ErrorMessages = new List<string> { "Username is required" }
+                    };
+                    return BadRequest(errorResponse);
+                }
+
+                var exists = await _userService.CheckUsernameExistsAsync(username);
+
+                var response = new APIResponse
+                {
+                    Result = !exists, // If username does not exist, return true
+                    StatusCode = HttpStatusCode.OK
                 };
-                return BadRequest(errorResponse);
+
+                return Ok(response);
             }
-
-            var exists = await _userService.CheckUsernameExistsAsync(username);
-
-            var response = new APIResponse
-            {
-                Result = exists,
-                StatusCode = HttpStatusCode.OK,
-            };
-
-            if (!exists)
-            {
-                response.StatusCode = HttpStatusCode.NotFound;
-                response.ErrorMessages = new List<string> { "No Username found" };
-                return NotFound(response);
-            }
-
-            return Ok(response);
         }
 
 
-        [HttpGet("{id}")]
+            [HttpGet("{id}")]
         public async Task<ActionResult<APIResponse>> GetUserById(int id)
         {
            

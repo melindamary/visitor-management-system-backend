@@ -156,7 +156,7 @@ namespace VMS.Repository
                     _logger.LogWarning("User with username {Username} not found.", username);
                     return false;
                 }
-                var result = CheckPasswordAsync(user.Password, password);
+               /* var result = CheckPasswordAsync(user.Password, password);*/
                 bool isValid = password == user.Password; // Replace with hash verification logic
                 _logger.LogInformation("User with username {Username} validation result: {IsValid}.", username, isValid);
                 return isValid;
@@ -211,17 +211,9 @@ namespace VMS.Repository
         public async Task<bool> UsernameExistsAsync(string username)
         {
             _logger.LogInformation("Checking if username exists: {Username}.", username);
-            try
-            {
-                bool exists = await _context.Users.AnyAsync(u => u.Username == username);
-                _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
-                return exists;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while checking if username exists: {Username}.", username);
-                throw;
-            }
+            bool exists = await _context.Users.AnyAsync(u => u.Username == username);
+            _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
+            return exists;
         }
     }
 }

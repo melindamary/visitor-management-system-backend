@@ -1,230 +1,350 @@
-/*using NUnit.Framework;
-using Moq;
-using Microsoft.AspNetCore.Mvc;
-using VMS.Repository.IRepository;
+using Microsoft.EntityFrameworkCore;
+using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
-using VMS.Services;
-using VMS.Controllers;
+using VMS.Repository;
+using NUnit.Framework;
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
+
 namespace UnitTest
 {
     [TestFixture]
-    public class VisitorControllerTests
+    public class VisitorFormRepositoryTests
     {
-        private Mock<IVisitorFormService> _mockService;
-        private VisitorController _controller;
+        private VisitorManagementDbContext _context;
+        private VisitorFormRepository _repository;
 
         [SetUp]
         public void SetUp()
         {
-            _mockService = new Mock<IVisitorFormService>();
-            _controller = new VisitorController(_mockService.Object);
+            var options = new DbContextOptionsBuilder<VisitorManagementDbContext>()
+                .UseInMemoryDatabase(databaseName: "VisitorManagementDb")
+                .Options;
+
+            _context = new VisitorManagementDbContext(options);
+            _repository = new VisitorFormRepository(_context);
+
+            // Seed the database with some data for testing
+            SeedDatabase();
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            _context.Database.EnsureDeleted();
+            _context.Dispose();
+        }
+
+        private void SeedDatabase()
+        {
+            var purposes = new List<PurposeOfVisit>
+            {
+                new PurposeOfVisit { Id = 1, Name = "Meeting" },
+                new PurposeOfVisit { Id = 2, Name = "Interview" }
+            };
+
+            var locations = new List<OfficeLocation>
+            {
+                new OfficeLocation { Id = 1, Name = "Head Office" },
+                new OfficeLocation { Id = 2, Name = "Branch Office" }
+            };
+
+            var visitors = new List<Visitor>
+            {
+                new Visitor { Id = 1, Name = "Visitor1", Phone = "1111111111", PurposeId = 1, HostName = "Host1", OfficeLocationId = 1, StaffId = 1, VisitDate = DateTime.Today },
+                new Visitor { Id = 2, Name = "Visitor2", Phone = "2222222222", PurposeId = 2, HostName = "Host2", OfficeLocationId = 2, StaffId = 1, VisitDate = DateTime.Today }
+            };
+
+            var devices = new List<VisitorDevice>
+            {
+                new VisitorDevice { VisitorId = 1, DeviceId = 1, SerialNumber = "L123" },
+                new VisitorDevice { VisitorId = 1, DeviceId = 2, SerialNumber = "P123" },
+                new VisitorDevice { VisitorId = 2, DeviceId = 1, SerialNumber = "L456" }
+            };
+
+            _context.PurposeOfVisits.AddRange(purposes);
+            _context.OfficeLocations.AddRange(locations);
+            _context.Visitors.AddRange(visitors);
+            _context.VisitorDevices.AddRange(devices);
+
+            _context.SaveChanges();
         }
 
         [Test]
-        public async Task GetVisitorDetails_ReturnsListOfVisitors()
+        public async Task AddVisitorDeviceAsync_WhenDeviceIsValid_AddsDevice()
         {
             // Arrange
-            _mockService.Setup(s => s.GetVisitorDetailsAsync()).ReturnsAsync(new List<Visitor>
+            var addDeviceDto = new AddVisitorDeviceDTO
             {
-                new Visitor { Id = 1, Name = "John Doe" },
-                new Visitor { Id = 2, Name = "Jane Smith" }
-            });
+                VisitorId = 1,
+                DeviceId = 3,
+                SerialNumber = "D123"
+            };
 
             // Act
-            var result = await _controller.GetVisitorDetails();
+            var result = await _repository.AddVisitorDeviceAsync(addDeviceDto);
 
             // Assert
-            if (result.Result is OkObjectResult okResult)
-            {
-                var visitors = okResult.Value as List<Visitor>;
-                Assert.IsNotNull(visitors);
-                Assert.AreEqual(2, visitors.Count);
-            }
-            else
-            {
-                Assert.Fail("Expected OkObjectResult");
-            }
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.SerialNumber, Is.EqualTo("D123"));
+            Assert.That(result.CreatedBy, Is.EqualTo(1));
         }
 
         [Test]
-        public async Task GetPersonInContact_ReturnsListOfContacts()
+        public async Task CreateVisitorAsync_WhenVisitorIsValid_AddsVisitor()
         {
             // Arrange
-            _mockService.Setup(s => s.GetPersonInContactAsync()).ReturnsAsync(new List<string> { "John Doe", "Jane Smith" });
+            var visitorDto = new VisitorCreationDTO
+            {
+                Name = "Visitor3",
+                PhoneNumber = "3333333333",
+                PurposeOfVisitId = 1,
+                PersonInContact = "Host3",
+                OfficeLocationId = 1,
+                ImageData = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABkAAAAMCAYAAABwY..."
+            };
 
             // Act
-            var result = await _controller.GetPersonInContact();
+            var result = await _repository.CreateVisitorAsync(visitorDto);
 
             // Assert
-            if (result.Result is OkObjectResult okResult)
-            {
-                var contacts = okResult.Value as List<string>;
-                Assert.IsNotNull(contacts);
-                Assert.AreEqual(2, contacts.Count);
-            }
-            else
-            {
-                Assert.Fail("Expected OkObjectResult");
-            }
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Name, Is.EqualTo("Visitor3"));
+            Assert.That(result.Photo, Is.Not.Null);
         }
 
         [Test]
-        public async Task GetVisitorById_ReturnsVisitor()
+        public void CreateVisitorAsync_WhenVisitorIsNull_ThrowsArgumentNullException()
         {
-            // Arrange
-            var visitor = new Visitor { Id = 1, Name = "John Doe" };
-            _mockService.Setup(s => s.GetVisitorByIdAsync(1)).ReturnsAsync(visitor);
-
-            // Act
-            var result = await _controller.GetVisitorById(1);
-
-            // Assert
-            if (result.Result is OkObjectResult okResult)
-            {
-                var returnedVisitor = okResult.Value as Visitor;
-                Assert.IsNotNull(returnedVisitor);
-                Assert.AreEqual(1, returnedVisitor.Id);
-            }
-            else
-            {
-                Assert.Fail("Expected OkObjectResult");
-            }
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentNullException>(async () => await _repository.CreateVisitorAsync(null));
         }
 
         [Test]
-        public async Task GetVisitorById_ReturnsNotFound_ForInvalidId()
+        public async Task GetPersonInContactAsync_WhenCalled_ReturnsDistinctHostNames()
         {
-            // Arrange
-            _mockService.Setup(s => s.GetVisitorByIdAsync(1)).ReturnsAsync((Visitor)null);
-
             // Act
-            var result = await _controller.GetVisitorById(1);
+            var result = await _repository.GetPersonInContactAsync();
 
             // Assert
-            Assert.IsInstanceOf<NotFoundResult>(result.Result);
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result, Does.Contain("Host1"));
+            Assert.That(result, Does.Contain("Host2"));
         }
 
         [Test]
-        public async Task CreateVisitor_ReturnsCreatedVisitor()
+        public async Task GetVisitorByIdAsync_WhenIdIsValid_ReturnsVisitor()
         {
-            // Arrange
-            var visitorDto = new VisitorCreationDTO { Name = "John Doe" };
-            var createdVisitor = new Visitor { Id = 1, Name = "John Doe" };
-            _mockService.Setup(s => s.CreateVisitorAsync(visitorDto)).ReturnsAsync(createdVisitor);
-
             // Act
-            var result = await _controller.CreateVisitor(visitorDto);
+            var result = await _repository.GetVisitorByIdAsync(1);
 
             // Assert
-            if (result.Result is CreatedAtActionResult createdResult)
-            {
-                var returnedVisitor = createdResult.Value as Visitor;
-                Assert.IsNotNull(returnedVisitor);
-                Assert.AreEqual(1, returnedVisitor.Id);
-            }
-            else
-            {
-                Assert.Fail("Expected CreatedAtActionResult");
-            }
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Name, Is.EqualTo("Visitor1"));
         }
 
         [Test]
-        public async Task CreateVisitor_ReturnsBadRequest_ForInvalidData()
+        public async Task GetVisitorByIdAsync_WhenIdIsInvalid_ReturnsNull()
         {
-            // Arrange
-            var invalidDto = new VisitorCreationDTO(); // Assume this is invalid
-            _controller.ModelState.AddModelError("Name", "Required");
-
             // Act
-            var result = await _controller.CreateVisitor(invalidDto);
+            var result = await _repository.GetVisitorByIdAsync(99);
 
             // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result.Result);
+            Assert.That(result, Is.Null);
         }
 
         [Test]
-        public async Task AddVisitorDevice_ReturnsCreatedDevice()
+        public async Task GetVisitorDetailsAsync_WhenCalled_ReturnsAllVisitors()
         {
-            // Arrange
-            var addDeviceDto = new AddVisitorDeviceDTO { DeviceId = 1, SerialNumber = "ABC123" };
-            var addedDevice = new VisitorDevice { VisitorId = 1, DeviceId = 1, SerialNumber = "ABC123" };
-            _mockService.Setup(s => s.AddVisitorDeviceAsync(addDeviceDto)).ReturnsAsync(addedDevice);
-
             // Act
-            var result = await _controller.AddVisitorDevice(addDeviceDto);
+            var result = await _repository.GetVisitorDetailsAsync();
 
             // Assert
-            if (result.Result is CreatedAtActionResult createdResult)
-            {
-                var returnedDevice = createdResult.Value as VisitorDevice;
-                Assert.IsNotNull(returnedDevice);
-                Assert.AreEqual("ABC123", returnedDevice.SerialNumber);
-            }
-            else
-            {
-                Assert.Fail("Expected CreatedAtActionResult");
-            }
+            Assert.That(result.Count(), Is.EqualTo(2));
         }
 
         [Test]
-        public async Task AddVisitorDevice_ReturnsBadRequest_ForInvalidData()
+        public async Task SaveAsync_WhenCalled_SavesChangesToDatabase()
         {
             // Arrange
-            var invalidDeviceDto = new AddVisitorDeviceDTO(); // Assume this is invalid
-            _controller.ModelState.AddModelError("DeviceId", "Required");
+            var visitor = new Visitor { Name = "New Visitor", Phone = "4444444444", PurposeId = 1, HostName = "Host4", OfficeLocationId = 1, StaffId = 1, VisitDate = DateTime.Today };
+            _context.Visitors.Add(visitor);
 
             // Act
-            var result = await _controller.AddVisitorDevice(invalidDeviceDto);
+            await _repository.SaveAsync();
 
             // Assert
-            Assert.IsInstanceOf<BadRequestObjectResult>(result.Result);
+            var result = await _context.Visitors.FirstOrDefaultAsync(v => v.Name == "New Visitor");
+            Assert.That(result, Is.Not.Null);
         }
 
         [Test]
-        public async Task GetVisitorDetails_ReturnsEmptyList_WhenNoVisitors()
+        public async Task AddVisitorDeviceAsync_WhenVisitorIdIsInvalid_ThrowsException()
         {
             // Arrange
-            _mockService.Setup(s => s.GetVisitorDetailsAsync()).ReturnsAsync(new List<Visitor>());
-
-            // Act
-            var result = await _controller.GetVisitorDetails();
-
-            // Assert
-            if (result.Result is OkObjectResult okResult)
+            var addDeviceDto = new AddVisitorDeviceDTO
             {
-                var visitors = okResult.Value as List<Visitor>;
-                Assert.IsNotNull(visitors);
-                Assert.IsEmpty(visitors);
-            }
-            else
-            {
-                Assert.Fail("Expected OkObjectResult");
-            }
+                VisitorId = 99,
+                DeviceId = 1,
+                SerialNumber = "D123"
+            };
+
+            // Act & Assert
+            Assert.ThrowsAsync<DbUpdateException>(async () => await _repository.AddVisitorDeviceAsync(addDeviceDto));
         }
 
         [Test]
-        public async Task GetPersonInContact_ReturnsEmptyList_WhenNoContacts()
+        public async Task CreateVisitorAsync_WhenVisitorIsValidAndHasDevices_AddsVisitorAndDevices()
         {
             // Arrange
-            _mockService.Setup(s => s.GetPersonInContactAsync()).ReturnsAsync(new List<string>());
+            var visitorDto = new VisitorCreationDTO
+            {
+                Name = "Visitor4",
+                PhoneNumber = "4444444444",
+                PurposeOfVisitId = 1,
+                PersonInContact = "Host4",
+                OfficeLocationId = 1,
+                SelectedDevice = new List<VisitorDeviceDTO>
+                {
+                    new VisitorDeviceDTO { DeviceId = 1, SerialNumber = "D123" },
+                    new VisitorDeviceDTO { DeviceId = 2, SerialNumber = "D456" }
+                }
+            };
 
             // Act
-            var result = await _controller.GetPersonInContact();
+            var result = await _repository.CreateVisitorAsync(visitorDto);
 
             // Assert
-            if (result.Result is OkObjectResult okResult)
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.VisitorDevices.Count, Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task GetPersonInContactAsync_WhenCalled_ReturnsDistinctHostNamesInOrder()
+        {
+            // Act
+            var result = await _repository.GetPersonInContactAsync();
+
+            // Assert
+            Assert.That(result.Count(), Is.EqualTo(2));
+            Assert.That(result.First(), Is.EqualTo("Host1"));
+        }
+
+        [Test]
+        public async Task GetVisitorByIdAsync_WhenIdIsValid_ReturnsVisitorWithCorrectPhone()
+        {
+            // Act
+            var result = await _repository.GetVisitorByIdAsync(2);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Phone, Is.EqualTo("2222222222"));
+        }
+
+        [Test]
+        public async Task CreateVisitorAsync_WhenCalled_SetsDefaultPassCode()
+        {
+            // Arrange
+            var visitorDto = new VisitorCreationDTO
             {
-                var contacts = okResult.Value as List<string>;
-                Assert.IsNotNull(contacts);
-                Assert.IsEmpty(contacts);
-            }
-            else
+                Name = "Visitor5",
+                PhoneNumber = "5555555555",
+                PurposeOfVisitId = 1,
+                PersonInContact = "Host5",
+                OfficeLocationId = 1
+            };
+
+            // Act
+            var result = await _repository.CreateVisitorAsync(visitorDto);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.VisitorPassCode, Is.EqualTo(0));
+        }
+
+        [Test]
+        public async Task AddVisitorDeviceAsync_WhenDeviceIsValid_SetsCreatedBy()
+        {
+            // Arrange
+            var addDeviceDto = new AddVisitorDeviceDTO
             {
-                Assert.Fail("Expected OkObjectResult");
-            }
+                VisitorId = 2,
+                DeviceId = 2,
+                SerialNumber = "D789"
+            };
+
+            // Act
+            var result = await _repository.AddVisitorDeviceAsync(addDeviceDto);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.CreatedBy, Is.EqualTo(1));
+        }
+
+        [Test]
+        public async Task GetVisitorDetailsAsync_WhenCalled_ValidatesVisitorCount()
+        {
+            // Act
+            var result = await _repository.GetVisitorDetailsAsync();
+
+            // Assert
+            Assert.That(result.Count(), Is.EqualTo(2));
+        }
+
+        [Test]
+        public async Task CreateVisitorAsync_WhenImageDataIsNull_DoesNotSavePhoto()
+        {
+            // Arrange
+            var visitorDto = new VisitorCreationDTO
+            {
+                Name = "Visitor6",
+                PhoneNumber = "6666666666",
+                PurposeOfVisitId = 1,
+                PersonInContact = "Host6",
+                OfficeLocationId = 1
+            };
+
+            // Act
+            var result = await _repository.CreateVisitorAsync(visitorDto);
+
+            // Assert
+            Assert.That(result, Is.Not.Null);
+            Assert.That(result.Photo, Is.Null);
+        }
+
+        [Test]
+        public async Task AddVisitorDeviceAsync_WhenSerialNumberIsEmpty_ThrowsArgumentException()
+        {
+            // Arrange
+            var addDeviceDto = new AddVisitorDeviceDTO
+            {
+                VisitorId = 1,
+                DeviceId = 2,
+                SerialNumber = ""
+            };
+
+            // Act & Assert
+            Assert.ThrowsAsync<ArgumentException>(async () => await _repository.AddVisitorDeviceAsync(addDeviceDto));
+        }
+
+        [Test]
+        public async Task CreateVisitorAsync_WhenPurposeIdIsOutOfRange_ThrowsDbUpdateException()
+        {
+            // Arrange
+            var visitorDto = new VisitorCreationDTO
+            {
+                Name = "Visitor7",
+                PhoneNumber = "7777777777",
+                PurposeOfVisitId = 99,
+                PersonInContact = "Host7",
+                OfficeLocationId = 1
+            };
+
+            // Act & Assert
+            Assert.ThrowsAsync<DbUpdateException>(async () => await _repository.CreateVisitorAsync(visitorDto));
         }
     }
-}*/
+}
