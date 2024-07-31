@@ -18,8 +18,8 @@ namespace VMS.Controllers
         }
 
         /*[Authorize(Policy = "AdminOnly")]*/
-        [HttpGet("get-device-id-name")]
-        public async Task<IEnumerable<GetDeviceIdAndNameDTO>> GetItems()
+        [HttpGet]
+        public async Task<IEnumerable<GetDeviceIdAndNameDTO>> GetDeviceIdAndName()
         {
             return await _deviceRepository.GetDevicesAsync();
         }

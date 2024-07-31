@@ -50,7 +50,7 @@ namespace VMS.Controllers
             return CreatedAtAction(nameof(GetVisitorById), new { id = visitor.Id }, visitor);
         }
 
-        [HttpPost("add-device")]
+        [HttpPost]
         public async Task<ActionResult<VisitorDevice>> AddVisitorDevice(AddVisitorDeviceDTO addDeviceDto)
         {
             var device = await _visitorService.AddVisitorDeviceAsync(addDeviceDto);

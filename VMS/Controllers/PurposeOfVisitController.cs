@@ -18,8 +18,8 @@ namespace VMS.Controllers
             _repository = repository;
         }
 
-        [HttpGet("get-purposes-id-Name")]
-        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposes()
+        [HttpGet]
+        public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetApprovedPurposesIdAndName()
         {
             return await _repository.GetPurposesAsync();
         }

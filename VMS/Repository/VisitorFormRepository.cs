@@ -62,15 +62,9 @@ namespace VMS.Repository
                  var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
                  visitor.Photo = imageDataBytes;
              }*/
-                            if
-                 (!
-                 string
-                 .IsNullOrEmpty(visitorDto.ImageData))
+           if(!string.IsNullOrEmpty(visitorDto.ImageData))
             {
-                var
-                imageDataParts = visitorDto.ImageData.Split(
-                ','
-                );
+                var imageDataParts = visitorDto.ImageData.Split(',');
                 if
                 (imageDataParts.Length > 1)
                 {
