@@ -3,7 +3,7 @@ using VMS.Models.DTO;
 
 namespace VMS.Repository.IRepository
 {
-    public interface IlocationRepository
+    public interface ILocationRepository
     {
         Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync();
         Task<IEnumerable<LocationDetailsDTO>> GetAllLocationDetailsAsync();
