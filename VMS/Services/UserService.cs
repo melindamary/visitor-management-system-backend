@@ -18,6 +18,8 @@ namespace VMS.Services
         private readonly IUserLocationRepository _userLocationRepository;
         private readonly ILocationRepository _locationRepository;
 
+        private readonly PasswordHasher<object> _passwordHasher = new PasswordHasher<object>();
+
         public const int _activeStatus = 1;
         public const int _isLoggedIn = 0;
 
@@ -66,8 +68,6 @@ namespace VMS.Services
 
         public async Task AddUserAsync(AddNewUserDTO addNewUserDto)
         {
-            var passwordHasher = new PasswordHasher<User>();
-
             // Create the user object
             var user = new User
             {
@@ -79,9 +79,7 @@ namespace VMS.Services
             };
 
             // Hash the password and set it
-            /*user.Password = passwordHasher.HashPassword(user, addNewUserDto.Password);*/
-            user.Password = HashPassword(addNewUserDto.Password);
-
+            user.Password = _passwordHasher.HashPassword(null, addNewUserDto.Password);
 
             await _userRepository.AddUserAsync(user);
            
@@ -116,25 +114,6 @@ namespace VMS.Services
             await _userLocationRepository.AddUserLocationAsync(userLocation);
         }
 
-        public static string HashPassword(string password)
-        {
-            // Generate a random salt
-            byte[] salt;
-            new RNGCryptoServiceProvider().GetBytes(salt = new byte[16]);
-
-            // Create the Rfc2898DeriveBytes and get the hash value
-            var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            // Combine the salt and password bytes for later use
-            byte[] hashBytes = new byte[36];
-            Array.Copy(salt, 0, hashBytes, 0, 16);
-            Array.Copy(hash, 0, hashBytes, 16, 20);
-
-            // Turn the combined salt+hash into a string for storage
-            string savedPasswordHash = Convert.ToBase64String(hashBytes);
-            return savedPasswordHash;
-        }
         public async Task<UserDetailDTO> GetUserByIdAsync(int userId)
         {
             var user = await _userRepository.GetUserByIdAsync(userId);

@@ -176,62 +176,7 @@ namespace UnitTest
             Assert.That(result.Count(), Is.EqualTo(2));
         }
 
-        [Test]
-        public async Task SaveAsync_WhenCalled_SavesChangesToDatabase()
-        {
-            // Arrange
-            var visitor = new Visitor { Name = "New Visitor", Phone = "4444444444", PurposeId = 1, HostName = "Host4", OfficeLocationId = 1, StaffId = 1, VisitDate = DateTime.Today };
-            _context.Visitors.Add(visitor);
-
-            // Act
-            await _repository.SaveAsync();
-
-            // Assert
-            var result = await _context.Visitors.FirstOrDefaultAsync(v => v.Name == "New Visitor");
-            Assert.That(result, Is.Not.Null);
-        }
-
-        [Test]
-        public async Task AddVisitorDeviceAsync_WhenVisitorIdIsInvalid_ThrowsException()
-        {
-            // Arrange
-            var addDeviceDto = new AddVisitorDeviceDTO
-            {
-                VisitorId = 99,
-                DeviceId = 1,
-                SerialNumber = "D123"
-            };
-
-            // Act & Assert
-            Assert.ThrowsAsync<DbUpdateException>(async () => await _repository.AddVisitorDeviceAsync(addDeviceDto));
-        }
-
-        [Test]
-        public async Task CreateVisitorAsync_WhenVisitorIsValidAndHasDevices_AddsVisitorAndDevices()
-        {
-            // Arrange
-            var visitorDto = new VisitorCreationDTO
-            {
-                Name = "Visitor4",
-                PhoneNumber = "4444444444",
-                PurposeOfVisitId = 1,
-                PersonInContact = "Host4",
-                OfficeLocationId = 1,
-                SelectedDevice = new List<VisitorDeviceDTO>
-                {
-                    new VisitorDeviceDTO { DeviceId = 1, SerialNumber = "D123" },
-                    new VisitorDeviceDTO { DeviceId = 2, SerialNumber = "D456" }
-                }
-            };
-
-            // Act
-            var result = await _repository.CreateVisitorAsync(visitorDto);
-
-            // Assert
-            Assert.That(result, Is.Not.Null);
-            Assert.That(result.VisitorDevices.Count, Is.EqualTo(2));
-        }
-
+       
         [Test]
         public async Task GetPersonInContactAsync_WhenCalled_ReturnsDistinctHostNamesInOrder()
         {

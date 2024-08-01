@@ -36,19 +36,6 @@ namespace VMS.Controllers
             }
         }
 
-        /*        [HttpGet]
-                public async Task<ActionResult<IEnumerable<LocationStatisticsDTO>>> GetLocationStatistics()
-                {
-                    var result = await _statisticsRepository.GetLocationStatistics();
-                    return Ok(result);
-                }*/
-        /*  [HttpGet("security")]
-          public async Task<ActionResult<IEnumerable<SecurityStatisticsDTO>>> GetSecurityStatistics()
-          {
-              var result = await _statisticsRepository.GetSecurityStatistics();
-              return Ok(result);
-          }
-  */
 
         [HttpGet("security")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]

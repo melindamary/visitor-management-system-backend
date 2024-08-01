@@ -2,7 +2,6 @@
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
 using VMS.Models;
-using VMS.Repository.IRepository;
 using VMS.Services.IServices;
 
 namespace VMS.Controllers
@@ -11,20 +10,23 @@ namespace VMS.Controllers
     [Route("[controller]/[action]")]
     public class ReportController : ControllerBase
     {
-        private IReportService _service;
-        public ReportController(IReportService service)
+        private readonly IReportService _service;
+        private readonly ILogger<ReportController> _logger; // Add this field
+
+        public ReportController(IReportService service, ILogger<ReportController> logger) // Add logger parameter
         {
             _service = service;
+            _logger = logger;
         }
 
-       /* [Authorize(Policy = "AdminOnly")]*/
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetAllVisitorReport()
+        public async Task<ActionResult<APIResponse>> VisitorList()
         {
+            _logger.LogInformation("Fetching visitor list");
             var visitors = await _service.GetAllVisitorReportsAsync();
 
             if (visitors == null || !visitors.Any())
@@ -35,6 +37,7 @@ namespace VMS.Controllers
                     StatusCode = HttpStatusCode.NotFound,
                     ErrorMessages = new List<string> { "No visitors found." }
                 };
+                _logger.LogWarning("No visitors found.");
                 return NotFound(errorResponse);
             }
 
@@ -45,6 +48,7 @@ namespace VMS.Controllers
                 StatusCode = HttpStatusCode.OK
             };
 
+            _logger.LogInformation("Successfully fetched visitor list");
             return Ok(response);
         }
 
@@ -54,8 +58,9 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetVisitorDetails(int id)
+        public async Task<ActionResult<APIResponse>> Visitor(int id)
         {
+            _logger.LogInformation($"Fetching details for visitor with ID {id}");
             var visitor = await _service.GetVisitorDetailsAsync(id);
 
             if (visitor == null)
@@ -66,6 +71,7 @@ namespace VMS.Controllers
                     StatusCode = HttpStatusCode.NotFound,
                     ErrorMessages = new List<string> { "Visitor not found." }
                 };
+                _logger.LogWarning($"Visitor with ID {id} not found.");
                 return NotFound(errorResponse);
             }
 
@@ -75,6 +81,8 @@ namespace VMS.Controllers
                 IsSuccess = true,
                 StatusCode = HttpStatusCode.OK,
             };
+
+            _logger.LogInformation($"Successfully fetched details for visitor with ID {id}");
             return Ok(response);
         }
     }

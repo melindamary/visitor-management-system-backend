@@ -15,7 +15,7 @@ namespace VMS.Repository
     {
         private readonly VisitorManagementDbContext _context;
         private readonly ILogger<UserRepository> _logger;
-
+        private readonly PasswordHasher<object> _passwordHasher = new PasswordHasher<object>();
         public UserRepository(VisitorManagementDbContext context, ILogger<UserRepository> logger) { 
             _context = context;
             _logger = logger;
@@ -157,8 +157,7 @@ namespace VMS.Repository
                     _logger.LogWarning("User with username {Username} not found.", username);
                     return false;
                 }
-               /* var result = CheckPasswordAsync(user.Password, password);*/
-                bool isValid = password == user.Password; // Replace with hash verification logic
+                bool isValid = ValidatePassword(user.Password, password);
                 _logger.LogInformation("User with username {Username} validation result: {IsValid}.", username, isValid);
                 return isValid;
             }
@@ -170,23 +169,10 @@ namespace VMS.Repository
 
 
         }
-        public static bool VerifyPassword(string enteredPassword, string storedHash)
+        public bool ValidatePassword(string hashedPassword, string providedPassword)
         {
-            // Extract the bytes
-            byte[] hashBytes = Convert.FromBase64String(storedHash);
-            byte[] salt = new byte[16];
-            Array.Copy(hashBytes, 0, salt, 0, 16);
-
-            // Compute the hash on the entered password
-            var pbkdf2 = new Rfc2898DeriveBytes(enteredPassword, salt, 10000);
-            byte[] hash = pbkdf2.GetBytes(20);
-
-            // Compare the results
-            for (int i = 0; i < 20; i++)
-                if (hashBytes[i + 16] != hash[i])
-                    return false;
-
-            return true;
+            var result = _passwordHasher.VerifyHashedPassword(null, hashedPassword, providedPassword);
+            return result == PasswordVerificationResult.Success;
         }
 
         public async Task<LocationIdAndNameDTO> GetUserLocationAsync(int id)

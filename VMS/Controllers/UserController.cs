@@ -22,7 +22,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetUserRoleByUsername(string username) 
+        public async Task<ActionResult<APIResponse>> UserRoleByUsername(string username) 
         {
 
             var userRole = await _userService.GetUserRoleByUsernameAsync(username);

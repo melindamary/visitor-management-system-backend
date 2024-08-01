@@ -66,11 +66,12 @@ namespace VMS.Controllers
             return CreatedAtAction(nameof(GetVisitorById), new { id = visitor.Id }, visitor);
         }
 
-        [HttpPost("add-device")]
+
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
+        [HttpPost]
         public async Task<ActionResult<VisitorDevice>> AddVisitorDevice(AddVisitorDeviceDTO addDeviceDto)
         {
             var device = await _visitorService.AddVisitorDeviceAsync(addDeviceDto);
