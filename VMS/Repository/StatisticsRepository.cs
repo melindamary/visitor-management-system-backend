@@ -116,7 +116,7 @@ namespace VMS.Repository
                                              SecurityFirstName = ud.FirstName,
                                              SecurityLastName = ud.LastName,
                                              PhoneNumber = ud.Phone,
-                                             Status = u.IsActive,
+                                             Status = u.IsLoggedIn,
                                              VisitorsApproved = visitors.Count
                                          }).OrderBy(sd => sd.Location)
                                            .ThenBy(sd => sd.SecurityLastName)
@@ -126,39 +126,7 @@ namespace VMS.Repository
         }
 
 
-        /*        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics()
-                {
-                    var sevenDaysAgo = DateTime.Now.AddDays(-7);
-
-                    var securityDetails = await (from ol in _context.OfficeLocations
-                                                 join ud in _context.UserDetails on ol.OfficeLocationId equals ud.OfficeLocationId
-                                                 join u in _context.Users on ud.UserId equals u.UserId
-                                                 join ur in _context.UserRoles on u.UserId equals ur.UserId
-                                                 join r in _context.Roles on ur.RoleId equals r.RoleId
-                                                 where r.RoleName == "Security"
-                                                 let visitors = _context.Visitors
-                                                     .Where(v => v.OfficeLocationId == ol.OfficeLocationId &&
-                                                                 v.UpdatedBy == u.UserId && 
-                                                                 v.VisitDate >= sevenDaysAgo)
-                                                     .Select(v => v.VisitorId)
-                                                     .Distinct()
-                                                     .ToList() // Convert IQueryable to List
-                                                 select new SecurityStatisticsDTO
-                                                 {
-                                                     Location = ol.LocationName,
-                                                     SecurityFirstName = ud.FirstName,
-                                                     SecurityLastName = ud.LastName,
-                                                     PhoneNumber = ud.Phone,
-                                                     Status = u.IsActive,
-                                                     VisitorsApproved = visitors.Count() // Use the Count property of List
-                                                 }).OrderBy(sd => sd.Location)
-                                                   .ThenBy(sd => sd.SecurityLastName)
-                                                   .ThenBy(sd => sd.SecurityFirstName)
-                                                   .ToListAsync();
-
-                    return securityDetails;
-                }
-        */
+       
         public async Task<IEnumerable<PurposeStatisticsDTO>> GetPurposeStatistics()
         {
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
@@ -191,7 +159,7 @@ namespace VMS.Repository
                                 {
                                     Location = g.Key,
                                     PassesGenerated = g.Count(x => x.v != null),
-                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != null && x.v.CheckOutTime == null),
+                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
                                     TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
                                 })
                                 .ToListAsync();
