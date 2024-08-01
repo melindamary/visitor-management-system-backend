@@ -18,13 +18,13 @@ namespace VMS.Controllers
             _repository = repository;
         }
 
-        [HttpGet("get-purposes-id-Name")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         // public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetPurposes()
-        // [HttpGet]
+        
         public async Task<IEnumerable<PurposeOfVisitNameadnIdDTO>> GetApprovedPurposesIdAndName()
         {
             return await _repository.GetPurposesAsync();
@@ -53,7 +53,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetPurposeList() {
+        public async Task<ActionResult<APIResponse>> PurposeList() {
 
             var purposes = await _repository.GetPurposeListAsync();
 
@@ -81,7 +81,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> UpdatePurpose([FromBody] PurposeUpdateRequestDTO updatePurposeRequestDTO)
+        public async Task<ActionResult<APIResponse>> Purpose([FromBody] PurposeUpdateRequestDTO updatePurposeRequestDTO)
         {
             var result = await _repository.UpdatePurposeAsync(updatePurposeRequestDTO);
             if (!result) {
@@ -106,7 +106,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> DeletePurpose(int id)
+        public async Task<ActionResult<APIResponse>> Purpose(int id)
         {
             var result = await _repository.DeletePurposeAsync(id);
             if (!result)
