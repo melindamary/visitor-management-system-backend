@@ -229,9 +229,9 @@ namespace VMS.Services
 
         public async Task<bool> CheckUsernameExistsAsync(string username)
         {
-           
-                return await _userRepository.UsernameExistsAsync(username);
-         
+
+            return await _userRepository.UsernameExistsAsync(username);
+
         }
     }
 }

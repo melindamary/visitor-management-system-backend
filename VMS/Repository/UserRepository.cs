@@ -209,17 +209,9 @@ namespace VMS.Repository
         public async Task<bool> UsernameExistsAsync(string username)
         {
             _logger.LogInformation("Checking if username exists: {Username}.", username);
-            try
-            {
-                bool exists = await _context.Users.AnyAsync(u => u.Username == username);
-                _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
-                return exists;
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError(ex, "An error occurred while checking if username exists: {Username}.", username);
-                throw;
-            }
+            bool exists = await _context.Users.AnyAsync(u => u.Username == username);
+            _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
+            return exists;
         }
     }
 }
