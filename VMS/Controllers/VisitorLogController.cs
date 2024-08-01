@@ -27,7 +27,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetVisitorLogToday()
+        public async Task<ActionResult<APIResponse>> VisitorLogList()
         {
             var response = new APIResponse();
             try
@@ -74,7 +74,7 @@ namespace VMS.Controllers
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.OK)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
-        public async Task<IActionResult> UpdateCheckInTimeAndPassCode(int id, [FromBody] UpdateVisitorPassCodeDTO updateVisitorPassCode)
+        public async Task<IActionResult> VisitorLogCheckIn(int id, [FromBody] UpdateVisitorPassCodeDTO updateVisitorPassCode)
         {
             var response = new APIResponse();
             try
@@ -145,7 +145,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<IActionResult> UpdateCheckOutTime(int id)
+        public async Task<IActionResult> VisitorLogCheckOut(int id)
         {
             var response = new APIResponse();
             try

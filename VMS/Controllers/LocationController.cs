@@ -34,7 +34,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> GetAllLocationDetails()
+        public async Task<ActionResult<APIResponse>> LocationList()
         {
             var response = new APIResponse();
             try
@@ -59,7 +59,7 @@ namespace VMS.Controllers
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.Created)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
-        public async Task<ActionResult<APIResponse>> AddLocation([FromBody] AddOfficeLocationDTO locationdDTO)
+        public async Task<ActionResult<APIResponse>> PostLocation([FromBody] AddOfficeLocationDTO locationdDTO)
         {
             var response = new APIResponse();
             if (!ModelState.IsValid)
@@ -82,7 +82,7 @@ namespace VMS.Controllers
                     response.IsSuccess = true;
                     response.StatusCode = HttpStatusCode.Created;
                     response.Result = "Location added successfully.";
-                    return CreatedAtAction(nameof(AddLocation), new { /* pass location id if available */ }, response);
+                    return CreatedAtAction(nameof(PostLocation), new {  }, response);
                 }
                 else
                 {
@@ -106,7 +106,7 @@ namespace VMS.Controllers
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.BadRequest)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.NotFound)]
         [ProducesResponseType(typeof(APIResponse), (int)HttpStatusCode.InternalServerError)]
-        public async Task<ActionResult<APIResponse>> UpdateLocation(int id, [FromBody] UpdateLocationDTO dto)
+        public async Task<ActionResult<APIResponse>> Location(int id, [FromBody] UpdateLocationDTO dto)
         {
             var response = new APIResponse();
             if (!ModelState.IsValid)
