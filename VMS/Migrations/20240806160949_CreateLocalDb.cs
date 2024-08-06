@@ -4,10 +4,12 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
+#pragma warning disable CA1814 // Prefer jagged arrays over multidimensional
+
 namespace VMS.Migrations
 {
     /// <inheritdoc />
-    public partial class AddStatusColumnToRoleAndDeviceTablesAndChangeVisitorPassCodeType : Migration
+    public partial class CreateLocalDb : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -79,9 +81,9 @@ namespace VMS.Migrations
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     location_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     address = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
-                    Status = table.Column<int>(type: "integer", nullable: false),
-                    created_by = table.Column<int>(type: "integer", nullable: false),
+                    phone = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: true),
+                    status = table.Column<int>(type: "integer", nullable: false),
+                    created_by = table.Column<int>(type: "integer", nullable: true),
                     created_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP"),
                     updated_by = table.Column<int>(type: "integer", nullable: true),
                     updated_date = table.Column<DateTime>(type: "timestamp", nullable: true, defaultValueSql: "CURRENT_TIMESTAMP")
@@ -93,8 +95,7 @@ namespace VMS.Migrations
                         name: "fk_office_location_created_by",
                         column: x => x.created_by,
                         principalTable: "user",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "user_id");
                     table.ForeignKey(
                         name: "fk_office_location_updated_by",
                         column: x => x.updated_by,
@@ -283,10 +284,12 @@ namespace VMS.Migrations
                     host_name = table.Column<string>(type: "character varying(255)", maxLength: 255, nullable: false),
                     photo = table.Column<byte[]>(type: "bytea", nullable: false),
                     visit_date = table.Column<DateTime>(type: "timestamp", nullable: false),
+                    form_submission_mode = table.Column<string>(type: "text", nullable: false),
                     visitor_pass_code = table.Column<int>(type: "integer", nullable: true),
                     check_in_time = table.Column<DateTime>(type: "timestamp", nullable: true),
+                    checked_in_by = table.Column<int>(type: "integer", nullable: false),
                     check_out_time = table.Column<DateTime>(type: "timestamp", nullable: true),
-                    user_id = table.Column<int>(type: "integer", nullable: false),
+                    checked_out_by = table.Column<int>(type: "integer", nullable: false),
                     office_location_id = table.Column<int>(type: "integer", nullable: false),
                     status = table.Column<int>(type: "integer", nullable: true),
                     created_by = table.Column<int>(type: "integer", nullable: true),
@@ -297,6 +300,12 @@ namespace VMS.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("pk_visitor", x => x.visitor_id);
+                    table.ForeignKey(
+                        name: "fk_visitor_checked_in_id",
+                        column: x => x.checked_in_by,
+                        principalTable: "user",
+                        principalColumn: "user_id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "fk_visitor_created_by",
                         column: x => x.created_by,
@@ -319,12 +328,6 @@ namespace VMS.Migrations
                         column: x => x.updated_by,
                         principalTable: "user",
                         principalColumn: "user_id");
-                    table.ForeignKey(
-                        name: "fk_visitor_user_id",
-                        column: x => x.user_id,
-                        principalTable: "user",
-                        principalColumn: "user_id",
-                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -443,6 +446,26 @@ namespace VMS.Migrations
                         principalTable: "visitor",
                         principalColumn: "visitor_id");
                 });
+
+            migrationBuilder.InsertData(
+                table: "office_location",
+                columns: new[] { "office_location_id", "address", "created_by", "location_name", "phone", "status", "updated_by" },
+                values: new object[,]
+                {
+                    { 1, "Technopark Phase 1, Trivandrum", null, "Thejaswini", null, 1, null },
+                    { 2, "Technopark Phase 1, Trivandrum", null, "Gayathri", null, 1, null },
+                    { 3, "Infopark, Cochin", null, "Athulya", null, 1, null }
+                });
+
+            migrationBuilder.InsertData(
+                table: "role",
+                columns: new[] { "role_id", "created_by", "role_name", "status", "updated_by" },
+                values: new object[] { 1, null, "SuperAdmin", null, null });
+
+            migrationBuilder.InsertData(
+                table: "user",
+                columns: new[] { "user_id", "created_by", "is_active", "is_logged_in", "password", "updated_by", "username", "valid_from" },
+                values: new object[] { 1, null, null, null, "system", null, "system", null });
 
             migrationBuilder.CreateIndex(
                 name: "fk_device_created_by",
@@ -585,6 +608,16 @@ namespace VMS.Migrations
                 column: "user_id");
 
             migrationBuilder.CreateIndex(
+                name: "fk_visitor_checked_in_by_id",
+                table: "visitor",
+                column: "checked_in_by");
+
+            migrationBuilder.CreateIndex(
+                name: "fk_visitor_checked_out_by_id",
+                table: "visitor",
+                column: "checked_out_by");
+
+            migrationBuilder.CreateIndex(
                 name: "fk_visitor_created_by",
                 table: "visitor",
                 column: "created_by");
@@ -603,11 +636,6 @@ namespace VMS.Migrations
                 name: "fk_visitor_updated_by",
                 table: "visitor",
                 column: "updated_by");
-
-            migrationBuilder.CreateIndex(
-                name: "fk_visitor_user_id",
-                table: "visitor",
-                column: "user_id");
 
             migrationBuilder.CreateIndex(
                 name: "fk_device_id",

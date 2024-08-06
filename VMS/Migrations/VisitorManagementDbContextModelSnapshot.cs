@@ -85,7 +85,7 @@ namespace VMS.Migrations
                         .HasColumnType("character varying(255)")
                         .HasColumnName("address");
 
-                    b.Property<int>("CreatedBy")
+                    b.Property<int?>("CreatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("created_by");
 
@@ -102,13 +102,13 @@ namespace VMS.Migrations
                         .HasColumnName("location_name");
 
                     b.Property<string>("Phone")
-                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("phone");
 
                     b.Property<int>("Status")
-                        .HasColumnType("integer");
+                        .HasColumnType("integer")
+                        .HasColumnName("status");
 
                     b.Property<int?>("UpdatedBy")
                         .HasColumnType("integer")
@@ -128,6 +128,29 @@ namespace VMS.Migrations
                     b.HasIndex(new[] { "UpdatedBy" }, "fk_office_location_updated_by");
 
                     b.ToTable("office_location", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Technopark Phase 1, Trivandrum",
+                            Name = "Thejaswini",
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Technopark Phase 1, Trivandrum",
+                            Name = "Gayathri",
+                            Status = 1
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Infopark, Cochin",
+                            Name = "Athulya",
+                            Status = 1
+                        });
                 });
 
             modelBuilder.Entity("VMS.Models.Page", b =>
@@ -325,6 +348,13 @@ namespace VMS.Migrations
                     b.HasIndex(new[] { "UpdatedBy" }, "fk_role_updated_by");
 
                     b.ToTable("role", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "SuperAdmin"
+                        });
                 });
 
             modelBuilder.Entity("VMS.Models.User", b =>
@@ -388,6 +418,14 @@ namespace VMS.Migrations
                     b.HasIndex(new[] { "UpdatedBy" }, "fk_user_updated_by");
 
                     b.ToTable("user", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Password = "system",
+                            Username = "system"
+                        });
                 });
 
             modelBuilder.Entity("VMS.Models.UserDetail", b =>
@@ -588,6 +626,14 @@ namespace VMS.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("check_out_time");
 
+                    b.Property<int>("CheckedInBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("checked_in_by");
+
+                    b.Property<int>("CheckedOutBy")
+                        .HasColumnType("integer")
+                        .HasColumnName("checked_out_by");
+
                     b.Property<int?>("CreatedBy")
                         .HasColumnType("integer")
                         .HasColumnName("created_by");
@@ -597,6 +643,11 @@ namespace VMS.Migrations
                         .HasColumnType("timestamp")
                         .HasColumnName("created_date")
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
+
+                    b.Property<string>("FormSubmissionMode")
+                        .IsRequired()
+                        .HasColumnType("text")
+                        .HasColumnName("form_submission_mode");
 
                     b.Property<string>("HostName")
                         .IsRequired()
@@ -629,10 +680,6 @@ namespace VMS.Migrations
                         .HasColumnType("integer")
                         .HasColumnName("purpose_id");
 
-                    b.Property<int>("StaffId")
-                        .HasColumnType("integer")
-                        .HasColumnName("user_id");
-
                     b.Property<int?>("Status")
                         .HasColumnType("integer")
                         .HasColumnName("status");
@@ -658,6 +705,10 @@ namespace VMS.Migrations
                     b.HasKey("Id")
                         .HasName("pk_visitor");
 
+                    b.HasIndex(new[] { "CheckedInBy" }, "fk_visitor_checked_in_by_id");
+
+                    b.HasIndex(new[] { "CheckedOutBy" }, "fk_visitor_checked_out_by_id");
+
                     b.HasIndex(new[] { "CreatedBy" }, "fk_visitor_created_by");
 
                     b.HasIndex(new[] { "OfficeLocationId" }, "fk_visitor_location_id");
@@ -665,8 +716,6 @@ namespace VMS.Migrations
                     b.HasIndex(new[] { "PurposeId" }, "fk_visitor_purpose_id");
 
                     b.HasIndex(new[] { "UpdatedBy" }, "fk_visitor_updated_by");
-
-                    b.HasIndex(new[] { "StaffId" }, "fk_visitor_user_id");
 
                     b.ToTable("visitor", (string)null);
                 });
@@ -749,8 +798,6 @@ namespace VMS.Migrations
                     b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("OfficeLocationCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
                         .HasConstraintName("fk_office_location_created_by");
 
                     b.HasOne("VMS.Models.User", "UpdatedByNavigation")
@@ -973,6 +1020,13 @@ namespace VMS.Migrations
 
             modelBuilder.Entity("VMS.Models.Visitor", b =>
                 {
+                    b.HasOne("VMS.Models.User", "CheckedInByNavigation")
+                        .WithMany("VisitorUsers")
+                        .HasForeignKey("CheckedInBy")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("fk_visitor_checked_in_id");
+
                     b.HasOne("VMS.Models.User", "CreatedByNavigation")
                         .WithMany("VisitorCreatedByNavigations")
                         .HasForeignKey("CreatedBy")
@@ -992,17 +1046,12 @@ namespace VMS.Migrations
                         .IsRequired()
                         .HasConstraintName("fk_visitor_purpose_id");
 
-                    b.HasOne("VMS.Models.User", "User")
-                        .WithMany("VisitorUsers")
-                        .HasForeignKey("StaffId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("fk_visitor_user_id");
-
                     b.HasOne("VMS.Models.User", "UpdatedByNavigation")
                         .WithMany("VisitorUpdatedByNavigations")
                         .HasForeignKey("UpdatedBy")
                         .HasConstraintName("fk_visitor_updated_by");
+
+                    b.Navigation("CheckedInByNavigation");
 
                     b.Navigation("CreatedByNavigation");
 
@@ -1011,8 +1060,6 @@ namespace VMS.Migrations
                     b.Navigation("Purpose");
 
                     b.Navigation("UpdatedByNavigation");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("VMS.Models.VisitorDevice", b =>

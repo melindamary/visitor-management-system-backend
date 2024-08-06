@@ -26,6 +26,23 @@ public partial class VisitorManagementDbContext : DbContext
     {
         modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
+        // Seed data for Users
+        modelBuilder.Entity<User>().HasData(
+            new User { Id = 1, Username = "system", Password = "system" }
+        );
+        // Seed data for Roles
+        modelBuilder.Entity<Role>().HasData(
+            new Role { Id = 1, Name = "SuperAdmin" }
+        );
+
+        // Seed data for Locations
+        modelBuilder.Entity<OfficeLocation>().HasData(
+            new OfficeLocation { Id = 1, Name = "Thejaswini", Address = "Technopark Phase 1, Trivandrum", Status = 1},
+            new OfficeLocation { Id = 2, Name = "Gayathri", Address = "Technopark Phase 1, Trivandrum", Status = 1 },
+            new OfficeLocation { Id = 3, Name = "Athulya", Address = "Infopark, Cochin", Status = 1 }
+        );
+
+
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);

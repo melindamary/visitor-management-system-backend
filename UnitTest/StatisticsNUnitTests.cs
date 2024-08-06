@@ -71,7 +71,7 @@ namespace UnitTest
             Phone = "3333333333",
             HostName = "Host 1",
             PurposeId = 1,
-            StaffId = 1,
+            CheckedInBy = 1,
             VisitorPassCode = 1,
             Photo = dummyPhoto
         },
@@ -85,7 +85,7 @@ namespace UnitTest
             Phone = "4444444444",
             HostName = "Host 2",
             PurposeId = 2,
-            StaffId = 1,
+            CheckedInBy = 1,
             VisitorPassCode = 2,
             Photo = dummyPhoto
         },
@@ -99,7 +99,7 @@ namespace UnitTest
             Phone = "5555555555",
             HostName = "Host 3",
             PurposeId = 1,
-            StaffId = 2,
+            CheckedInBy = 2,
             VisitorPassCode = 3,
             Photo = dummyPhoto
         }

@@ -59,14 +59,14 @@ namespace UnitTest
                 new Visitor
                 {
                     Id = 1, Name = "Visitor1", Phone = "1111111111", VisitDate = DateTime.Today,
-                    HostName = "Host1", PurposeId = 1, OfficeLocationId = 1, StaffId = 1,
+                    HostName = "Host1", PurposeId = 1, OfficeLocationId = 1, CheckedInBy = 1,
                     CheckInTime = DateTime.Now.AddHours(-1), CheckOutTime = DateTime.Now.AddMinutes(-30),
                     Photo = new byte[] { 0x20 }
                 },
                 new Visitor
                 {
                     Id = 2, Name = "Visitor2", Phone = "2222222222", VisitDate = DateTime.Today,
-                    HostName = "Host2", PurposeId = 2, OfficeLocationId = 2, StaffId = 2,
+                    HostName = "Host2", PurposeId = 2, OfficeLocationId = 2, CheckedInBy = 2,
                     CheckInTime = DateTime.Now.AddHours(-2), CheckOutTime = DateTime.Now.AddMinutes(-60),
                     Photo = new byte[] { 0x20 }
                 }

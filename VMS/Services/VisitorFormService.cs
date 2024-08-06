@@ -29,7 +29,7 @@ namespace VMS.Services
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                StaffId = _systemUserId,
+                CheckedInBy = _systemUserId,
                 CreatedBy = _systemUserId,
                 VisitorPassCode = _defaultPassCode,
                 VisitDate = DateTime.Now.Date,

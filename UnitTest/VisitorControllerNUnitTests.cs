@@ -1,29 +1,15 @@
 using Microsoft.EntityFrameworkCore;
 using VMS.Data;
-using Microsoft.EntityFrameworkCore;
-using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository;
-using NUnit.Framework;
-using System;
-using VMS.Repository;
-using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq;
-using System.Threading.Tasks;
 
 
 namespace UnitTest
 {
     [TestFixture]
     public class VisitorFormRepositoryTests
-    public class VisitorFormRepositoryTests
     {
-        private VisitorManagementDbContext _context;
-        private VisitorFormRepository _repository;
         private VisitorManagementDbContext _context;
         private VisitorFormRepository _repository;
 
@@ -64,8 +50,8 @@ namespace UnitTest
 
             var visitors = new List<Visitor>
             {
-                new Visitor { Id = 1, Name = "Visitor1", Phone = "1111111111", PurposeId = 1, HostName = "Host1", OfficeLocationId = 1, StaffId = 1, VisitDate = DateTime.Today },
-                new Visitor { Id = 2, Name = "Visitor2", Phone = "2222222222", PurposeId = 2, HostName = "Host2", OfficeLocationId = 2, StaffId = 1, VisitDate = DateTime.Today }
+                new Visitor { Id = 1, Name = "Visitor1", Phone = "1111111111", PurposeId = 1, HostName = "Host1", OfficeLocationId = 1, CheckedInBy = 1, VisitDate = DateTime.Today },
+                new Visitor { Id = 2, Name = "Visitor2", Phone = "2222222222", PurposeId = 2, HostName = "Host2", OfficeLocationId = 2, CheckedInBy = 1, VisitDate = DateTime.Today }
             };
 
             var devices = new List<VisitorDevice>
@@ -215,7 +201,6 @@ namespace UnitTest
             };
 
             // Act
-            var result = await _repository.CreateVisitorAsync(visitorDto);
             var result = await _repository.CreateVisitorAsync(visitorDto);
 
             // Assert

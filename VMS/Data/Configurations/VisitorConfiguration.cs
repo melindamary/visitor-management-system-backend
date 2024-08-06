@@ -20,15 +20,22 @@
 
             entity.HasIndex(e => e.UpdatedBy, "fk_visitor_updated_by");
 
-            entity.HasIndex(e => e.StaffId, "fk_visitor_user_id");
+            entity.HasIndex(e => e.CheckedInBy, "fk_visitor_checked_in_by_id");
+
+            entity.HasIndex(e => e.CheckedOutBy, "fk_visitor_checked_out_by_id");
 
             entity.Property(e => e.Id).HasColumnName("visitor_id");
+            entity.Property(e => e.CheckedInBy)
+                .HasColumnName("checked_in_by");
             entity.Property(e => e.CheckInTime)
                 .HasColumnType("timestamp")
                 .HasColumnName("check_in_time");
             entity.Property(e => e.CheckOutTime)
                 .HasColumnType("timestamp")
                 .HasColumnName("check_out_time");
+            entity.Property(e => e.CheckedOutBy)
+               .HasColumnName("checked_out_by");
+            entity.Property(e => e.FormSubmissionMode).HasColumnName("form_submission_mode");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
@@ -51,7 +58,6 @@
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")
                 .HasColumnType("timestamp")
                 .HasColumnName("updated_date");
-            entity.Property(e => e.StaffId).HasColumnName("user_id");
             entity.Property(e => e.VisitDate)
                 .HasColumnType("timestamp")
                 .HasColumnName("visit_date");
@@ -78,9 +84,9 @@
                 .HasForeignKey(d => d.UpdatedBy)
                 .HasConstraintName("fk_visitor_updated_by");
 
-            entity.HasOne(d => d.User).WithMany(p => p.VisitorUsers)
-                .HasForeignKey(d => d.StaffId)
-                .HasConstraintName("fk_visitor_user_id");
+            entity.HasOne(d => d.CheckedInByNavigation).WithMany(p => p.VisitorUsers)
+                .HasForeignKey(d => d.CheckedInBy)
+                .HasConstraintName("fk_visitor_checked_in_id");
 
         }
     }

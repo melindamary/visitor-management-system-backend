@@ -16,7 +16,9 @@
 
             entity.HasIndex(e => e.UpdatedBy, "fk_office_location_updated_by");
 
-            entity.Property(e => e.Id).HasColumnName("office_location_id");
+            entity.Property(e => e.Id)
+                .HasColumnName("office_location_id")
+                .ValueGeneratedOnAdd();
             entity.Property(e => e.Address)
                 .HasMaxLength(255)
                 .HasColumnName("address");

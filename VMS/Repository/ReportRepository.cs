@@ -17,7 +17,7 @@ namespace VMS.Repository
             var visitors = await (from visitor in _context.Visitors
                                   join purpose in _context.PurposeOfVisits on visitor.PurposeId equals purpose.Id
                                   join location in _context.OfficeLocations on visitor.OfficeLocationId equals location.Id
-                                  join user in _context.UserDetails on visitor.StaffId equals user.UserId
+                                  join user in _context.UserDetails on visitor.CheckedInBy equals user.UserId
                                   where visitor.CheckInTime != null && visitor.CheckOutTime != null
                                     let devices = (from visitorDevice in _context.VisitorDevices
                                                   join device in _context.Devices on visitorDevice.DeviceId equals device.Id

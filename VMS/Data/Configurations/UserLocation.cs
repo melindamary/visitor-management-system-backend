@@ -20,7 +20,9 @@
 
             entity.HasIndex(e => e.UserId, "fk_user_location_user_id");
 
-            entity.Property(e => e.Id).HasColumnName("user_location_id");
+            entity.Property(e => e.Id)
+                .HasColumnName("user_location_id")
+                .ValueGeneratedOnAdd();
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

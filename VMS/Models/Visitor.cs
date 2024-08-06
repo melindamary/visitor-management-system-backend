@@ -15,14 +15,15 @@ public partial class Visitor
 
     public DateTime VisitDate { get; set; }
 
+    public string FormSubmissionMode { get; set; }
     public int? VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
 
+    public int CheckedInBy { get; set; }
     public DateTime? CheckOutTime { get; set; }
-
-    public int StaffId { get; set; }
-
+    
+    public int CheckedOutBy { get; set; }
     public int OfficeLocationId { get; set; }
 
     public int? Status { get; set; }
@@ -43,7 +44,6 @@ public partial class Visitor
 
     public virtual User? UpdatedByNavigation { get; set; }
 
-    public virtual User? User { get; set; }
-
+    public virtual User? CheckedInByNavigation { get; set; }
     public virtual ICollection<VisitorDevice> VisitorDevices { get; set; } = new List<VisitorDevice>();
 }
