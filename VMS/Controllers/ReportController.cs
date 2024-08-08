@@ -19,6 +19,7 @@ namespace VMS.Controllers
             _logger = logger;
         }
 
+       
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]

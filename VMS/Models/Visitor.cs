@@ -20,10 +20,10 @@ public partial class Visitor
 
     public DateTime? CheckInTime { get; set; }
 
-    public int CheckedInBy { get; set; }
+    public int? CheckedInBy { get; set; }
     public DateTime? CheckOutTime { get; set; }
     
-    public int CheckedOutBy { get; set; }
+    public int? CheckedOutBy { get; set; }
     public int OfficeLocationId { get; set; }
 
     public int? Status { get; set; }
