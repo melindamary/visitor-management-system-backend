@@ -9,6 +9,7 @@ namespace VMS.Services
         private readonly IVisitorFormRepository _repository;
         private const int _systemUserId = 1;
         private const int _defaultPassCode = 0;
+        private const string _submissionType = "Kiosk";
 
         public VisitorFormService(IVisitorFormRepository repository)
         {
@@ -29,7 +30,7 @@ namespace VMS.Services
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                CheckedInBy = _systemUserId,
+                FormSubmissionMode = _submissionType,                
                 CreatedBy = _systemUserId,
                 VisitorPassCode = _defaultPassCode,
                 VisitDate = DateTime.Now.Date,
