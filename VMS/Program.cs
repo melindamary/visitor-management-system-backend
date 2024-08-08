@@ -140,10 +140,21 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("CorsPolicy", policy =>
     {
-        policy.WithOrigins("http://localhost:4200")
-              .AllowAnyMethod()
-              .AllowAnyHeader()
-              .AllowCredentials();
+        policy.SetIsOriginAllowed(origin =>
+        {
+            // Allow port 4200 specifically
+            if (origin == "http://localhost:4200")
+            {
+                return true;
+            }
+
+            // Allow any other port on localhost
+            Uri uri = new Uri(origin);
+            return uri.Host == "localhost";
+        })
+        .AllowAnyMethod()
+        .AllowAnyHeader()
+        .AllowCredentials(); // Use this cautiously
     });
 });
 
