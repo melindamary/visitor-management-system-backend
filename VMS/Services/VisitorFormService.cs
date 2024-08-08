@@ -22,6 +22,7 @@ namespace VMS.Services
             {
                 throw new ArgumentNullException(nameof(visitorDto));
             }
+            Console.WriteLine(_submissionType);
 
             var visitor = new Visitor
             {
@@ -65,6 +66,7 @@ namespace VMS.Services
                     await _repository.AddVisitorDeviceAsync(addDeviceDto);
                 }
             }
+
 
             return createdVisitor;
         }

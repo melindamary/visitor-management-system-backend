@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using VMS.Data;
@@ -11,9 +12,11 @@ using VMS.Data;
 namespace VMS.Migrations
 {
     [DbContext(typeof(VisitorManagementDbContext))]
-    partial class VisitorManagementDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240808093041_UpdateMaxLengthOfFormSubmissionModeColumnInVisitorTable")]
+    partial class UpdateMaxLengthOfFormSubmissionModeColumnInVisitorTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -645,6 +648,7 @@ namespace VMS.Migrations
                         .HasDefaultValueSql("CURRENT_TIMESTAMP");
 
                     b.Property<string>("FormSubmissionMode")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("character varying(255)")
                         .HasColumnName("form_submission_mode");

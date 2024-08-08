@@ -35,7 +35,9 @@
                 .HasColumnName("check_out_time");
             entity.Property(e => e.CheckedOutBy)
                .HasColumnName("checked_out_by");
-            entity.Property(e => e.FormSubmissionMode).HasColumnName("form_submission_mode");
+            entity.Property(e => e.FormSubmissionMode)
+                .HasMaxLength(255)
+                .HasColumnName("form_submission_mode");
             entity.Property(e => e.CreatedBy).HasColumnName("created_by");
             entity.Property(e => e.CreatedDate)
                 .HasDefaultValueSql("CURRENT_TIMESTAMP")

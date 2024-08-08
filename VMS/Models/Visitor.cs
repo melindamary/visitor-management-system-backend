@@ -15,7 +15,7 @@ public partial class Visitor
 
     public DateTime VisitDate { get; set; }
 
-    public string FormSubmissionMode { get; set; }
+    public string? FormSubmissionMode { get; set; }
     public int? VisitorPassCode { get; set; }
 
     public DateTime? CheckInTime { get; set; }
