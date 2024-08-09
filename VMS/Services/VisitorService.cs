@@ -150,6 +150,7 @@ namespace VMS.Services
                 }
 
                 exisitingVisitor.UpdatedBy = user.Id;
+                exisitingVisitor.CheckedInBy = user.Id;
                 var checkedInVisitor = await _visitorRepository.UpdateCheckInTimeAndCardNumber(id, updateVisitorPassCode);
                 
                 _logger.LogInformation("Visitor with id {VisitorId} check-in time and pass code updated by user with id {UserId}.", id, user.Id);
