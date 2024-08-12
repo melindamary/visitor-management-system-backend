@@ -191,7 +191,7 @@ namespace VMS.Repository
                                 {
                                     Location = g.Key,
                                     PassesGenerated = g.Count(x => x.v != null),
-                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != null && x.v.CheckOutTime == null),
+                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
                                     TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
                                 })
                                 .ToListAsync();
