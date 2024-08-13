@@ -12,13 +12,11 @@ namespace VMS.Repository
     {
         private readonly VisitorManagementDbContext _context;
         private readonly IMapper _mapper;
-        private readonly ILogger<VisitorRepository> _logger;
 
-        public VisitorRepository(VisitorManagementDbContext context, IMapper mapper, ILogger<VisitorRepository> logger)
+        public VisitorRepository(VisitorManagementDbContext context, IMapper mapper)
         {
             _context = context;
             _mapper = mapper;
-            _logger = logger;
         }
 
         public async Task<Visitor> GetVisitorByIdAsync(int id)
@@ -29,26 +27,23 @@ namespace VMS.Repository
         public async Task<int> GetVisitorCount(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter)
         {
             DateTime today = DateTime.Today;
-            _logger.LogInformation("Fetching visitor count for today.");
 
             var count = await filter(_context.Visitors
                 .Where(v => v.VisitDate == today))
                 .CountAsync();
 
-            _logger.LogInformation("Visitor count for today: {Count}", count);
             return count;
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter)
+        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter,string locationName)
         {
             DateTime today = DateTime.Today;
-            _logger.LogInformation("Fetching visitor logs for today.");
-
+            var officeLocation = await _context.OfficeLocations.FirstOrDefaultAsync(l => l.Name == locationName);
             var visitorDetail = await filter(_context.Visitors
                 .Include(v => v.Purpose)
                 .Include(v => v.VisitorDevices)
                     .ThenInclude(vd => vd.Device)
-                .Where(v => v.VisitDate == today))
+                .Where(v => v.VisitDate == today && v.OfficeLocationId == officeLocation.Id))
                 .ToListAsync();
 
             var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetail);
@@ -61,25 +56,22 @@ namespace VMS.Repository
                 }
             }
 
-            _logger.LogInformation("Fetched {Count} visitor logs for today.", visitorLogDtos.Count);
             return visitorLogDtos;
         }
 
         public async Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode)
         {
-            _logger.LogInformation("Updating check-in time and pass code for visitor ID {VisitorId}.", id);
 
             var existingVisitor = await _context.Visitors.FindAsync(id);
             if (existingVisitor == null)
             {
-                _logger.LogWarning("Visitor ID {VisitorId} not found.", id);
                 return null;
             }
 
-            bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode && v.Id != id);
+            bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode
+            && v.OfficeLocationId == existingVisitor.OfficeLocationId && v.Id != id);
             if (passCodeExists)
             {
-                _logger.LogWarning("Visitor pass code {PassCode} already allocated.", updateVisitorPassCode.VisitorPassCode);
                 throw new ArgumentException("This visitor pass code has already been allocated.");
             }
 
@@ -90,18 +82,15 @@ namespace VMS.Repository
             await _context.SaveChangesAsync();
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
 
-            _logger.LogInformation("Successfully updated check-in time and pass code for visitor ID {VisitorId}.", id);
             return visitorLogDTO;
         }
 
         public async Task<VisitorLogDTO> UpdateCheckOutTime(int id)
         {
-            _logger.LogInformation("Updating check-out time for visitor ID {VisitorId}.", id);
 
             var existingVisitor = await _context.Visitors.FindAsync(id);
             if (existingVisitor == null)
             {
-                _logger.LogWarning("Visitor ID {VisitorId} not found.", id);
                 return null;
             }
 
@@ -113,7 +102,6 @@ namespace VMS.Repository
 
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
 
-            _logger.LogInformation("Successfully updated check-out time for visitor ID {VisitorId}.", id);
             return visitorLogDTO;
         }
     }
