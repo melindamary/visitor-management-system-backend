@@ -38,6 +38,16 @@ namespace VMS.AVHubs
             int count = await _dashboardService.GetTotalVisitorsCountAsync();
             await Clients.Caller.SendAsync("ReceiveTotalVisitorsCount", count);
         }
+        public async Task BroadcastVisitorCounts()
+        {
+            int activeCount = await _dashboardService.GetVisitorCountAsync();
+            int scheduledCount = await _dashboardService.GetScheduledVisitorsCountAsync();
+            int totalCount = await _dashboardService.GetTotalVisitorsCountAsync();
+
+            await Clients.All.SendAsync("ReceiveVisitorCount", activeCount);
+            await Clients.All.SendAsync("ReceiveScheduledVisitorsCount", scheduledCount);
+            await Clients.All.SendAsync("ReceiveTotalVisitorsCount", totalCount);
+        }
         public override async Task OnConnectedAsync()
         {
             _logger.LogInformation("Client connected: {ConnectionId}", Context.ConnectionId);

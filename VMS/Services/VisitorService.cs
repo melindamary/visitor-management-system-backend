@@ -11,19 +11,24 @@ namespace VMS.Services
         private readonly IUserRepository _userRepository;
         private readonly ILogger<VisitorService> _logger;
 
-        public VisitorService(IVisitorRepository visitorRepository, IUserRepository userRepository, ILogger<VisitorService> logger)
+        public VisitorService(
+            IVisitorRepository visitorRepository, 
+            IUserRepository userRepository, 
+            ILogger<VisitorService> logger)
         {
             _visitorRepository = visitorRepository;
             _userRepository = userRepository;
             _logger = logger;
         }
 
-        public async Task<int> GetActiveVisitorsCountToday()
+        public async Task<int> GetActiveVisitorsCountToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching active visitors count for today.");
-                var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null));
+                //var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null));
+                var activeVisitors = await GetActiveVisitorsToday(locationName);
+                var count = activeVisitors.Count();
                 _logger.LogInformation("Active visitors count for today: {Count}", count);
                 return count;
             }
@@ -34,12 +39,14 @@ namespace VMS.Services
             }
         }
 
-        public async Task<int> GetTotalVisitorsCountToday()
+        public async Task<int> GetTotalVisitorsCountToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching total visitors count for today.");
-                var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
+                //var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
+                var visitorsToday = await GetVisitorDetailsToday(locationName);
+                var count = visitorsToday.Count();
                 _logger.LogInformation("Total visitors count for today: {Count}", count);
                 return count;
             }
@@ -50,12 +57,14 @@ namespace VMS.Services
             }
         }
 
-        public async Task<int> GetCheckedOutVisitorsCountToday()
+        public async Task<int> GetCheckedOutVisitorsCountToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching checked-out visitors count for today.");
-                var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckOutTime != null));
+                //var count = await _visitorRepository.GetVisitorCount(v => v.Where(visitor => visitor.CheckOutTime != null));
+                var checkedOutVisitors = await GetCheckedOutVisitorsToday(locationName);
+                var count = checkedOutVisitors.Count();
                 _logger.LogInformation("Checked-out visitors count for today: {Count}", count);
                 return count;
             }
@@ -66,12 +75,12 @@ namespace VMS.Services
             }
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday()
+        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching visitor details for today.");
-                var details = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null));
+                var details = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null), locationName);
                 _logger.LogInformation("Fetched {Count} visitor details for today.", details.Count());
                 return details;
             }
@@ -82,12 +91,12 @@ namespace VMS.Services
             }
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday()
+        public async Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching upcoming visitors for today.");
-                var upcomingVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null));
+                var upcomingVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null),locationName);
                 _logger.LogInformation("Fetched {Count} upcoming visitors for today.", upcomingVisitors.Count());
                 return upcomingVisitors;
             }
@@ -98,12 +107,12 @@ namespace VMS.Services
             }
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday()
+        public async Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching active visitors for today.");
-                var activeVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null));
+                var activeVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null), locationName);
                 _logger.LogInformation("Fetched {Count} active visitors for today.", activeVisitors.Count());
                 return activeVisitors;
             }
@@ -114,12 +123,12 @@ namespace VMS.Services
             }
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday()
+        public async Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday(string locationName)
         {
             try
             {
                 _logger.LogInformation("Fetching checked-out visitors for today.");
-                var checkedOutVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime != null));
+                var checkedOutVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime != null), locationName);
                 _logger.LogInformation("Fetched {Count} checked-out visitors for today.", checkedOutVisitors.Count());
                 return checkedOutVisitors;
             }

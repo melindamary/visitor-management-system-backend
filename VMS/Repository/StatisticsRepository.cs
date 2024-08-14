@@ -149,21 +149,40 @@ namespace VMS.Repository
 
 
 
+        /*        public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
+                {
+                    var result = await (from o in _context.OfficeLocations
+                                        join v in _context.Visitors on o.Id equals v.OfficeLocationId into vGroup
+                                        from v in vGroup.DefaultIfEmpty()
+                                        group new { o, v } by o.Name into g
+                                        select new DashboardStatisticsDTO
+                                        {
+                                            Location = g.Key,
+                                            PassesGenerated = g.Count(x => x.v != null),
+                                            ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
+                                            TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
+                                        })
+                                        .ToListAsync();
+
+                    return result;
+                }*/
         public async Task<IEnumerable<DashboardStatisticsDTO>> GetDashboardStatistics()
         {
+            var thirtyDaysAgo = DateTime.Now.AddDays(-30);
+
             var result = await (from o in _context.OfficeLocations
-                                join v in _context.Visitors on o.Id equals v.OfficeLocationId into vGroup
+                                join v in _context.Visitors.Where(v => v.CheckInTime >= thirtyDaysAgo)
+                                    on o.Id equals v.OfficeLocationId into vGroup
                                 from v in vGroup.DefaultIfEmpty()
                                 group new { o, v } by o.Name into g
                                 select new DashboardStatisticsDTO
                                 {
                                     Location = g.Key,
-                                    PassesGenerated = g.Count(x => x.v != null),
-                                    ActiveVisitors = g.Count(x => x.v != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
-                                    TotalVisitors = g.Count(x => x.v != null && x.v.CheckInTime != null)
+                                    PassesGenerated = g.Count(x => x.v.Id != null),
+                                    ActiveVisitors = g.Count(x => x.v.Id != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
+                                    TotalVisitors = g.Count(x => x.v.Id != null && x.v.CheckInTime != null)
                                 })
                                 .ToListAsync();
-
             return result;
         }
 
