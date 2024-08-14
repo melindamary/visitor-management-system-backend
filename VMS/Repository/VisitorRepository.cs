@@ -1,10 +1,13 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using VMS.AVHubs;
 using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
+using VMS.Services;
 
 namespace VMS.Repository
 {
@@ -13,12 +16,18 @@ namespace VMS.Repository
         private readonly VisitorManagementDbContext _context;
         private readonly IMapper _mapper;
         private readonly ILogger<VisitorRepository> _logger;
+        private readonly IHubContext<VisitorHub> _hubContext;
+        private readonly DashboardService _dashboardService;
 
-        public VisitorRepository(VisitorManagementDbContext context, IMapper mapper, ILogger<VisitorRepository> logger)
+
+        public VisitorRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, IMapper mapper, ILogger<VisitorRepository> logger, DashboardService dashboardService)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
+            _hubContext = hubContext;
+            _dashboardService = dashboardService;
+
         }
 
         public async Task<Visitor> GetVisitorByIdAsync(int id)
@@ -89,6 +98,13 @@ namespace VMS.Repository
 
             await _context.SaveChangesAsync();
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
+            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
+
+           
+
+
 
             _logger.LogInformation("Successfully updated check-in time and pass code for visitor ID {VisitorId}.", id);
             return visitorLogDTO;
@@ -110,11 +126,21 @@ namespace VMS.Repository
             existingVisitor.VisitorPassCode = 0;
 
             await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
+
 
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
 
+
+
             _logger.LogInformation("Successfully updated check-out time for visitor ID {VisitorId}.", id);
             return visitorLogDTO;
+        }
+        public async Task SaveAsync()
+        {
+            await _context.SaveChangesAsync();
         }
     }
 }

@@ -10,6 +10,8 @@ namespace VMS.Repository.IRepository
         Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter);
         Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode);
         Task<VisitorLogDTO> UpdateCheckOutTime(int id);
+        Task SaveAsync();
+
 
     }
 }
