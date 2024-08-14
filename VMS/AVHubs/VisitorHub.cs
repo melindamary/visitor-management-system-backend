@@ -1,9 +1,6 @@
 ﻿
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.EntityFrameworkCore;
-using System;
 using VMS.Data;
-using VMS.Models;
 using VMS.Services;
 
 namespace VMS.AVHubs
