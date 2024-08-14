@@ -1,16 +1,17 @@
 ﻿using VMS.Models.DTO;
+using static Google.Protobuf.Reflection.SourceCodeInfo.Types;
 
 namespace VMS.Services.IServices
 {
     public interface IVisitorService
     {
-        Task<int> GetActiveVisitorsCountToday();
-        Task<int> GetTotalVisitorsCountToday();
-        Task<int> GetCheckedOutVisitorsCountToday();
-        Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday();
-        Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday();
-        Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday();
-        Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday();
+        Task<int> GetActiveVisitorsCountToday(string locationName);
+        Task<int> GetTotalVisitorsCountToday(string locationName);
+        Task<int> GetCheckedOutVisitorsCountToday(string locationName);
+        Task<IEnumerable<VisitorLogDTO>> GetVisitorDetailsToday(string locationName);
+        Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday(string locationName);
+        Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday(string locationName);
+        Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday(string locationName);
         Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode);
         Task<VisitorLogDTO> UpdateCheckOutTime(int id);
 
