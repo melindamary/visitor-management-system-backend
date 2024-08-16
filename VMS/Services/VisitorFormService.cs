@@ -22,36 +22,11 @@ namespace VMS.Services
             {
                 throw new ArgumentNullException(nameof(visitorDto));
             }
-            Console.WriteLine(_submissionType);
 
-            var visitor = new Visitor
-            {
-                Name = visitorDto.Name,
-                Phone = visitorDto.PhoneNumber,
-                PurposeId = visitorDto.PurposeOfVisitId,
-                HostName = visitorDto.PersonInContact,
-                OfficeLocationId = visitorDto.OfficeLocationId,
-                FormSubmissionMode = _submissionType,                
-                CreatedBy = _systemUserId,
-                VisitorPassCode = _defaultPassCode,
-                VisitDate = DateTime.Now.Date,
-                CreatedDate = DateTime.Now,
-                UpdatedDate = DateTime.Now,
-                VisitorDevices = new List<VisitorDevice>()
-            };
-
-            if (!string.IsNullOrEmpty(visitorDto.ImageData))
-            {
-                var imageDataParts = visitorDto.ImageData.Split(',');
-                if (imageDataParts.Length > 1)
-                {
-                    var imageDataBytes = Convert.FromBase64String(imageDataParts[1]);
-                    visitor.Photo = imageDataBytes;
-                }
-            }
-
+            // Delegate visitor creation to the repository
             var createdVisitor = await _repository.CreateVisitorAsync(visitorDto);
 
+            // If there are devices associated, add them
             if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
             {
                 foreach (var selectedDevice in visitorDto.SelectedDevice)
@@ -66,7 +41,6 @@ namespace VMS.Services
                     await _repository.AddVisitorDeviceAsync(addDeviceDto);
                 }
             }
-
 
             return createdVisitor;
         }
