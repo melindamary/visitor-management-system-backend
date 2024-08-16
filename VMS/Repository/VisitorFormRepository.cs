@@ -1,21 +1,29 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using VMS.AVHubs;
 using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
+using VMS.Services;
 
 namespace VMS.Repository
 {
     public class VisitorFormRepository : IVisitorFormRepository
     {
+        private readonly DashboardService _dashboardService;
+
+        private readonly IHubContext<VisitorHub> _hubContext;
         private readonly VisitorManagementDbContext _context;
         public const int _systemUserId = 1;
         public const int _deafaultPassCode = 0;
         public const string _formSubmissionMode = "Kiosk";
 
-        public VisitorFormRepository(VisitorManagementDbContext context)
+        public VisitorFormRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, DashboardService dashboardService)
         {
             _context = context;
+            _hubContext = hubContext;
+            _dashboardService = dashboardService;
         }
         public async Task<VisitorDevice> AddVisitorDeviceAsync(AddVisitorDeviceDTO addDeviceDto)
         {
@@ -73,6 +81,17 @@ namespace VMS.Repository
 
             _context.Visitors.Add(visitor);
             await _context.SaveChangesAsync();
+
+
+/*            var hubContext = _serviceProvider.GetRequiredService<IHubContext<VisitorHub>>();
+*/            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
+            await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
+
+            // Update Location Statistics
+            await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetLocationStatistics(7));
+            await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetSecurityStatistics(7));
+
 
 
             

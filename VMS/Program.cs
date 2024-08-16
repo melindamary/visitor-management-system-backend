@@ -99,6 +99,7 @@ builder.Services.AddScoped<IReportRepository, ReportRepository>();
 builder.Services.AddScoped<IStatisticsRepository, StatisticsRepository>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IReportService, ReportService>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
 
 //authentication for backend API
 var key = Encoding.ASCII.GetBytes(builder.Configuration["ApiSettings:Key"]);

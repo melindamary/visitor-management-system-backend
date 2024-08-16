@@ -11,9 +11,9 @@ namespace VMS.Controllers
     public class ReportController : ControllerBase
     {
         private readonly IReportService _service;
-        private readonly ILogger<ReportController> _logger; // Add this field
+        private readonly ILogger<ReportController> _logger; 
 
-        public ReportController(IReportService service, ILogger<ReportController> logger) // Add logger parameter
+        public ReportController(IReportService service, ILogger<ReportController> logger) 
         {
             _service = service;
             _logger = logger;

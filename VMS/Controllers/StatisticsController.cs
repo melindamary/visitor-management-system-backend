@@ -11,7 +11,6 @@ namespace VMS.Controllers
     public class StatisticsController : ControllerBase
     {
         private readonly IStatisticsRepository _statisticsRepository;
-
         public StatisticsController(IStatisticsRepository statisticsRepository)
         {
             _statisticsRepository = statisticsRepository;

@@ -27,20 +27,20 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> VisitorLogList()
+        public async Task<ActionResult<APIResponse>> VisitorLogList(string locationName)
         {
             var response = new APIResponse();
             try
             {
                 _logger.LogInformation("Fetching visitor log details for today.");
 
-                var activeVisitorsCount = await _service.GetActiveVisitorsCountToday();
-                var totalVisitorsCount = await _service.GetTotalVisitorsCountToday();
-                var checkedOutVisitorsCount = await _service.GetCheckedOutVisitorsCountToday();
-                var upcomingVisitors = await _service.GetUpcomingVisitorsToday();
-                var activeVisitors = await _service.GetActiveVisitorsToday();
-                var checkedOutVisitors = await _service.GetCheckedOutVisitorsToday();
-                var visitorsToday = await _service.GetVisitorDetailsToday();
+                var activeVisitorsCount = await _service.GetActiveVisitorsCountToday(locationName);
+                var totalVisitorsCount = await _service.GetTotalVisitorsCountToday(locationName);
+                var checkedOutVisitorsCount = await _service.GetCheckedOutVisitorsCountToday(locationName);
+                var upcomingVisitors = await _service.GetUpcomingVisitorsToday(locationName);
+                var activeVisitors = await _service.GetActiveVisitorsToday(locationName);
+                var checkedOutVisitors = await _service.GetCheckedOutVisitorsToday(locationName);
+                var visitorsToday = await _service.GetVisitorDetailsToday(locationName);
 
                 var result = new
                 {

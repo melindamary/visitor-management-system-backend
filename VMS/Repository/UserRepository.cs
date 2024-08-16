@@ -122,6 +122,8 @@ namespace VMS.Repository
                     _logger.LogInformation("User {Username} status set to logged out.", username);
                 }
                 await _context.SaveChangesAsync();
+
+                // I need to add the hub
             }
             catch (Exception ex)
             {
