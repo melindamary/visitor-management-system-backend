@@ -56,9 +56,9 @@ namespace VMS.Services
             return await _repository.GetLocationStatistics(7);
         
         }
-        public async Task<IEnumerable<LocationStatisticsDTO>> GetSecurityStatistics(int days)
+        public async Task<IEnumerable<SecurityStatisticsDTO>> GetSecurityStatistics(int days)
         {
-            return await _repository.GetLocationStatistics(7);
+            return await _repository.GetSecurityStatistics(7);
 
         }
     }

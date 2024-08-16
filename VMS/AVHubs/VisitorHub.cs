@@ -1,6 +1,7 @@
 ﻿
 using Microsoft.AspNetCore.SignalR;
 using VMS.Data;
+using VMS.Models.DTO;
 using VMS.Services;
 
 namespace VMS.AVHubs
@@ -38,6 +39,17 @@ namespace VMS.AVHubs
             int count = await _dashboardService.GetTotalVisitorsCountAsync();
             await Clients.Caller.SendAsync("ReceiveTotalVisitorsCount", count);
         }
+        public async Task SendInitialLocationStatistics(int days)
+        {
+            var locationStatistics = await _dashboardService.GetLocationStatistics(days); // Get the location statistics
+            await Clients.Caller.SendAsync("ReceiveLocationStatistics", locationStatistics); // Send the location statistics to the caller
+        }
+        public async Task SendInitialLocationStatisticsecurity(int days)
+        {
+            var locationStatisticssecurity = await _dashboardService.GetSecurityStatistics(days); // Get the location statistics
+            await Clients.Caller.SendAsync("ReceiveLocationStatisticsecurity", locationStatisticssecurity); // Send the location statistics to the caller
+        }
+
         public async Task BroadcastVisitorCounts()
         {
             int activeCount = await _dashboardService.GetVisitorCountAsync();

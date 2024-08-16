@@ -7,6 +7,9 @@ using Microsoft.Extensions.Logging;
 using Microsoft.AspNetCore.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using System.Security.Cryptography;
+using Microsoft.AspNetCore.SignalR;
+using VMS.Services;
+using VMS.AVHubs;
 
 
 namespace VMS.Repository
@@ -14,11 +17,19 @@ namespace VMS.Repository
     public class UserRepository : IUserRepository
     {
         private readonly VisitorManagementDbContext _context;
+        private readonly DashboardService _dashboardService;
+
+        private readonly IHubContext<VisitorHub> _hubContext;
+
         private readonly ILogger<UserRepository> _logger;
         private readonly PasswordHasher<object> _passwordHasher = new PasswordHasher<object>();
-        public UserRepository(VisitorManagementDbContext context, ILogger<UserRepository> logger) { 
+        public UserRepository(VisitorManagementDbContext context, ILogger<UserRepository> logger, IHubContext<VisitorHub> hubContext,DashboardService dashboardService) { 
             _context = context;
             _logger = logger;
+            _hubContext = hubContext;
+            _dashboardService = dashboardService;
+
+
         }
 
         public async Task AddUserAsync(User user)
@@ -101,6 +112,8 @@ namespace VMS.Repository
         public async Task UpdateLoggedInStatusAsync(string username) {
 
             await _context.SaveChangesAsync();
+          
+
             _logger.LogInformation("Updating logged-in status for user: {Username}.", username);
             try
             {
@@ -113,17 +126,23 @@ namespace VMS.Repository
 
                 if (user.IsLoggedIn == 0)
                 {
+
                     user.IsLoggedIn = 1;
                     _logger.LogInformation("User {Username} status set to logged in.", username);
                 }
                 else if (user.IsLoggedIn == 1)
                 {
+
                     user.IsLoggedIn = 0;
                     _logger.LogInformation("User {Username} status set to logged out.", username);
                 }
                 await _context.SaveChangesAsync();
 
                 // I need to add the hub
+
+                // Update Location security Statistics
+                await _hubContext.Clients.All.SendAsync("ReceiveLocationStatisticsecurity", await _dashboardService.GetSecurityStatistics(30));
+
             }
             catch (Exception ex)
             {
@@ -139,6 +158,8 @@ namespace VMS.Repository
             {
                 _context.Users.Update(user);
                 await _context.SaveChangesAsync();
+                await _hubContext.Clients.All.SendAsync("ReceiveLocationStatisticsecurity", await _dashboardService.GetSecurityStatistics(30));
+
                 _logger.LogInformation("User with ID {UserId} updated successfully.", user.Id);
             }
             catch (Exception ex)
