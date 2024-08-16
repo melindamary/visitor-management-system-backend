@@ -4,16 +4,20 @@ using SixLabors.ImageSharp;
 using SixLabors.ImageSharp.Formats.Jpeg;
 using VMS.Data;
 using VMS.Models.DTO;
+using VMS.Repository;
+using VMS.Repository.IRepository;
 
 namespace VMS.Services
 {
     public class DashboardService
     {
         private readonly VisitorManagementDbContext _context;
+        private readonly IStatisticsRepository _repository;
 
-        public DashboardService(VisitorManagementDbContext context)
+        public DashboardService(VisitorManagementDbContext context, IStatisticsRepository repository)
         {
             _context = context;
+            _repository = repository;
         }
 
 
@@ -46,6 +50,16 @@ namespace VMS.Services
                 .CountAsync(v => v.CheckInTime != null
                                  && v.CheckOutTime != null
                                  && v.CheckInTime.Value.Date == today);
+        }
+        public async Task<IEnumerable<LocationStatisticsDTO>> GetLocationStatistics(int days)
+        {
+            return await _repository.GetLocationStatistics(7);
+        
+        }
+        public async Task<IEnumerable<LocationStatisticsDTO>> GetSecurityStatistics(int days)
+        {
+            return await _repository.GetLocationStatistics(7);
+
         }
     }
 }

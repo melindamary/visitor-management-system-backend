@@ -12,6 +12,7 @@ namespace VMS.Repository
     public class VisitorFormRepository : IVisitorFormRepository
     {
         private readonly DashboardService _dashboardService;
+
         private readonly IHubContext<VisitorHub> _hubContext;
         private readonly VisitorManagementDbContext _context;
         public const int _systemUserId = 1;
@@ -88,6 +89,10 @@ namespace VMS.Repository
 */            await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
+
+            // Update Location Statistics
+            await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetLocationStatistics(7));
+            await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetSecurityStatistics(7));
 
 
 
