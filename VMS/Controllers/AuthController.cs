@@ -30,5 +30,19 @@ namespace VMS.Controllers
             return Ok(loginResponse);
 
         }
+
+        [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
+        public async Task<IActionResult> Logout([FromBody] LogoutRequestDTO logoutRequest)
+        {
+            Console.WriteLine("Logout Request Body:"+logoutRequest);
+            var logoutResponse = await _authService.LogoutUser(logoutRequest);
+
+            return Ok(logoutResponse);
+
+        }
     }
 }

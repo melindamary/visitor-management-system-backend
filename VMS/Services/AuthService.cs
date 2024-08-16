@@ -7,6 +7,7 @@ using VMS.Models.DTO;
 using VMS.Models;
 using VMS.Repository.IRepository;
 using VMS.Services.IServices;
+using MySqlX.XDevAPI.Common;
 
 namespace VMS.Services
 {
@@ -98,6 +99,16 @@ namespace VMS.Services
             return tokenHandler.WriteToken(token);
         }
 
+        public async Task<APIResponse> LogoutUser(LogoutRequestDTO loginRequest)
+        {
+            await _repository.UpdateLoggedInStatusAsync(loginRequest.Username);
+
+            return new APIResponse
+            {
+                StatusCode = HttpStatusCode.OK,
+                IsSuccess = true,
+            };
+        }
     }
 }
 

@@ -7,5 +7,7 @@ namespace VMS.Services.IServices
     {
         Task<APIResponse> AuthenticateUser(LoginRequestDTO loginRequest);
         string GenerateJwtToken(User user, string userRole);
+
+        Task<APIResponse> LogoutUser(LogoutRequestDTO loginRequest);
     }
 }
