@@ -17,7 +17,7 @@ namespace VMS.Repository
         private readonly VisitorManagementDbContext _context;
         public const int _systemUserId = 1;
         public const int _deafaultPassCode = 0;
-        public const string _formSubmissionMode = "Kiosk";
+       /* public const string _formSubmissionMode = "Kiosk";*/
 
         public VisitorFormRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, DashboardService dashboardService)
         {
@@ -57,7 +57,7 @@ namespace VMS.Repository
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
-                FormSubmissionMode = _formSubmissionMode,
+                FormSubmissionMode = visitorDto.formSubmissionMode,
                 CheckedInBy = _systemUserId,
                 CreatedBy = _systemUserId,
                 VisitorPassCode= _deafaultPassCode,
