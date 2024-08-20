@@ -19,6 +19,10 @@ namespace VMS.Services
             _userRepository = userRepository;
             _mapper = mapper;
         }
+        public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndNameAsync()
+        {
+            return await _locationRepository.GetLocationIdAndNameAsync();
+        }
         public async Task<IEnumerable<LocationDetailsDTO>> GetAllLocationDetailsAsync()
         {
             return await _locationRepository.GetAllLocationDetailsAsync();
