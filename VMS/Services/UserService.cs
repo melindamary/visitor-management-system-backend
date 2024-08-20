@@ -68,11 +68,18 @@ namespace VMS.Services
 
         public async Task AddUserAsync(AddNewUserDTO addNewUserDto)
         {
+            var currentUser = await _userRepository.GetUserByUsernameAsync(addNewUserDto.loginUserName);
+            if (currentUser == null)
+            {
+                return  ;
+            }
             // Create the user object
             var user = new User
             {
                 Username = addNewUserDto.UserName,
                 CreatedDate = DateTime.Now,
+                CreatedBy = currentUser.Id,
+                UpdatedBy = currentUser.Id,
                 IsActive = _activeStatus,
                 IsLoggedIn = _isLoggedIn,
                 ValidFrom = addNewUserDto.ValidFrom
@@ -91,6 +98,8 @@ namespace VMS.Services
                 LastName = addNewUserDto.LastName,
                 Phone = addNewUserDto.Phone,
                 Address = addNewUserDto.Address,
+                CreatedBy = currentUser.Id,
+                UpdatedBy = currentUser.Id,
                 OfficeLocationId = addNewUserDto.OfficeLocationId,
                 CreatedDate = DateTime.Now
             };
@@ -99,6 +108,8 @@ namespace VMS.Services
             {
                 UserId = user.Id,
                 RoleId = addNewUserDto.RoleId,
+                CreatedBy = currentUser.Id,
+                UpdatedBy = currentUser.Id,
                 CreatedDate = DateTime.Now
             };
 
@@ -106,6 +117,8 @@ namespace VMS.Services
             {
                 UserId = user.Id,
                 OfficeLocationId = addNewUserDto.OfficeLocationId,
+                CreatedBy = currentUser.Id,
+                UpdatedBy = currentUser.Id,
                 CreatedDate = DateTime.Now
             };
 
@@ -185,6 +198,8 @@ namespace VMS.Services
         {
             var user = await _userRepository.GetUserByIdAsync(updateUserDto.UserId);
             if (user == null) return false;
+            var currentUser = await _userRepository.GetUserByUsernameAsync(updateUserDto.loginUserName);
+            if (currentUser == null) return false;
 
             user.Username = updateUserDto.Username;
             // Only update the password if a new password is provided
@@ -195,6 +210,7 @@ namespace VMS.Services
             }
             user.ValidFrom = updateUserDto.ValidFrom;
             user.IsActive = updateUserDto.IsActive;
+            user.UpdatedBy = currentUser.Id;
 
             await _userRepository.UpdateUserAsync(user);
 
@@ -206,6 +222,7 @@ namespace VMS.Services
                 userDetail.Phone = updateUserDto.Phone;
                 userDetail.Address = updateUserDto.Address;
                 userDetail.OfficeLocationId = updateUserDto.OfficeLocationId;
+                userDetail.UpdatedBy = currentUser.Id;
 
                 await _userDetailRepository.UpdateUserDetailAsync(userDetail);
             }
@@ -214,6 +231,7 @@ namespace VMS.Services
             if (userRole != null)
             {
                 userRole.RoleId = updateUserDto.RoleId;
+                userRole.UpdatedBy = currentUser.Id;
                 await _userRoleRepository.UpdateUserRoleAsync(userRole);
             }
 
@@ -221,6 +239,7 @@ namespace VMS.Services
             if (userLocation != null)
             {
                 userLocation.OfficeLocationId = updateUserDto.OfficeLocationId;
+                userLocation.UpdatedBy = currentUser.Id;
                 await _userLocationRepository.UpdateUserLocationAsync(userLocation);
             }
 

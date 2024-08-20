@@ -18,10 +18,10 @@ namespace VMS.Repository
 
         public async Task<PurposeOfVisit> AddPurposeAsync(AddNewPurposeDTO purposeDto)
         {
-            if (_context.PurposeOfVisits.Any(p => p.Name == purposeDto.purposeName))
+            /*if (_context.PurposeOfVisits.Any(p => p.Name == purposeDto.purposeName))
             {
                 throw new InvalidOperationException("Purpose already exists");
-            }
+            }*/
 
             var purpose = new PurposeOfVisit
             {

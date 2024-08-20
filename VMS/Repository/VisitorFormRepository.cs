@@ -17,6 +17,7 @@ namespace VMS.Repository
         private readonly VisitorManagementDbContext _context;
         public const int _systemUserId = 1;
         public const int _deafaultPassCode = 0;
+       /* public const string _formSubmissionMode = "Kiosk";*/
 
         public VisitorFormRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, DashboardService dashboardService)
         {
@@ -56,6 +57,7 @@ namespace VMS.Repository
                 PurposeId = visitorDto.PurposeOfVisitId,
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
+                FormSubmissionMode = visitorDto.formSubmissionMode,
                 CheckedInBy = _systemUserId,
                 CreatedBy = _systemUserId,
                 VisitorPassCode= _deafaultPassCode,
@@ -65,11 +67,7 @@ namespace VMS.Repository
                 VisitorDevices = new List<VisitorDevice>()
             };
 
-            /* if (!string.IsNullOrEmpty(visitorDto.ImageData))
-             {
-                 var imageDataBytes = Convert.FromBase64String(visitorDto.ImageData.Split(',')[1]);
-                 visitor.Photo = imageDataBytes;
-             }*/
+         
            if(!string.IsNullOrEmpty(visitorDto.ImageData))
             {
                 var imageDataParts = visitorDto.ImageData.Split(',');
@@ -96,21 +94,8 @@ namespace VMS.Repository
 
 
 
-            /*if (visitorDto.SelectedDevice != null && visitorDto.SelectedDevice.Count > 0)
-            {
-                foreach (var selectedDevice in visitorDto.SelectedDevice)
-                {
-                    var addDeviceDto = new AddVisitorDeviceDTO
-                    {
-                        VisitorId = visitor.Id,
-                        DeviceId = selectedDevice.DeviceId,
-                        SerialNumber = selectedDevice.SerialNumber,
-                    };
-
-                    await AddVisitorDeviceAsync(addDeviceDto);
-                }
-            }*/
-
+            
+            
             return visitor;
            
         }
@@ -136,24 +121,6 @@ namespace VMS.Repository
             await _context.SaveChangesAsync();
         }
 
-        // Method to call the AddVisitorDevice API
-       /* private VisitorDevice AddVisitorDevice(AddVisitorDeviceDto addDeviceDto)
-        {
-            // Create VisitorDevice entity from AddVisitorDeviceDto
-            var visitorDevice = new VisitorDevice
-            {
-                VisitorId = addDeviceDto.VisitorId,
-                DeviceId = addDeviceDto.DeviceId,
-                SerialNumber = addDeviceDto.SerialNumber
-            };
-
-            // Add VisitorDevice to context
-            *//* _context.VisitorDevices.Add(visitorDevice);*//*
-
-            // Save changes to the VisitorDevices
-            *//* _context.SaveChanges();*//*
-
-            return visitorDevice;
-        }*/
+       
     }
 }

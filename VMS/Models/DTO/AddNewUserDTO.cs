@@ -16,8 +16,10 @@
 
         // UserRole property
         public int RoleId { get; set; }
+        public string loginUserName { get; set; }
 
-       
+
+
 
 
 

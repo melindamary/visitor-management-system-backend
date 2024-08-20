@@ -17,6 +17,7 @@ namespace VMS.Models.DTO
         
         [Required]
         public int OfficeLocationId { get; set; }
+        public string formSubmissionMode { get; set; }
 
         public List<VisitorDeviceDTO>? SelectedDevice { get; set; }
         public string ImageData { get; set; }
