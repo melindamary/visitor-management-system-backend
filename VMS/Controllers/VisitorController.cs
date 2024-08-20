@@ -3,6 +3,8 @@ using VMS.Repository.IRepository;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Services;
+using Microsoft.AspNetCore.SignalR;
+using VMS.AVHubs;
 
 namespace VMS.Controllers
 {
@@ -12,10 +14,12 @@ namespace VMS.Controllers
     public class VisitorController : ControllerBase
     {
         private readonly IVisitorFormService _visitorService;
+        private readonly IHubContext<VisitorHub> _hubContext;
 
-        public VisitorController(IVisitorFormService visitorService)
+        public VisitorController(IVisitorFormService visitorService, IHubContext<VisitorHub> hubContext)
         {
             _visitorService = visitorService;
+            _hubContext = hubContext;
         }
 
         [HttpGet("details")]
@@ -63,6 +67,11 @@ namespace VMS.Controllers
         public async Task<ActionResult<Visitor>> CreateVisitor(VisitorCreationDTO visitorDto)
         {
             var visitor = await _visitorService.CreateVisitorAsync(visitorDto);
+            if (visitor != null)
+            {
+                // Notify all connected clients to reload the visitor log
+                await _hubContext.Clients.All.SendAsync("ReloadVisitorLog");
+            }
             return CreatedAtAction(nameof(GetVisitorById), new { id = visitor.Id }, visitor);
         }
 

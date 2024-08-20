@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using System.Net;
+using VMS.AVHubs;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
@@ -12,11 +14,12 @@ namespace VMS.Controllers
     public class LocationController : ControllerBase
     {
         private readonly ILocationService _locationService;
-        private readonly ILocationRepository _repository;
-        public LocationController(ILocationService  locationService, ILocationRepository locationRepository)
+        private readonly IHubContext<VisitorHub> _hubContext;
+
+        public LocationController(ILocationService  locationService, IHubContext<VisitorHub> hubContext)
         {
             _locationService = locationService;
-            _repository = locationRepository;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -26,7 +29,7 @@ namespace VMS.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
         public async Task<IEnumerable<LocationIdAndNameDTO>> GetLocationIdAndName()
         {
-            return await _repository.GetLocationIdAndNameAsync();
+            return await _locationService.GetLocationIdAndNameAsync();
         }
 
         [HttpGet]
@@ -79,6 +82,7 @@ namespace VMS.Controllers
                 var success = await _locationService.AddLocationAsync(locationdDTO);
                 if (success)
                 {
+                    await _hubContext.Clients.All.SendAsync("LocationAdded");
                     response.IsSuccess = true;
                     response.StatusCode = HttpStatusCode.Created;
                     response.Result = "Location added successfully.";

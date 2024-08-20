@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
 using Microsoft.Extensions.Logging;
 using System.Net;
+using VMS.AVHubs;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
@@ -15,11 +17,10 @@ namespace VMS.Controllers
     {
         private readonly IVisitorService _service;
         private readonly ILogger<VisitorLogController> _logger;
-
         public VisitorLogController(IVisitorService service, ILogger<VisitorLogController> logger)
         {
             _service = service;
-            _logger = logger; 
+            _logger = logger;
         }
 
         [HttpGet]
