@@ -1,15 +1,12 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.SignalR;
+using Microsoft.EntityFrameworkCore;
+using VMS.AVHubs;
 using VMS.Data;
 using VMS.Models;
 using VMS.Models.DTO;
 using VMS.Repository.IRepository;
-using Microsoft.Extensions.Logging;
-using Microsoft.AspNetCore.Identity.Data;
-using Microsoft.AspNetCore.Identity;
-using System.Security.Cryptography;
-using Microsoft.AspNetCore.SignalR;
 using VMS.Services;
-using VMS.AVHubs;
 
 
 namespace VMS.Repository
@@ -111,8 +108,8 @@ namespace VMS.Repository
 
         public async Task UpdateLoggedInStatusAsync(string username) {
 
-            await _context.SaveChangesAsync();
-          
+            // await _context.SaveChangesAsync();
+            await _hubContext.Clients.All.SendAsync("ReceiveLocationStatisticsecurity", await _dashboardService.GetSecurityStatistics(30));
 
             _logger.LogInformation("Updating logged-in status for user: {Username}.", username);
             try
@@ -126,12 +123,15 @@ namespace VMS.Repository
 
                 if (user.IsLoggedIn == 0)
                 {
+                    await _hubContext.Clients.All.SendAsync("ReceiveLocationStatisticsecurity", await _dashboardService.GetSecurityStatistics(30));
+
 
                     user.IsLoggedIn = 1;
                     _logger.LogInformation("User {Username} status set to logged in.", username);
                 }
                 else if (user.IsLoggedIn == 1)
                 {
+                    await _hubContext.Clients.All.SendAsync("ReceiveLocationStatisticsecurity", await _dashboardService.GetSecurityStatistics(30));
 
                     user.IsLoggedIn = 0;
                     _logger.LogInformation("User {Username} status set to logged out.", username);
@@ -232,7 +232,8 @@ namespace VMS.Repository
         public async Task<bool> UsernameExistsAsync(string username)
         {
             _logger.LogInformation("Checking if username exists: {Username}.", username);
-            bool exists = await _context.Users.AnyAsync(u => u.Username == username);
+            var result = await _context.Users.FirstOrDefaultAsync(u => u.Username == username);
+            var exists = result != null? true:false;
             _logger.LogInformation("Username {Username} exists: {Exists}.", username, exists);
             return exists;
         }

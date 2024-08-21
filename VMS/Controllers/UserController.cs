@@ -69,12 +69,12 @@ namespace VMS.Controllers
                 return StatusCode((int)HttpStatusCode.InternalServerError, errorResponse);
             }*/
         }
-        [HttpGet]
+        [HttpGet("{username}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<IActionResult> CheckUsernameExists([FromQuery] string username)
+        public async Task<ActionResult<APIResponse>> CheckUsernameExists(string username)
         {
             {
                 if (string.IsNullOrWhiteSpace(username))
@@ -91,7 +91,8 @@ namespace VMS.Controllers
 
                 var response = new APIResponse
                 {
-                    Result = !exists, // If username does not exist, return true
+                    IsSuccess = true,
+                    Result = exists, // If username does not exist, return true
                     StatusCode = HttpStatusCode.OK
                 };
 
@@ -151,7 +152,8 @@ namespace VMS.Controllers
 
             return Ok(userOverviews);
         }
-       [HttpPut("{id}")]
+
+        [HttpPut("{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
