@@ -19,14 +19,16 @@ namespace VMS.Repository
         private readonly IHubContext<VisitorHub> _hubContext;
         private readonly DashboardService _dashboardService;
 
+        private readonly ReportService _reportService;
 
-        public VisitorRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, IMapper mapper, ILogger<VisitorRepository> logger, DashboardService dashboardService)
+        public VisitorRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, IMapper mapper, ILogger<VisitorRepository> logger, DashboardService dashboardService,ReportService reportService)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
             _hubContext = hubContext;
             _dashboardService = dashboardService;
+            _reportService=reportService;    
 
         }
 
@@ -121,7 +123,8 @@ namespace VMS.Repository
             await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
 
-
+        //report update 
+            await _hubContext.Clients.All.SendAsync("ReceiveReport",await _reportService.GetAllVisitorReportsAsync());
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
 
 
