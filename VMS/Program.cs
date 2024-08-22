@@ -85,6 +85,7 @@ builder.Services.AddScoped<IVisitorService, VisitorService>();
 builder.Services.AddScoped<IVisitorRepository, VisitorRepository>();
 builder.Services.AddScoped<ILocationService, LocationService>();
 builder.Services.AddScoped<DashboardService>();
+builder.Services.AddScoped<ReportService>();
 // builder.Services.AddScoped<VisitorService>();
 builder.Services.AddScoped<IVisitorFormService, VisitorFormService>();
 /*builder.Services.AddScoped<VisitorMonitorService>();

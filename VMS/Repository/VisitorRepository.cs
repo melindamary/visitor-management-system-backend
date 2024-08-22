@@ -28,7 +28,7 @@ namespace VMS.Repository
             _logger = logger;
             _hubContext = hubContext;
             _dashboardService = dashboardService;
-            _reportService=reportService;    
+            _reportService = reportService;    
 
         }
 
