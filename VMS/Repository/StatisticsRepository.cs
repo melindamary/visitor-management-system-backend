@@ -132,6 +132,7 @@ namespace VMS.Repository
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
 
             var purposeStatistics = await _context.PurposeOfVisits
+                .Where(pov=>pov.Status==1)
                 .GroupJoin(
                     _context.Visitors.Where(v => v.VisitDate >= thirtyDaysAgo),
                     pov => pov.Id,
