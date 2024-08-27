@@ -10,11 +10,10 @@
         public DateTime? CheckOutTime { get; set; }
         public int? VisitorPassCode { get; set; }
         public DateTime? VisitDate { get; set; }
-        public string? DeviceName { get; set; }
         public string? HostName { get; set; }
         public string? PhotoBase64 { get; set; }
         public byte[]? Photo { get; set; }
-
-
+        public List<DeviceDetailsDTO> Devices { get; set; } = new List<DeviceDetailsDTO>(); // Initialize list to avoid null reference
     }
+
 }
