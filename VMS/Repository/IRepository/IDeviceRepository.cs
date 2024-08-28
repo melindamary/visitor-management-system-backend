@@ -9,9 +9,11 @@ namespace VMS.Repository.IRepository
         Task<Device> AddDeviceAsync(AddNewDeviceDTO deviceDto);
         Task<IEnumerable<DeviceDTO>> GetDeviceListAsync();
 
-        Task<bool> DeleteDeviceAsync(int id);
+       /* Task<bool> DeleteDeviceAsync(int id);*/
 
         Task<bool> UpdateDeviceAsync(DeviceUpdateRequestDTO updateRequestDTO);
+
+        Task<bool> UpdateDeviceStatusAsync(DeviceStatusUpdateRequestDTO updateDeviceStatusRequestDTO);
         Task SaveAsync();
     }
 }
