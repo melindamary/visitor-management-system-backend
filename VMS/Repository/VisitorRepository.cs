@@ -19,14 +19,16 @@ namespace VMS.Repository
         private readonly IHubContext<VisitorHub> _hubContext;
         private readonly DashboardService _dashboardService;
 
+        private readonly ReportService _reportService;
 
-        public VisitorRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, IMapper mapper, ILogger<VisitorRepository> logger, DashboardService dashboardService)
+        public VisitorRepository(VisitorManagementDbContext context, IHubContext<VisitorHub> hubContext, IMapper mapper, ILogger<VisitorRepository> logger, DashboardService dashboardService,ReportService reportService)
         {
             _context = context;
             _mapper = mapper;
             _logger = logger;
             _hubContext = hubContext;
             _dashboardService = dashboardService;
+            _reportService = reportService;    
 
         }
 
@@ -46,18 +48,18 @@ namespace VMS.Repository
             return count;
         }
 
-        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter,string locationName)
+        public async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter, string locationName)
         {
             DateTime today = DateTime.Today;
             var officeLocation = await _context.OfficeLocations.FirstOrDefaultAsync(l => l.Name == locationName);
-            var visitorDetail = await filter(_context.Visitors
+            var visitorDetails = await filter(_context.Visitors
                 .Include(v => v.Purpose)
                 .Include(v => v.VisitorDevices)
                     .ThenInclude(vd => vd.Device)
                 .Where(v => v.VisitDate == today && v.OfficeLocationId == officeLocation.Id))
                 .ToListAsync();
 
-            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetail);
+            var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetails);
 
             foreach (var dto in visitorLogDtos)
             {
@@ -65,10 +67,20 @@ namespace VMS.Repository
                 {
                     dto.PhotoBase64 = Convert.ToBase64String(dto.Photo);
                 }
+
+                // Ensure the Devices list is populated
+                var visitor = visitorDetails.FirstOrDefault(v => v.Id == dto.Id);
+                dto.Devices = visitor?.VisitorDevices?.Select(vd => new DeviceDetailsDTO
+                {
+                    Id = vd.Device.Id,
+                    Name = vd.Device.Name,
+                    SerialNumber = vd.SerialNumber // Map SerialNumber from VisitorDevice
+                }).ToList() ?? new List<DeviceDetailsDTO>();
             }
 
             return visitorLogDtos;
         }
+
 
         public async Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode)
         {
@@ -121,7 +133,8 @@ namespace VMS.Repository
             await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
 
-
+        //report update 
+            await _hubContext.Clients.All.SendAsync("ReceiveReport",await _reportService.GetAllVisitorReportsAsync());
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
 
 

@@ -91,7 +91,9 @@ namespace VMS.Repository
             // Update Location Statistics
             await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetLocationStatistics(1));
             await _hubContext.Clients.All.SendAsync("ReceiveLocationStatistics", await _dashboardService.GetSecurityStatistics(1));
+            
 
+            //update report on visitor adding
 
 
             

@@ -13,11 +13,11 @@ namespace VMS.AVHubs
 
         private readonly DashboardService _dashboardService;
 
-
-        public VisitorHub(VisitorManagementDbContext dbContext, ILogger<VisitorHub> logger, DashboardService visitorTiles)
+        private readonly ReportService _reportService;
+        public VisitorHub(VisitorManagementDbContext dbContext, ILogger<VisitorHub> logger, DashboardService visitorTiles,ReportService reportService)
         {
             _dashboardService = visitorTiles;
-
+            _reportService=reportService;
             _logger = logger;
 
         }
@@ -49,6 +49,12 @@ namespace VMS.AVHubs
             var locationStatisticssecurity = await _dashboardService.GetSecurityStatistics(days); // Get the location statistics
             await Clients.Caller.SendAsync("ReceiveLocationStatisticsecurity", locationStatisticssecurity); // Send the location statistics to the caller
         }
+        public async Task SendInitialReports()
+        {
+            var report = await _reportService.GetAllVisitorReportsAsync(); 
+            await Clients.Caller.SendAsync("ReceiveReport", report); 
+        }
+
 
         public async Task BroadcastVisitorCounts()
         {

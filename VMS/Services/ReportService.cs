@@ -13,12 +13,12 @@ namespace VMS.Services
         {
             _repository = repository;
         }
-
+//include signal r
         public async Task<IEnumerable<VisitorReportDetailsDTO>> GetAllVisitorReportsAsync()
         {
             return await _repository.GetAllVisitorsAsync();
         }
-
+//
         public async Task<VisitorDetailsDTO> GetVisitorDetailsAsync(int id)
         {
             return await _repository.GetVisitorDetailsAsync(id);

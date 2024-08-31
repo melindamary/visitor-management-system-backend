@@ -11,6 +11,7 @@ namespace VMS.Repository.IRepository
         Task<IEnumerable<PurposeOfVisitDTO>> GetPurposeListAsync();
 
         Task<bool> UpdatePurposeAsync(PurposeUpdateRequestDTO updatePurposeRequestDTO);
+        Task<bool> UpdatePurposeStatusAsync(PurposeStatusUpdateRequestDTO updatePurposeStatusRequestDTO);
 
         Task<bool> DeletePurposeAsync(int id);
         Task SaveAsync();
