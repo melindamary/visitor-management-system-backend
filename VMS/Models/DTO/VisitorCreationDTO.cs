@@ -21,5 +21,6 @@ namespace VMS.Models.DTO
 
         public List<VisitorDeviceDTO>? SelectedDevice { get; set; }
         public string ImageData { get; set; }
+        public DateTime VisitDate { get; set; }
     }
 }
