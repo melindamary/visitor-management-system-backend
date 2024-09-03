@@ -42,6 +42,7 @@ namespace VMS.Controllers
                 var activeVisitors = await _service.GetActiveVisitorsToday(locationName);
                 var checkedOutVisitors = await _service.GetCheckedOutVisitorsToday(locationName);
                 var visitorsToday = await _service.GetVisitorDetailsToday(locationName);
+                var scheduledVisitors = await _service.GetScheduledVisitors(locationName);
 
                 var result = new
                 {
@@ -51,7 +52,8 @@ namespace VMS.Controllers
                     UpcomingVisitors = upcomingVisitors,
                     ActiveVisitors = activeVisitors,
                     VisitorsToday = visitorsToday,
-                    CheckedOutVisitors = checkedOutVisitors
+                    CheckedOutVisitors = checkedOutVisitors,
+                    ScheduledVisitors = scheduledVisitors
                 };
 
                 response.IsSuccess = true;

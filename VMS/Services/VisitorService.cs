@@ -80,7 +80,8 @@ namespace VMS.Services
             try
             {
                 _logger.LogInformation("Fetching visitor details for today.");
-                var details = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null || visitor.CheckOutTime != null), locationName);
+                DateTime today = DateTime.Today;
+                var details = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.VisitDate == today && visitor.CheckInTime != null), locationName);
                 _logger.LogInformation("Fetched {Count} visitor details for today.", details.Count());
                 return details;
             }
@@ -96,7 +97,8 @@ namespace VMS.Services
             try
             {
                 _logger.LogInformation("Fetching upcoming visitors for today.");
-                var upcomingVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null),locationName);
+                DateTime today = DateTime.Today;
+                var upcomingVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.VisitDate == today && visitor.CheckInTime == null),locationName);
                 _logger.LogInformation("Fetched {Count} upcoming visitors for today.", upcomingVisitors.Count());
                 return upcomingVisitors;
             }
@@ -112,7 +114,8 @@ namespace VMS.Services
             try
             {
                 _logger.LogInformation("Fetching active visitors for today.");
-                var activeVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime == null), locationName);
+                DateTime today = DateTime.Today;
+                var activeVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.VisitDate == today && visitor.CheckInTime != null && visitor.CheckOutTime == null), locationName);
                 _logger.LogInformation("Fetched {Count} active visitors for today.", activeVisitors.Count());
                 return activeVisitors;
             }
@@ -128,7 +131,8 @@ namespace VMS.Services
             try
             {
                 _logger.LogInformation("Fetching checked-out visitors for today.");
-                var checkedOutVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime != null && visitor.CheckOutTime != null), locationName);
+                DateTime today = DateTime.Today;
+                var checkedOutVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.VisitDate == today && visitor.CheckInTime != null && visitor.CheckOutTime != null), locationName);
                 _logger.LogInformation("Fetched {Count} checked-out visitors for today.", checkedOutVisitors.Count());
                 return checkedOutVisitors;
             }
@@ -138,6 +142,24 @@ namespace VMS.Services
                 throw;
             }
         }
+
+        public async Task<IEnumerable<VisitorLogDTO>> GetScheduledVisitors(string locationName)
+        {
+            try
+            {
+                _logger.LogInformation("Fetching scheduled visitors for today.");
+                var scheduledVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null), locationName);
+                _logger.LogInformation("Fetched {Count} scheduled visitors for today.", scheduledVisitors.Count());
+                return scheduledVisitors;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while fetching upcoming visitors for today.");
+                throw;
+            }
+        }
+
+
 
         public async Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode)
         {
