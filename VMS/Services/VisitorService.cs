@@ -148,7 +148,8 @@ namespace VMS.Services
             try
             {
                 _logger.LogInformation("Fetching scheduled visitors for today.");
-                var scheduledVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.CheckInTime == null), locationName);
+                DateTime today = DateTime.Today;
+                var scheduledVisitors = await _visitorRepository.GetVisitorLogs(v => v.Where(visitor => visitor.VisitDate != today && visitor.CheckInTime == null), locationName);
                 _logger.LogInformation("Fetched {Count} scheduled visitors for today.", scheduledVisitors.Count());
                 return scheduledVisitors;
             }
