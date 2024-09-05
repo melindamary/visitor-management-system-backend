@@ -59,6 +59,7 @@ namespace VMS.Repository
                                     join user in _context.UserDetails
                                     on device.UpdatedBy equals user.UserId into userGroup
                                     from user in userGroup.DefaultIfEmpty()
+                                where device.Status == 0 || device.Status == 1 
                                     select new DeviceDTO
                                     {
                                         Id = device.Id,
@@ -104,6 +105,25 @@ namespace VMS.Repository
             device.UpdatedBy = user.Id;
             device.UpdatedDate = DateTime.Now;
             device.Status = 1;
+
+            _context.Devices.Update(device);
+            await _context.SaveChangesAsync();
+
+            return true;
+        }
+
+        public async Task<bool> UpdateDeviceStatusAsync(DeviceStatusUpdateRequestDTO updateDeviceStatusRequestDTO)
+        {
+            var device = await _context.Devices.FindAsync(updateDeviceStatusRequestDTO.Id);
+            if (device == null)
+            {
+                return false;
+            }
+            var user = await _context.Users.FirstOrDefaultAsync(u => u.Username == updateDeviceStatusRequestDTO.Username);
+            Console.WriteLine(updateDeviceStatusRequestDTO.Username);
+            device.Status = updateDeviceStatusRequestDTO.Status;
+            device.UpdatedBy = user.Id;
+            device.UpdatedDate = DateTime.Now;
 
             _context.Devices.Update(device);
             await _context.SaveChangesAsync();

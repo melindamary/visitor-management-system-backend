@@ -101,14 +101,14 @@ namespace VMS.Controllers
 
         }
 
-        [HttpDelete("{id}")]
+        [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(APIResponse))]
         [ProducesResponseType(StatusCodes.Status500InternalServerError, Type = typeof(APIResponse))]
-        public async Task<ActionResult<APIResponse>> Purpose(int id)
+        public async Task<ActionResult<APIResponse>> PurposeStatus([FromBody] PurposeStatusUpdateRequestDTO updatePurposeStatusRequestDTO)
         {
-            var result = await _repository.DeletePurposeAsync(id);
+            var result = await _repository.UpdatePurposeStatusAsync(updatePurposeStatusRequestDTO);
             if (!result)
             {
                 var errorResponse = new APIResponse

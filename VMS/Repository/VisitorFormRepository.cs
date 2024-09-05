@@ -58,10 +58,10 @@ namespace VMS.Repository
                 HostName = visitorDto.PersonInContact,
                 OfficeLocationId = visitorDto.OfficeLocationId,
                 FormSubmissionMode = visitorDto.formSubmissionMode,
+                VisitDate = visitorDto.VisitDate,
                 CheckedInBy = _systemUserId,
                 CreatedBy = _systemUserId,
-                VisitorPassCode= _deafaultPassCode,
-                VisitDate = DateTime.Now.Date,
+                VisitorPassCode= _deafaultPassCode,                
                 CreatedDate = DateTime.Now,
                 UpdatedDate = DateTime.Now,
                 VisitorDevices = new List<VisitorDevice>()

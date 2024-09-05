@@ -12,10 +12,10 @@ namespace VMS.Services
             _repository = repository;   
         }
 
-        public async Task<bool> DeleteDeviceAsync(int id)
+       /* public async Task<bool> DeleteDeviceAsync(int id)
         {
             return await _repository.DeleteDeviceAsync(id);
-        }
+        }*/
 
         public async Task<IEnumerable<DeviceDTO>> GetDeviceListAsync()
         {
@@ -25,6 +25,11 @@ namespace VMS.Services
         public async Task<bool> UpdateDeviceAsync(DeviceUpdateRequestDTO updateDeviceRequestDTO)
         {
             return await _repository.UpdateDeviceAsync(updateDeviceRequestDTO);
+        }
+
+        public async Task<bool> UpdateDeviceStatusAsync(DeviceStatusUpdateRequestDTO updateDeviceStatusRequestDTO)
+        {
+            return await _repository.UpdateDeviceStatusAsync(updateDeviceStatusRequestDTO);
         }
     }
 }
