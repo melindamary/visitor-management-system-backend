@@ -71,7 +71,7 @@ namespace VMS.Services
             var currentUser = await _userRepository.GetUserByUsernameAsync(addNewUserDto.loginUserName);
             if (currentUser == null)
             {
-                return  ;
+                throw new ArgumentException($"Login username '{addNewUserDto.loginUserName}' not found.");
             }
             // Create the user object
             var user = new User
