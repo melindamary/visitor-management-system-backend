@@ -50,13 +50,12 @@ namespace VMS.Repository
 
         public async Task<IEnumerable<VisitorLogDTO>> GetVisitorLogs(Func<IQueryable<Visitor>, IQueryable<Visitor>> filter, string locationName)
         {
-            DateTime today = DateTime.Today;
             var officeLocation = await _context.OfficeLocations.FirstOrDefaultAsync(l => l.Name == locationName);
             var visitorDetails = await filter(_context.Visitors
                 .Include(v => v.Purpose)
                 .Include(v => v.VisitorDevices)
                     .ThenInclude(vd => vd.Device)
-                .Where(v => v.VisitDate == today && v.OfficeLocationId == officeLocation.Id))
+                .Where(v => v.OfficeLocationId == officeLocation.Id))
                 .ToListAsync();
 
             var visitorLogDtos = _mapper.Map<List<VisitorLogDTO>>(visitorDetails);

@@ -12,6 +12,7 @@ namespace VMS.Services.IServices
         Task<IEnumerable<VisitorLogDTO>> GetUpcomingVisitorsToday(string locationName);
         Task<IEnumerable<VisitorLogDTO>> GetActiveVisitorsToday(string locationName);
         Task<IEnumerable<VisitorLogDTO>> GetCheckedOutVisitorsToday(string locationName);
+        Task<IEnumerable<VisitorLogDTO>> GetScheduledVisitors(string locationName);
         Task<VisitorLogDTO> UpdateCheckInTimeAndCardNumber(int id, UpdateVisitorPassCodeDTO updateVisitorPassCode);
         Task<VisitorLogDTO> UpdateCheckOutTime(int id);
 
