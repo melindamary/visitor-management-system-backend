@@ -68,9 +68,9 @@ project.fragment.lock.json
 artifacts/
 
 # Docker images
-**/Dockerfile
-**/docker-compose*
-/.docker/
+# **/Dockerfile
+# **/docker-compose*
+# /.docker/
 
 # Logs
 *.log
