@@ -175,6 +175,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseCors("CorsPolicy");
 app.MapControllers();
 app.UseStaticFiles();
 
@@ -182,7 +183,5 @@ app.UseAuthorization();
 
 app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
 //app.MapHub<VisitorLogHub>("/visitorLogHub").RequireCors("CorsPolicy");
-
-app.UseCors("CorsPolicy");
 app.Run();
 
