@@ -12,9 +12,13 @@ using VMS.Repository;
 using VMS.Repository.IRepository;
 using VMS.Services;
 using VMS.Services.IServices;
-
+using DotNetEnv;
 
 var builder = WebApplication.CreateBuilder(args);
+
+DotNetEnv.Env.Load();
+
+builder.Configuration.AddEnvironmentVariables();
 
 // Configure Serilog
 Log.Logger = new LoggerConfiguration()
