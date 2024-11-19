@@ -1,0 +1,29 @@
+# Use the official .NET SDK image for building the app
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS base
+USER app
+# Set the working directory in the container
+WORKDIR /app
+EXPOSE 8081
+
+# Copy the .csproj and restore any dependencies (using cached layers if possible)
+COPY *.csproj ./
+RUN dotnet restore
+
+# Copy the entire project and build it
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Use the official .NET runtime image for running the app
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS runtime
+
+# Set the working directory in the runtime container
+WORKDIR /app
+
+# Copy the compiled output from the build stage to the runtime stage
+COPY --from=build /app/out .
+
+# Expose port 80 to the outside world
+EXPOSE 80
+
+# Set the entry point to run your app
+ENTRYPOINT ["dotnet", "VMS.dll"]
