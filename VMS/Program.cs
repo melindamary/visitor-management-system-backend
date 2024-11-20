@@ -187,8 +187,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
-app.UseCors("CorsPolicy");
+/*app.UseHttpsRedirection(); 
+*/app.UseCors("CorsPolicy");
 app.MapControllers();
 app.UseStaticFiles();
 
