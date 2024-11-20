@@ -17,7 +17,7 @@ using DotNetEnv;
 var builder = WebApplication.CreateBuilder(args);
 
 DotNetEnv.Env.Load();
-
+Console.WriteLine("Environment: ",DotNetEnv.Env.Load());
 builder.Configuration.AddEnvironmentVariables();
 
 // Configure Serilog
@@ -106,8 +106,17 @@ builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddScoped<IDeviceService, DeviceService>();
 
+var connectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING");
+var secretKey = Environment.GetEnvironmentVariable("SECRET_KEY");
+
 //authentication for backend API
+
+builder.Configuration["ConnectionStrings:DefaultConnection"] = connectionString;
+builder.Configuration["ApiSettings:Key"] = secretKey;
+
 var key = Encoding.ASCII.GetBytes(builder.Configuration["ApiSettings:Key"]);
+Console.WriteLine("Key: ",key);
+
 builder.Services.AddAuthentication(x =>
 {
     x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
