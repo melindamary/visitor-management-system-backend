@@ -91,25 +91,25 @@ namespace VMS.Repository
             }
 
             bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode
-            && v.OfficeLocationId == existingVisitor.OfficeLocationId && v.Id != id);
+            && v.OfficeLocationId == existingVisitor.OfficeLocationId && v.Id != id && v.VisitDate == DateTime.Now.Date);
             if (passCodeExists)
             {
                 throw new ArgumentException("This visitor pass code has already been allocated.");
             }
 
-            existingVisitor.CheckInTime = DateTime.Now;
+            // Directly set IST time (UTC + 5:30)
+            DateTimeOffset istTime = DateTimeOffset.Now.ToOffset(TimeSpan.FromHours(5).Add(TimeSpan.FromMinutes(30)));
+
+            // Update CheckInTime and UpdatedDate to IST time
+            existingVisitor.CheckInTime = istTime.DateTime;
             existingVisitor.VisitorPassCode = updateVisitorPassCode.VisitorPassCode;
-            existingVisitor.UpdatedDate = DateTime.Now;
+            existingVisitor.UpdatedDate = istTime.DateTime;
 
             await _context.SaveChangesAsync();
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
             await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveScheduledVisitorsCount", await _dashboardService.GetScheduledVisitorsCountAsync());
             await _hubContext.Clients.All.SendAsync("ReceiveTotalVisitorsCount", await _dashboardService.GetTotalVisitorsCountAsync());
-
-           
-
-
 
             return visitorLogDTO;
         }
@@ -122,9 +122,11 @@ namespace VMS.Repository
             {
                 return null;
             }
+            // Directly set IST time (UTC + 5:30)
+            DateTimeOffset istTime = DateTimeOffset.Now.ToOffset(TimeSpan.FromHours(5).Add(TimeSpan.FromMinutes(30)));
 
-            existingVisitor.CheckOutTime = DateTime.Now;
-            existingVisitor.UpdatedDate = DateTime.Now;
+            existingVisitor.CheckOutTime = istTime.DateTime;
+            existingVisitor.UpdatedDate = istTime.DateTime;
             existingVisitor.VisitorPassCode = 0;
 
             await _context.SaveChangesAsync();
@@ -135,10 +137,8 @@ namespace VMS.Repository
         //report update 
             await _hubContext.Clients.All.SendAsync("ReceiveReport",await _reportService.GetAllVisitorReportsAsync());
             var visitorLogDTO = _mapper.Map<VisitorLogDTO>(existingVisitor);
-
-
-
             _logger.LogInformation("Successfully updated check-out time for visitor ID {VisitorId}.", id);
+
             return visitorLogDTO;
         }
         public async Task SaveAsync()
