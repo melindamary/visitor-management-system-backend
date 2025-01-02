@@ -10,7 +10,8 @@ namespace VMS.Services.IServices
      Task<UserDetailDTO> GetUserByIdAsync(int userId);
      Task<List<UserOverviewDTO>> GetAllUsersOverviewAsync();
      Task<bool> UpdateUserAsync(UpdateUserDTO updateUserDto);
-        Task<bool> CheckUsernameExistsAsync(string username);
+     Task<bool> CheckUsernameExistsAsync(string username);
+     Task<bool> CheckOldeUserPasswordWhenResetPassword(int userId, string newPassword);
 
     }
 }
