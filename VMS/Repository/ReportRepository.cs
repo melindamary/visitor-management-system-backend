@@ -43,7 +43,8 @@ namespace VMS.Repository
                                                   Photo = Convert.ToBase64String(visitor.Photo),
                                                   DeviceCount = devices.Count,
                                                   Devices = devices
-                                              }).ToListAsync();
+                                              })
+                                              .OrderByDescending(v => v.VisitDate).ToListAsync();
 
             return visitors;
         }
