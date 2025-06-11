@@ -59,7 +59,8 @@ namespace VMS.Repository
                                     join user in _context.UserDetails
                                     on device.UpdatedBy equals user.UserId into userGroup
                                     from user in userGroup.DefaultIfEmpty()
-                                where device.Status == 0 || device.Status == 1 
+                                    where device.Status == 0 || device.Status == 1
+                                    orderby device.Status descending
                                     select new DeviceDTO
                                     {
                                         Id = device.Id,

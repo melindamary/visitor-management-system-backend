@@ -181,6 +181,7 @@ namespace VMS.Services
                                 join userLocation in userLocations on user.Id equals userLocation.UserId
                                 join location in locations on userLocation.OfficeLocationId equals location.Id
                                 where userLocation.OfficeLocationId != null
+                                orderby user.IsActive descending
                                 select new UserOverviewDTO
                                 {
                                     userId = user.Id,

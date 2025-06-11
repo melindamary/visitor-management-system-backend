@@ -58,6 +58,7 @@ namespace VMS.Repository
                                      on purpose.UpdatedBy equals user.UserId into userGroup
                                      from user in userGroup.DefaultIfEmpty()
                                      where purpose.Status == 0 || purpose.Status == 1
+                                     orderby purpose.Status descending
                                      select new PurposeOfVisitDTO
                                      {
                                          Id = purpose.Id,
