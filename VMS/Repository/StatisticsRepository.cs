@@ -25,8 +25,8 @@ namespace VMS.Repository
                                          _context.UserDetails.Any(ud => ud.UserId == ur.UserId &&
                                                                         ud.OfficeLocationId == ol.Id))
                         let passesGenerated = _context.Visitors
-                            .Count(v => v.OfficeLocationId == ol.Id &&
-                                        v.VisitDate >= startDate)
+                            .Count(v => v.OfficeLocationId == ol.Id && v.Id != null &&
+                                        v.CreatedDate >= startDate)
                         let totalVisitors = _context.Visitors
                             .Count(v => v.OfficeLocationId == ol.Id &&
                                         v.CheckInTime != null &&
@@ -105,7 +105,7 @@ namespace VMS.Repository
                                          where r.Name == "Security"
                                          let visitors = _context.Visitors
                                              .Where(v => v.OfficeLocationId == ol.Id &&
-                                                         v.UpdatedBy == u.Id &&
+                                                         v.UpdatedBy == u.Id && 
                                                          v.VisitDate >= startDate)
                                              .Select(v => v.Id)
                                              .Distinct()
@@ -172,7 +172,7 @@ namespace VMS.Repository
             var thirtyDaysAgo = DateTime.Now.AddDays(-30);
 
             var result = await (from o in _context.OfficeLocations
-                                join v in _context.Visitors.Where(v => v.CheckInTime >= thirtyDaysAgo)
+                                join v in _context.Visitors.Where(v => v.CreatedDate >= thirtyDaysAgo)
                                     on o.Id equals v.OfficeLocationId into vGroup
                                 from v in vGroup.DefaultIfEmpty()
                                 group new { o, v } by o.Name into g
@@ -180,7 +180,7 @@ namespace VMS.Repository
                                 {
                                     Location = g.Key,
                                     PassesGenerated = g.Count(x => x.v.Id != null),
-                                    ActiveVisitors = g.Count(x => x.v.Id != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null),
+                                    ActiveVisitors = g.Count(x => x.v.Id != null && x.v.VisitorPassCode != 0 && x.v.CheckOutTime == null && x.v.CheckInTime.Value.Date < DateTime.Today ),
                                     TotalVisitors = g.Count(x => x.v.Id != null && x.v.CheckInTime != null)
                                 })
                                 .ToListAsync();
