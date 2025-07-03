@@ -1,12 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Logging;
 using System.Net;
 using VMS.AVHubs;
 using VMS.Models;
 using VMS.Models.DTO;
-using VMS.Repository.IRepository;
-using VMS.Services;
 using VMS.Services.IServices;
 
 namespace VMS.Controllers
@@ -17,10 +14,12 @@ namespace VMS.Controllers
     {
         private readonly IVisitorService _service;
         private readonly ILogger<VisitorLogController> _logger;
-        public VisitorLogController(IVisitorService service, ILogger<VisitorLogController> logger)
+        private readonly IHubContext<VisitorHub> _hubContext;
+        public VisitorLogController(IVisitorService service, ILogger<VisitorLogController> logger, IHubContext<VisitorHub> hubContext)
         {
             _service = service;
             _logger = logger;
+            _hubContext = hubContext;
         }
 
         [HttpGet]
@@ -121,6 +120,8 @@ namespace VMS.Controllers
                 response.Result = checkedInVisitor;
 
                 _logger.LogInformation("Successfully updated check-in time and pass code for visitor ID {VisitorId}.", id);
+                // Notify all connected clients to reload the visitor log
+                await _hubContext.Clients.All.SendAsync("ReloadVisitorLog");
                 return Ok(response);
             }
             catch (ArgumentException ex)
@@ -172,6 +173,7 @@ namespace VMS.Controllers
                 response.Result = checkedOutVisitor;
 
                 _logger.LogInformation("Successfully updated check-out time for visitor ID {VisitorId}.", id);
+                await _hubContext.Clients.All.SendAsync("ReloadVisitorLog");
                 return Ok(response);
             }
             catch (Exception ex)
