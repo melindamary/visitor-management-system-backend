@@ -33,6 +33,7 @@ namespace VMS.Repository
                                                   VisitorName = visitor.Name,
                                                   Phone = visitor.Phone,
                                                   VisitDate = visitor.VisitDate,
+                                                  VisitorPassCode = visitor.VisitorPassCode,
                                                   HostName = visitor.HostName,
                                                   PurposeName = purpose.Name,
                                                   LocationName = location.Name,

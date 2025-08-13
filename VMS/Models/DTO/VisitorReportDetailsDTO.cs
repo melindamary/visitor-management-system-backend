@@ -9,7 +9,7 @@
         public string Phone { get; set; }
 
         public DateTime VisitDate { get; set; }
-
+        public int? VisitorPassCode { get; set; }
         public string LocationName { get; set; }
 
         public string PurposeName { get; set; }
