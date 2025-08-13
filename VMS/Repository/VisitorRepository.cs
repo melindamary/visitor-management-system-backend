@@ -91,7 +91,7 @@ namespace VMS.Repository
             }
 
             bool passCodeExists = await _context.Visitors.AnyAsync(v => v.VisitorPassCode == updateVisitorPassCode.VisitorPassCode
-            && v.OfficeLocationId == existingVisitor.OfficeLocationId && v.Id != id && v.VisitDate == DateTime.Now.Date);
+            && v.OfficeLocationId == existingVisitor.OfficeLocationId && v.Id != id && v.VisitDate == DateTime.Now.Date && v.CheckOutTime == null);
             if (passCodeExists)
             {
                 throw new ArgumentException("This visitor pass code has already been allocated.");
@@ -127,7 +127,7 @@ namespace VMS.Repository
 
             existingVisitor.CheckOutTime = istTime.DateTime;
             existingVisitor.UpdatedDate = istTime.DateTime;
-            existingVisitor.VisitorPassCode = 0;
+            //existingVisitor.VisitorPassCode = 0;
 
             await _context.SaveChangesAsync();
             await _hubContext.Clients.All.SendAsync("ReceiveVisitorCount", await _dashboardService.GetVisitorCountAsync());
