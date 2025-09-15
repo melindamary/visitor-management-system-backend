@@ -198,7 +198,7 @@ app.UseStaticFiles();
 
 app.UseAuthorization();
 
-app.MapHub<VisitorHub>("/VisitorHub").RequireCors("CorsPolicy");
+app.MapHub<VisitorHub>("api/VisitorHub").RequireCors("CorsPolicy");
 //app.MapHub<VisitorLogHub>("/visitorLogHub").RequireCors("CorsPolicy");
 app.Run();
 
